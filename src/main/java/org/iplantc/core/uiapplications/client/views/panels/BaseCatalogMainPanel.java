@@ -29,6 +29,7 @@ import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
+import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.RowExpander;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -103,7 +104,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
 
         new BetterQuickTip(analysisGrid);
 
-        analysisGrid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        analysisGrid.setSelectionModel(buildSelectionModel());
         analysisGrid.addPlugin(expander);
         analysisGrid.getView().setEmptyText(I18N.DISPLAY.noAnalyses());
         analysisGrid.getView().setForceFit(true);
@@ -112,6 +113,12 @@ public class BaseCatalogMainPanel extends ContentPanel {
 
     public void addGridSelectionChangeListener(Listener<BaseEvent> listener) {
         analysisGrid.getSelectionModel().addListener(Events.SelectionChange, listener);
+    }
+
+    protected GridSelectionModel<Analysis> buildSelectionModel() {
+        GridSelectionModel<Analysis> selectionModel = new GridSelectionModel<Analysis>();
+        selectionModel.setSelectionMode(SelectionMode.SINGLE);
+        return selectionModel;
     }
 
     private void initExpander() {

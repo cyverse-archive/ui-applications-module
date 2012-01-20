@@ -12,6 +12,7 @@ import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
+import com.google.gwt.user.client.Random;
 
 /**
  * Models an Analysis tool
@@ -31,13 +32,14 @@ public class Analysis extends AnalysisGroupTreeModel {
     public static final String WIKI_URL = "wiki_url"; //$NON-NLS-1$
     public static final String DEPLOYED_COMPONENTS = "deployed_components"; //$NON-NLS-1$
     public static final String SUGGESTED_CATEGORIES = "suggested_categories"; //$NON-NLS-1$
+    public static final String DISABLED = "disabled";
 
     /**
      * Creates a new App.
      * 
      * @param json JSON representation of the App, containing keys for "id", "name", and optional
      *            "description", "integrator_name", "integrator_email", "integration_date", "rating",
-     *            "is_favorite", "is_public", "wiki_url", "deployed_components", and
+     *            "is_favorite", "is_public", "wiki_url", "deployed_components", "disabled" and
      *            "suggested_categories".
      */
     public Analysis(JSONObject json) {
@@ -68,6 +70,9 @@ public class Analysis extends AnalysisGroupTreeModel {
         setDeployedComponents(parseDeployedComponents(JsonUtil.getArray(json, DEPLOYED_COMPONENTS)));
 
         setSuggestedCategories(parseSuggestedCategories(JsonUtil.getArray(json, SUGGESTED_CATEGORIES)));
+
+        // TODO: get json and parse boolean. randomize for now
+        setDisabled(Random.nextBoolean());
     }
 
     private List<DeployedComponent> parseDeployedComponents(JSONArray deployedComponents) {
@@ -249,6 +254,24 @@ public class Analysis extends AnalysisGroupTreeModel {
     }
 
     /**
+     * set the app to enabled or disabled
+     * 
+     * @param disabled boolean indicating whether the app is disabled
+     */
+    public void setDisabled(boolean disabled) {
+        set(DISABLED, disabled);
+    }
+
+    /**
+     * check if the app is disabled
+     * 
+     * @return a boolean indicating whether the app is disabled
+     */
+    public Boolean isDisabled() {
+        return get(DISABLED);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -273,6 +296,7 @@ public class Analysis extends AnalysisGroupTreeModel {
         ret.put(FAVOURITE, JSONBoolean.getInstance(isUser_favourite()));
         ret.put(PUBLIC, JSONBoolean.getInstance(isPublic()));
         ret.put(WIKI_URL, new JSONString(getWikiUrl()));
+        ret.put(DISABLED, JSONBoolean.getInstance(isDisabled()));
 
         return ret;
     }
