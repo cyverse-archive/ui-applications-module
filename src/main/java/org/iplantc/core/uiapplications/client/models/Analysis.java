@@ -12,7 +12,6 @@ import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
-import com.google.gwt.user.client.Random;
 
 /**
  * Models an Analysis tool
@@ -71,8 +70,7 @@ public class Analysis extends AnalysisGroupTreeModel {
 
         setSuggestedCategories(parseSuggestedCategories(JsonUtil.getArray(json, SUGGESTED_CATEGORIES)));
 
-        // TODO: get json and parse boolean. randomize for now
-        setDisabled(Random.nextBoolean());
+        setDisabled(JsonUtil.getBoolean(json, DISABLED, false));
     }
 
     private List<DeployedComponent> parseDeployedComponents(JSONArray deployedComponents) {
