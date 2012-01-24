@@ -67,4 +67,11 @@ public interface CommonAppDisplayStrings extends CommonUIDisplayStrings {
      * @return a string representing the localized text.
      */
     String ratingOutOfTotal();
+
+    /**
+     * Localized text for app unavailable
+     * 
+     * @return @return a string representing the localized text.
+     */
+    String appUnavailable();
 }
