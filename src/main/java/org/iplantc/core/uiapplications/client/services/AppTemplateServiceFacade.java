@@ -22,4 +22,12 @@ public interface AppTemplateServiceFacade {
      * @param callback
      */
     void getAnalysisCategories(String workspaceId, AsyncCallback<String> callback);
+
+    /**
+     * Searches for all active Apps with a name or description that contains the given search term.
+     * 
+     * @param search
+     * @param callback called when the RPC call is complete.
+     */
+    void searchAnalysis(String search, AsyncCallback<String> callback);
 }
