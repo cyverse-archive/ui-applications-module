@@ -62,6 +62,13 @@ public interface CommonAppDisplayStrings extends CommonUIDisplayStrings {
     String avgCommunityRating();
 
     /**
+     * Localized display text for an Avg. Rating label.
+     * 
+     * @return a string representing the localized text.
+     */
+    String avgRating();
+
+    /**
      * Localized display text for a rating "x out of 5" label.
      * 
      * @return a string representing the localized text.

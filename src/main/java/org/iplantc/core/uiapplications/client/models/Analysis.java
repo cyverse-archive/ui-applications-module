@@ -31,7 +31,9 @@ public class Analysis extends AnalysisGroupTreeModel {
     public static final String WIKI_URL = "wiki_url"; //$NON-NLS-1$
     public static final String DEPLOYED_COMPONENTS = "deployed_components"; //$NON-NLS-1$
     public static final String SUGGESTED_CATEGORIES = "suggested_categories"; //$NON-NLS-1$
-    public static final String DISABLED = "disabled";
+    public static final String DISABLED = "disabled"; //$NON-NLS-1$
+    public static final String GROUP_ID = "group_id"; //$NON-NLS-1$
+    public static final String GROUP_NAME = "group_name"; //$NON-NLS-1$
 
     /**
      * Creates a new App.
@@ -51,6 +53,9 @@ public class Analysis extends AnalysisGroupTreeModel {
 
         setIntegratorName(JsonUtil.getString(json, INTEGRATOR_NAME));
         setIntegratorEmail(JsonUtil.getString(json, INTEGRATOR_EMAIL));
+        setGroupId(JsonUtil.getString(json, GROUP_ID));
+        setGroupName(JsonUtil.getString(json, GROUP_NAME));
+        setWikiUrl(JsonUtil.getString(json, WIKI_URL));
 
         long timestamp = 0;
         Number num = JsonUtil.getNumber(json, INTEGRATION_DATE);
@@ -61,16 +66,13 @@ public class Analysis extends AnalysisGroupTreeModel {
 
         setUser_favourite(JsonUtil.getBoolean(json, FAVOURITE, false));
         setPublic(JsonUtil.getBoolean(json, PUBLIC, false));
+        setDisabled(JsonUtil.getBoolean(json, DISABLED, false));
 
         setAnalysisFeedback(new AnalysisFeedback(JsonUtil.getObject(json, RATING)));
-
-        set(WIKI_URL, JsonUtil.getString(json, WIKI_URL));
 
         setDeployedComponents(parseDeployedComponents(JsonUtil.getArray(json, DEPLOYED_COMPONENTS)));
 
         setSuggestedCategories(parseSuggestedCategories(JsonUtil.getArray(json, SUGGESTED_CATEGORIES)));
-
-        setDisabled(JsonUtil.getBoolean(json, DISABLED, false));
     }
 
     private List<DeployedComponent> parseDeployedComponents(JSONArray deployedComponents) {
@@ -267,6 +269,42 @@ public class Analysis extends AnalysisGroupTreeModel {
      */
     public Boolean isDisabled() {
         return get(DISABLED);
+    }
+
+    /**
+     * Sets the Group ID this App is listed in.
+     * 
+     * @param groupId The Group ID of this App.
+     */
+    public void setGroupId(String groupId) {
+        set(GROUP_ID, groupId);
+    }
+
+    /**
+     * Retrieves the Group ID this App is listed in.
+     * 
+     * @return The Group ID of this App.
+     */
+    public String getGroupId() {
+        return get(GROUP_ID);
+    }
+
+    /**
+     * Sets the Group name this App is listed in.
+     * 
+     * @param groupName The Group name of this App.
+     */
+    public void setGroupName(String groupName) {
+        set(GROUP_NAME, groupName);
+    }
+
+    /**
+     * Retrieves the Group name this App is listed in.
+     * 
+     * @return The Group name of this App.
+     */
+    public String getGroupName() {
+        return get(GROUP_NAME);
     }
 
     /**

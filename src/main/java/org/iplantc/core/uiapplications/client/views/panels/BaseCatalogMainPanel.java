@@ -7,6 +7,7 @@ import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.models.AnalysisFeedback;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroup;
+import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.Constants;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.widgets.BetterQuickTip;
@@ -15,7 +16,6 @@ import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.core.XTemplate;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
@@ -23,7 +23,6 @@ import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.HorizontalPanel;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.button.IconButton;
-import com.extjs.gxt.ui.client.widget.form.TextField;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnData;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
@@ -49,6 +48,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
     private RowExpander expander;
     private String appIdToSelect;
     protected AnalysisGroup current_category;
+    protected AppTemplateServiceFacade templateService;
 
     public static enum RATING_CONSTANT {
 
@@ -93,7 +93,9 @@ public class BaseCatalogMainPanel extends ContentPanel {
         }
     }
 
-    public BaseCatalogMainPanel() {
+    public BaseCatalogMainPanel(AppTemplateServiceFacade templateService) {
+        this.templateService = templateService;
+
         setLayout(new FitLayout());
         initToolBar();
         initGrid();
@@ -190,12 +192,10 @@ public class BaseCatalogMainPanel extends ContentPanel {
     }
 
     private void initToolBar() {
-         toolBar = new ToolBar();
-         toolBar.setHeight(25);
-         toolBar.add(buildFilterField());
+        toolBar = new CatalogMainToolBar(templateService);
 
-         setTopComponent(toolBar);
-     }
+        setTopComponent(toolBar);
+    }
 
     protected void addToToolBar(Component component) {
         toolBar.add(component);
@@ -238,29 +238,6 @@ public class BaseCatalogMainPanel extends ContentPanel {
 
         return new ColumnModel(configs);
     }
-
-    /**
-     * Builds a text field for filtering items displayed in the data container.
-     */
-    private TextField<String> buildFilterField() {
-        TextField<String> filter = new TextField<String>() {
-            @Override
-            public void onKeyUp(FieldEvent fe) {
-                String filter = getValue();
-                if (filter != null && !filter.isEmpty()) {
-                    analysisGrid.getStore().filter("name", filter); //$NON-NLS-1$
-                } else {
-                    analysisGrid.getStore().clearFilters();
-                }
-
-            }
-        };
-
-        filter.setEmptyText(I18N.DISPLAY.filterDataList());
-
-        return filter;
-    }
-
     /**
      * Selects an application by ID. If the list isn't populated yet, the application is selected after
      * population.
