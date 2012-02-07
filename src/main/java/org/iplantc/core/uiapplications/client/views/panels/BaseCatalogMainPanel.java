@@ -238,42 +238,40 @@ public class BaseCatalogMainPanel extends ContentPanel {
 
         return new ColumnModel(configs);
     }
+
     /**
-     * Selects an application by ID. If the list isn't populated yet, the application is selected after
-     * population.
+     * Selects an application by ID. If the grid store isn't loaded with this application yet, it's
+     * selected the next time the grid store is reloaded.
      * 
      * @param appID the ID of the application to select
      * @see #seed(List)
      */
     public void selectTool(String appID) {
-        List<Analysis> analyses = analysisGrid.getStore().getModels();
+        appIdToSelect = appID;
 
         if (appID == null) {
             return;
         }
-        if (analyses == null || analyses.isEmpty()) {
-            appIdToSelect = appID;
-        } else {
-            selectToolNow(appID);
+
+        if (analysisGrid.getStore().findModel(Analysis.ID, appIdToSelect) != null) {
+            selectToolNow(appIdToSelect);
         }
     }
 
     /**
-     * Selects an application by ID. If the list isn't populated yet, nothing happens. If no application
-     * exists for the ID, an error pop-up is displayed.
+     * Selects an application by appIdToSelect. If the grid store isn't loaded with this application, an
+     * error pop-up is displayed.
      * 
-     * @param category
+     * @param appID
      */
     private void selectToolNow(String appID) {
-        List<Analysis> analyses = analysisGrid.getStore().getModels();
-        for (Analysis app : analyses) {
-            if (appID.equalsIgnoreCase(app.getId())) {
-                analysisGrid.getSelectionModel().select(app, false);
-                return;
-            }
-        }
+        Analysis app = analysisGrid.getStore().findModel(Analysis.ID, appID);
 
-        ErrorHandler.post(org.iplantc.core.uicommons.client.I18N.ERROR.appNotFound());
+        if (app != null) {
+            analysisGrid.getSelectionModel().select(app, false);
+        } else {
+            ErrorHandler.post(org.iplantc.core.uicommons.client.I18N.ERROR.appNotFound());
+        }
     }
 
     /**
