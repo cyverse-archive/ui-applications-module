@@ -5,14 +5,18 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uiapplications.client.events.AnalysisSelectEvent;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
+import org.iplantc.core.uicommons.client.events.EventBus;
 
 import com.extjs.gxt.ui.client.data.BaseListLoadConfig;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.ListLoader;
 import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
+import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -47,7 +51,7 @@ public class CatalogMainToolBar extends ToolBar {
 
         ListStore<Analysis> store = new ListStore<Analysis>(loader);
 
-        ComboBox<Analysis> combo = new ComboBox<Analysis>();
+        final ComboBox<Analysis> combo = new ComboBox<Analysis>();
         combo.setWidth(300);
         combo.setDisplayField("name"); //$NON-NLS-1$
         combo.setItemSelector("div.app-search-item"); //$NON-NLS-1$
@@ -55,6 +59,18 @@ public class CatalogMainToolBar extends ToolBar {
         combo.setStore(store);
         combo.setHideTrigger(true);
         combo.setEmptyText(I18N.DISPLAY.filterDataList());
+
+        combo.addSelectionChangedListener(new SelectionChangedListener<Analysis>() {
+            @Override
+            public void selectionChanged(SelectionChangedEvent<Analysis> se) {
+                Analysis app = se.getSelectedItem();
+
+                if (app != null) {
+                    AnalysisSelectEvent event = new AnalysisSelectEvent(app.getGroupId(), app.getId());
+                    EventBus.getInstance().fireEvent(event);
+                }
+            }
+        });
 
         return combo;
     }
