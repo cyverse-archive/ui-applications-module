@@ -30,9 +30,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * 
  */
 public class CatalogMainToolBar extends ToolBar {
+    protected String tag;
     protected AppTemplateServiceFacade templateService;
 
-    public CatalogMainToolBar(AppTemplateServiceFacade templateService) {
+    public CatalogMainToolBar(String tag, AppTemplateServiceFacade templateService) {
+        this.tag = tag;
         this.templateService = templateService;
 
         setHeight(25);
@@ -66,8 +68,8 @@ public class CatalogMainToolBar extends ToolBar {
                 Analysis app = se.getSelectedItem();
 
                 if (app != null) {
-                    AnalysisSelectEvent event = new AnalysisSelectEvent(app.getGroupId(), app.getId());
-                    EventBus.getInstance().fireEvent(event);
+                    EventBus.getInstance().fireEvent(
+                            new AnalysisSelectEvent(tag, app.getGroupId(), app.getId()));
                 }
             }
         });

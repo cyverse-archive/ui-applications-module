@@ -48,6 +48,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
     private RowExpander expander;
     private String appIdToSelect;
     protected AnalysisGroup current_category;
+    protected String tag;
     protected AppTemplateServiceFacade templateService;
 
     public static enum RATING_CONSTANT {
@@ -93,7 +94,8 @@ public class BaseCatalogMainPanel extends ContentPanel {
         }
     }
 
-    public BaseCatalogMainPanel(AppTemplateServiceFacade templateService) {
+    public BaseCatalogMainPanel(String tag, AppTemplateServiceFacade templateService) {
+        this.tag = tag;
         this.templateService = templateService;
 
         setLayout(new FitLayout());
@@ -192,7 +194,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
     }
 
     private void initToolBar() {
-        toolBar = new CatalogMainToolBar(templateService);
+        toolBar = new CatalogMainToolBar(tag, templateService);
 
         setTopComponent(toolBar);
     }

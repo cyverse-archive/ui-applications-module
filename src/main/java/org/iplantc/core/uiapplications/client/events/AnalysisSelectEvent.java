@@ -18,10 +18,12 @@ public class AnalysisSelectEvent extends GwtEvent<AnalysisSelectEventHandler> {
      */
     public static final GwtEvent.Type<AnalysisSelectEventHandler> TYPE = new GwtEvent.Type<AnalysisSelectEventHandler>();
 
+    private String tag;
     private String categoryId;
     private String appId;
 
-    public AnalysisSelectEvent(String categoryId, String appId) {
+    public AnalysisSelectEvent(String sourceTag, String categoryId, String appId) {
+        setSourceTag(sourceTag);
         setCategoryId(categoryId);
         setAppId(appId);
     }
@@ -37,6 +39,20 @@ public class AnalysisSelectEvent extends GwtEvent<AnalysisSelectEventHandler> {
     @Override
     public Type<AnalysisSelectEventHandler> getAssociatedType() {
         return TYPE;
+    }
+
+    /**
+     * @param tag A Tag identifying the source of the event.
+     */
+    public void setSourceTag(String tag) {
+        this.tag = tag;
+    }
+
+    /**
+     * @return The Tag identifying the source of the event.
+     */
+    public String getSourceTag() {
+        return tag;
     }
 
     /**
