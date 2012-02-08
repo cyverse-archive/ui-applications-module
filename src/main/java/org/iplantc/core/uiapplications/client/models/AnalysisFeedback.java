@@ -14,9 +14,11 @@ import com.google.gwt.json.client.JSONObject;
 public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
     public static final String RATING_AVG = "average"; //$NON-NLS-1$
     public static final String RATING_USR = "user"; //$NON-NLS-1$
+    public static final String COMMENT_ID = "commentId"; //$NON-NLS-1$
 
     private int user_score;
     private double average_score;
+    private String comment_id;
     
     public AnalysisFeedback(double avg_score, int score) {
         setAverage_score(avg_score);
@@ -31,6 +33,7 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
     public AnalysisFeedback(JSONObject rating) {
         double avgScore = 0;
         int userScore = 0;
+        String commentId = ""; //$NON-NLS-1$
 
         if (rating != null) {
             Number score = JsonUtil.getNumber(rating, RATING_AVG);
@@ -43,10 +46,14 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
                 userScore = score.intValue();
             }
 
+            if (rating.containsKey(COMMENT_ID)) {
+                commentId = JsonUtil.getString(rating, COMMENT_ID);
+            }
         }
 
         setAverage_score(avgScore);
         setUser_score(userScore);
+        setComment_id(commentId);
     }
 
     /**
@@ -75,6 +82,20 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
      */
     public double getAverage_score() {
         return average_score;
+    }
+
+    /**
+     * @param comment_id an ID pointing to the wiki comment associated with this rating
+     */
+    public void setComment_id(String comment_id) {
+        this.comment_id = comment_id;
+    }
+
+    /**
+     * @return the comment ID for the wiki comment
+     */
+    public String getComment_id() {
+        return comment_id;
     }
 
     /**
