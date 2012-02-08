@@ -20,11 +20,6 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
     private double average_score;
     private String comment_id;
     
-    public AnalysisFeedback(double avg_score, int score) {
-        setAverage_score(avg_score);
-        setUser_score(score);
-    }
-
     /**
      * Instantiates from a JSON object.
      * 
