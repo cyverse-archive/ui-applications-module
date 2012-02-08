@@ -8,6 +8,7 @@ import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.events.AnalysisSelectEvent;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
+import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 
 import com.extjs.gxt.ui.client.data.BaseListLoadConfig;
@@ -88,7 +89,7 @@ public class CatalogMainToolBar extends ToolBar {
             @Override
             protected void load(Object loadConfig, final AsyncCallback<List<Analysis>> callback) {
                 if (templateService == null) {
-                    callback.onFailure(new Exception("Could not access service")); //$NON-NLS-1$
+                    callback.onFailure(new Exception("Could not access service"));
 
                     return;
                 }
@@ -116,6 +117,7 @@ public class CatalogMainToolBar extends ToolBar {
 
                     @Override
                     public void onFailure(Throwable caught) {
+                        ErrorHandler.post(caught);
                         callback.onFailure(caught);
                     }
                 };
