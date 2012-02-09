@@ -19,6 +19,7 @@ import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.json.client.JSONArray;
@@ -48,7 +49,7 @@ public class CatalogMainToolBar extends ToolBar {
      * 
      * @return A combo box of Analysis models, remotely loaded and filtered by the user's combo text.
      */
-    protected ComboBox<Analysis> buildSearchField() {
+    protected Component buildSearchField() {
         ListLoader<ListLoadResult<Analysis>> loader = new BaseListLoader<ListLoadResult<Analysis>>(
                 buildSearchProxy());
 

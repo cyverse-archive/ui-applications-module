@@ -43,7 +43,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class BaseCatalogMainPanel extends ContentPanel {
 
-    private ToolBar toolBar;
+    protected ToolBar toolBar;
     protected Grid<Analysis> analysisGrid;
     private RowExpander expander;
     private String appIdToSelect;
@@ -193,7 +193,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
         }
     }
 
-    private void initToolBar() {
+    protected void initToolBar() {
         toolBar = new CatalogMainToolBar(tag, templateService);
 
         setTopComponent(toolBar);
