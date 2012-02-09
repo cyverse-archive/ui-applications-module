@@ -15,12 +15,17 @@ import com.extjs.gxt.ui.client.data.BaseListLoadConfig;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.ListLoader;
+import com.extjs.gxt.ui.client.data.ModelKeyProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
+import com.extjs.gxt.ui.client.widget.form.ListModelPropertyEditor;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -34,6 +39,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class CatalogMainToolBar extends ToolBar {
     protected String tag;
     protected AppTemplateServiceFacade templateService;
+    private String lastQueryText = ""; //$NON-NLS-1$
 
     public CatalogMainToolBar(String tag, AppTemplateServiceFacade templateService) {
         this.tag = tag;
@@ -53,16 +59,50 @@ public class CatalogMainToolBar extends ToolBar {
         ListLoader<ListLoadResult<Analysis>> loader = new BaseListLoader<ListLoadResult<Analysis>>(
                 buildSearchProxy());
 
-        ListStore<Analysis> store = new ListStore<Analysis>(loader);
+        // We need to use a custom key string that will allow the combobox to find the correct model if 2
+        // apps in different groups have the same name, since the combo's SelectionChange event will find
+        // the first model that matches the raw text in the combo's text field.
+        final ModelKeyProvider<Analysis> storeKeyProvider = new ModelKeyProvider<Analysis>() {
+            @Override
+            public String getKey(Analysis model) {
+                return model.getId() + model.getGroupId();
+            }
+        };
+
+        final ListStore<Analysis> store = new ListStore<Analysis>(loader);
+        store.setKeyProvider(storeKeyProvider);
+
+        // Use the custom key provider for model lookups from the raw text in the combo's text field.
+        ListModelPropertyEditor<Analysis> propertyEditor = new ListModelPropertyEditor<Analysis>() {
+            @Override
+            public String getStringValue(Analysis value) {
+                return storeKeyProvider.getKey(value);
+            }
+
+            @Override
+            public Analysis convertStringValue(String value) {
+                return store.findModel(value);
+            }
+        };
 
         final ComboBox<Analysis> combo = new ComboBox<Analysis>();
         combo.setWidth(300);
-        combo.setDisplayField("name"); //$NON-NLS-1$
         combo.setItemSelector("div.app-search-item"); //$NON-NLS-1$
         combo.setTemplate(getTemplate());
         combo.setStore(store);
+        combo.setPropertyEditor(propertyEditor);
         combo.setHideTrigger(true);
         combo.setEmptyText(I18N.DISPLAY.filterDataList());
+
+        // Since we don't want our custom key provider's string to display after a user selects a search
+        // result, cache the user's query string, then reset the raw text field to that value after a
+        // selection is made.
+        combo.addListener(Events.BeforeSelect, new Listener<FieldEvent>() {
+            @Override
+            public void handleEvent(FieldEvent event) {
+                lastQueryText = event.getField().getRawValue();
+            }
+        });
 
         combo.addSelectionChangedListener(new SelectionChangedListener<Analysis>() {
             @Override
@@ -70,9 +110,18 @@ public class CatalogMainToolBar extends ToolBar {
                 Analysis app = se.getSelectedItem();
 
                 if (app != null) {
+                    // Fire the search item selection event.
                     EventBus.getInstance().fireEvent(
                             new AnalysisSelectEvent(tag, app.getGroupId(), app.getId()));
                 }
+            }
+        });
+
+        // Reset the search field to the user's entered text.
+        combo.addListener(Events.Select, new Listener<FieldEvent>() {
+            @Override
+            public void handleEvent(FieldEvent event) {
+                combo.setRawValue(lastQueryText);
             }
         });
 
