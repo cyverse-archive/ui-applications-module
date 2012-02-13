@@ -92,7 +92,7 @@ public class CatalogMainToolBar extends ToolBar {
         combo.setStore(store);
         combo.setPropertyEditor(propertyEditor);
         combo.setHideTrigger(true);
-        combo.setEmptyText(I18N.DISPLAY.filterDataList());
+        combo.setEmptyText(I18N.DISPLAY.searchApps());
 
         // Since we don't want our custom key provider's string to display after a user selects a search
         // result, cache the user's query string, then reset the raw text field to that value after a
