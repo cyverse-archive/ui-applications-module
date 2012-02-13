@@ -14,11 +14,11 @@ import com.google.gwt.json.client.JSONObject;
 public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
     public static final String RATING_AVG = "average"; //$NON-NLS-1$
     public static final String RATING_USR = "user"; //$NON-NLS-1$
-    public static final String COMMENT_ID = "commentId"; //$NON-NLS-1$
+    public static final String COMMENT_ID = "comment_id"; //$NON-NLS-1$
 
     private int user_score;
     private double average_score;
-    private String comment_id;
+    private Long comment_id;
     
     /**
      * Instantiates from a JSON object.
@@ -28,7 +28,7 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
     public AnalysisFeedback(JSONObject rating) {
         double avgScore = 0;
         int userScore = 0;
-        String commentId = ""; //$NON-NLS-1$
+        Long commentId = null;
 
         if (rating != null) {
             Number score = JsonUtil.getNumber(rating, RATING_AVG);
@@ -42,7 +42,10 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
             }
 
             if (rating.containsKey(COMMENT_ID)) {
-                commentId = JsonUtil.getString(rating, COMMENT_ID);
+                Number n = JsonUtil.getNumber(rating, COMMENT_ID);
+                if (n != null) {
+                    commentId = n.longValue();
+                }
             }
         }
 
@@ -82,14 +85,14 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
     /**
      * @param comment_id an ID pointing to the wiki comment associated with this rating
      */
-    public void setComment_id(String comment_id) {
+    public void setComment_id(Long comment_id) {
         this.comment_id = comment_id;
     }
 
     /**
      * @return the comment ID for the wiki comment
      */
-    public String getComment_id() {
+    public Long getComment_id() {
         return comment_id;
     }
 
@@ -103,6 +106,7 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
 
         ret.put(RATING_AVG, new JSONNumber(getAverage_score()));
         ret.put(RATING_USR, new JSONNumber(getUser_score()));
+        ret.put(COMMENT_ID, new JSONNumber(getComment_id()));
 
         return ret;
     }
