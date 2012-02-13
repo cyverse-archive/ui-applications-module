@@ -41,13 +41,16 @@ public interface AppTemplateUserServiceFacade extends AppTemplateServiceFacade {
             AsyncCallback<String> callback);
 
     /**
-     * Deletes an existing rating for the current user. If the user hasn't rated the application, nothing
-     * happens.
+     * Deletes an existing rating for the current user. If a non-null commentId is provided, the comment
+     * on the wiki page is also deleted. If the user hasn't rated the application, nothing happens.
      * 
      * @param analysisId
+     * @param toolName name of the app (name of the confluence page that contains the comment)
+     * @param commentId Confluence comment ID
      * @param callback
      */
-    void deleteRating(String analysisId, AsyncCallback<String> callback);
+    void deleteRating(String analysisId, String toolName, Long commentId,
+            AsyncCallback<String> callback);
 
     /**
      * Retrieves the name and a list of inputs and outputs for the given analysis. The response JSON will
