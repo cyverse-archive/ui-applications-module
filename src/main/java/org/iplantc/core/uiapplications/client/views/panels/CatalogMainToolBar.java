@@ -136,6 +136,7 @@ public class CatalogMainToolBar extends ToolBar {
         combo.setPropertyEditor(propertyEditor);
         combo.setHideTrigger(true);
         combo.setEmptyText(I18N.DISPLAY.searchApps());
+        combo.setMinChars(3);
 
         combo.addSelectionChangedListener(new SelectionChangedListener<Analysis>() {
             @Override
