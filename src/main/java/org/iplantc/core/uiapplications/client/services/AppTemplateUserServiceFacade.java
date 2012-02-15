@@ -33,11 +33,11 @@ public interface AppTemplateUserServiceFacade extends AppTemplateServiceFacade {
      * @param analysisId
      * @param rating
      * @param appName name of the app (name of the confluence page that contains the comment)
-     * @param comment the comment text
      * @param commentId Confluence ID of the comment associated with the rating
+     * @param comment the comment text
      * @param callback
      */
-    void updateRating(String analysisId, int rating, String appName, String comment, String commentId,
+    void updateRating(String analysisId, int rating, String appName, Long commentId, String comment,
             AsyncCallback<String> callback);
 
     /**
