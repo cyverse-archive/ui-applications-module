@@ -81,4 +81,11 @@ public interface CommonAppDisplayStrings extends CommonUIDisplayStrings {
      * @return @return a string representing the localized text.
      */
     String appUnavailable();
+
+    /**
+     * Localized display text for an empty App Search field.
+     * 
+     * @return a string representing the localized text.
+     */
+    String searchApps();
 }

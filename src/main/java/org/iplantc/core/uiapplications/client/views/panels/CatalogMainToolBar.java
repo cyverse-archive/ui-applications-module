@@ -11,18 +11,23 @@ import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 
+import com.extjs.gxt.ui.client.Style.SortDir;
 import com.extjs.gxt.ui.client.data.BaseListLoadConfig;
 import com.extjs.gxt.ui.client.data.BaseListLoader;
 import com.extjs.gxt.ui.client.data.ListLoadResult;
 import com.extjs.gxt.ui.client.data.ListLoader;
+import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.ModelKeyProvider;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.event.SelectionChangedEvent;
 import com.extjs.gxt.ui.client.event.SelectionChangedListener;
 import com.extjs.gxt.ui.client.store.ListStore;
+import com.extjs.gxt.ui.client.store.Store;
+import com.extjs.gxt.ui.client.store.StoreSorter;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ListModelPropertyEditor;
@@ -56,8 +61,47 @@ public class CatalogMainToolBar extends ToolBar {
      * @return A combo box of Analysis models, remotely loaded and filtered by the user's combo text.
      */
     protected Component buildSearchField() {
+        // Create a loader with our custom RpcProxy.
         ListLoader<ListLoadResult<Analysis>> loader = new BaseListLoader<ListLoadResult<Analysis>>(
                 buildSearchProxy());
+
+        // Create the store
+        final ListStore<Analysis> store = new ListStore<Analysis>(loader);
+
+        // Add a load listener that sorts the store's search results.
+        loader.addLoadListener(new LoadListener() {
+            @Override
+            public void loaderLoad(LoadEvent le) {
+                store.sort(Analysis.NAME, SortDir.ASC);
+            }
+        });
+
+        // Set a custom store sorter to order Apps with names that match the search before description
+        // matches.
+        store.setStoreSorter(new StoreSorter<Analysis>() {
+            @Override
+            public int compare(Store<Analysis> store, Analysis app1, Analysis app2, String property) {
+                if (app1 != null && app2 != null) {
+                    String searchTerm = lastQueryText.toLowerCase();
+
+                    boolean app1NameMatches = app1.getName().toLowerCase().contains(searchTerm);
+                    boolean app2NameMatches = app2.getName().toLowerCase().contains(searchTerm);
+
+                    if (app1NameMatches && !app2NameMatches) {
+                        // Only app1's name contains the search term, so order it before app2
+                        return -1;
+                    }
+                    if (!app1NameMatches && app2NameMatches) {
+                        // Only app2's name contains the search term, so order it before app1
+                        return 1;
+                    }
+                }
+
+                // If both or neither app contains the search term in the app name, order them according
+                // to the sort called above (by App name, ascending)
+                return super.compare(store, app1, app2, property);
+            }
+        });
 
         // We need to use a custom key string that will allow the combobox to find the correct model if 2
         // apps in different groups have the same name, since the combo's SelectionChange event will find
@@ -69,7 +113,6 @@ public class CatalogMainToolBar extends ToolBar {
             }
         };
 
-        final ListStore<Analysis> store = new ListStore<Analysis>(loader);
         store.setKeyProvider(storeKeyProvider);
 
         // Use the custom key provider for model lookups from the raw text in the combo's text field.
@@ -92,17 +135,8 @@ public class CatalogMainToolBar extends ToolBar {
         combo.setStore(store);
         combo.setPropertyEditor(propertyEditor);
         combo.setHideTrigger(true);
-        combo.setEmptyText(I18N.DISPLAY.filterDataList());
-
-        // Since we don't want our custom key provider's string to display after a user selects a search
-        // result, cache the user's query string, then reset the raw text field to that value after a
-        // selection is made.
-        combo.addListener(Events.BeforeSelect, new Listener<FieldEvent>() {
-            @Override
-            public void handleEvent(FieldEvent event) {
-                lastQueryText = event.getField().getRawValue();
-            }
-        });
+        combo.setEmptyText(I18N.DISPLAY.searchApps());
+        combo.setMinChars(3);
 
         combo.addSelectionChangedListener(new SelectionChangedListener<Analysis>() {
             @Override
@@ -117,7 +151,8 @@ public class CatalogMainToolBar extends ToolBar {
             }
         });
 
-        // Reset the search field to the user's entered text.
+        // Since we don't want our custom key provider's string to display after a user selects a search
+        // result, reset the raw text field to the cached user query string after a selection is made.
         combo.addListener(Events.Select, new Listener<FieldEvent>() {
             @Override
             public void handleEvent(FieldEvent event) {
@@ -172,8 +207,11 @@ public class CatalogMainToolBar extends ToolBar {
                     }
                 };
 
+                // cache the query text
+                lastQueryText = (String)config.get("query"); //$NON-NLS-1$
+
                 // Call the searchAnalysis service with the combo's query.
-                templateService.searchAnalysis((String)config.get("query"), searchCallback); //$NON-NLS-1$
+                templateService.searchAnalysis(lastQueryText, searchCallback);
             }
         };
 
