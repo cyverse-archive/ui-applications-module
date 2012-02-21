@@ -33,6 +33,7 @@ import com.extjs.gxt.ui.client.widget.grid.RowExpander;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.ui.Label;
 
 /**
  * 
@@ -324,6 +325,11 @@ public class BaseCatalogMainPanel extends ContentPanel {
         @Override
         public Object render(Analysis model, String property, ColumnData config, int rowIndex,
                 int colIndex, ListStore<Analysis> store, Grid<Analysis> grid) {
+            // only show rating stars if the app is public
+            if (!model.isPublic()) {
+                return new Label();
+            }
+            
             final AnalysisFeedback af = model.getFeedback();
 
             final HorizontalPanel hp = buildPanel(model);
