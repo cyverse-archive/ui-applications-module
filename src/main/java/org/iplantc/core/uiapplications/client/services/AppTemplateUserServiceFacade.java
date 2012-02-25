@@ -22,10 +22,11 @@ public interface AppTemplateUserServiceFacade extends AppTemplateServiceFacade {
      * @param rating
      * @param appName name of the app (name of the confluence page to add the comment to)
      * @param comment the comment text
+     * @param authorEmail the app author's email address for sending feedback
      * @param callback
      */
     void rateAnalysis(String analysisId, int rating, String appName, String comment,
-            AsyncCallback<String> callback);
+            final String authorEmail, AsyncCallback<String> callback);
 
     /**
      * Posts the current user's rating of the given analysis, and changes the comment on the wiki page.
@@ -35,10 +36,11 @@ public interface AppTemplateUserServiceFacade extends AppTemplateServiceFacade {
      * @param appName name of the app (name of the confluence page that contains the comment)
      * @param commentId Confluence ID of the comment associated with the rating
      * @param comment the comment text
+     * @param authorEmail the app author's email address for sending feedback
      * @param callback
      */
     void updateRating(String analysisId, int rating, String appName, Long commentId, String comment,
-            AsyncCallback<String> callback);
+            String authorEmail, AsyncCallback<String> callback);
 
     /**
      * Deletes an existing rating for the current user. If a non-null commentId is provided, the comment
