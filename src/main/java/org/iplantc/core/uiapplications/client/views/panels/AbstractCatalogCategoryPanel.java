@@ -121,13 +121,8 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
      * Selects a category by ID. If the tree isn't populated yet, the category is set after population.
      * 
      * @param categoryId The ID of the category to select.
-     * @see #seed(TreeStore)
      */
     public void selectCategory(String categoryId) {
-        if (categoryId == null) {
-            return;
-        }
-
         setDefaultCategoryId(categoryId);
 
         if (categoryPanel != null && categoryPanel.getStore() != null
