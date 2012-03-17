@@ -72,7 +72,8 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
      * @param average_score the average_score to set
      */
     public void setAverage_score(double average_score) {
-        this.average_score = average_score;
+        // limit precision to one digit
+        this.average_score = Math.round(average_score * 10) / 10.0;
     }
 
     /**
