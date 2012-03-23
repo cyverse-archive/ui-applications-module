@@ -111,7 +111,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
 
         analysisGrid.setSelectionModel(buildSelectionModel());
         analysisGrid.addPlugin(expander);
-        analysisGrid.getView().setEmptyText(I18N.DISPLAY.noAnalyses());
+        analysisGrid.getView().setEmptyText(I18N.DISPLAY.noApps());
         analysisGrid.getView().setForceFit(true);
         add(analysisGrid);
     }
