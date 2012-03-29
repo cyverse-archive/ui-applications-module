@@ -107,7 +107,9 @@ public class AnalysisFeedback implements Comparable<AnalysisFeedback> {
 
         ret.put(RATING_AVG, new JSONNumber(getAverage_score()));
         ret.put(RATING_USR, new JSONNumber(getUser_score()));
-        ret.put(COMMENT_ID, new JSONNumber(getComment_id()));
+        if (getComment_id() != null) {
+            ret.put(COMMENT_ID, new JSONNumber(getComment_id()));
+        }
 
         return ret;
     }
