@@ -16,6 +16,7 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Status;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.extjs.gxt.ui.client.widget.treepanel.TreeStyle;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -34,6 +35,7 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
 
     public AbstractCatalogCategoryPanel() {
         setHeading(I18N.DISPLAY.category());
+        setLayout(new FitLayout());
 
         Status pleaseWait = new Status();
         pleaseWait.setBusy(""); //$NON-NLS-1$
@@ -92,30 +94,30 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
         style.setLeafIcon(AbstractImagePrototype.create(Resources.ICONS.subCategory()));
     }
 
-    @Override
-    protected void onResize(int width, int height) {
-        super.onResize(width, height);
-        resizeContents(getInnerWidth(), getInnerHeight());
-    }
+    // @Override
+    // protected void onResize(int width, int height) {
+    // super.onResize(width, height);
+    // resizeContents(getInnerWidth(), getInnerHeight());
+    // }
+    //
+    // @Override
+    // protected void onAfterLayout() {
+    // super.onAfterLayout();
+    //
+    // resizeContents(getInnerWidth(), getInnerHeight());
+    // }
 
-    @Override
-    protected void onAfterLayout() {
-        super.onAfterLayout();
-
-        resizeContents(getInnerWidth(), getInnerHeight());
-    }
-
-    /**
-     * Resizes this panel's inner tree panel.
-     * 
-     * @param width
-     * @param height
-     */
-    private void resizeContents(int width, int height) {
-        if (categoryPanel != null) {
-            categoryPanel.setHeight(height);
-        }
-    }
+    // /**
+    // * Resizes this panel's inner tree panel.
+    // *
+    // * @param width
+    // * @param height
+    // */
+    // private void resizeContents(int width, int height) {
+    // if (categoryPanel != null) {
+    // categoryPanel.setHeight(height);
+    // }
+    // }
 
     /**
      * Selects a category by ID. If the tree isn't populated yet, the category is set after population.
