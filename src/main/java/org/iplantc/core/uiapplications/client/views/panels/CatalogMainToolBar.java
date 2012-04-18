@@ -130,7 +130,7 @@ public class CatalogMainToolBar extends ToolBar {
 
         final ComboBox<Analysis> combo = new ComboBox<Analysis>();
         combo.setWidth(300);
-        combo.setItemSelector("div.app-search-item"); //$NON-NLS-1$
+        combo.setItemSelector("div.search-item"); //$NON-NLS-1$
         combo.setTemplate(getTemplate());
         combo.setStore(store);
         combo.setPropertyEditor(propertyEditor);
@@ -224,7 +224,7 @@ public class CatalogMainToolBar extends ToolBar {
     private String getTemplate() {
         StringBuilder template = new StringBuilder();
 
-        template.append("<tpl for=\".\"><div class=\"app-search-item\">"); //$NON-NLS-1$
+        template.append("<tpl for=\".\"><div class=\"search-item\">"); //$NON-NLS-1$
 
         template.append("<h3>"); //$NON-NLS-1$
 
