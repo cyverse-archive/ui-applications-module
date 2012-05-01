@@ -272,6 +272,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
 
         if (app != null) {
             analysisGrid.getSelectionModel().select(app, false);
+            analysisGrid.getView().ensureVisible(analysisGrid.getStore().indexOf(app), 0, false);
         } else {
             ErrorHandler.post(org.iplantc.core.uicommons.client.I18N.ERROR.appNotFound());
         }
