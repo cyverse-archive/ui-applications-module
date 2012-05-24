@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
-import org.iplantc.core.uiapplications.client.events.AnalysisSelectEvent;
+import org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.ErrorHandler;
@@ -146,7 +146,7 @@ public class CatalogMainToolBar extends ToolBar {
                 if (app != null) {
                     // Fire the search item selection event.
                     EventBus.getInstance().fireEvent(
-                            new AnalysisSelectEvent(tag, app.getGroupId(), app.getId()));
+                            new AppSearchResultSelectedEvent(tag, app.getGroupId(), app.getId()));
                 }
             }
         });
