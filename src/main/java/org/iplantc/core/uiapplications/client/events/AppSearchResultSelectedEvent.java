@@ -9,27 +9,27 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author psarando
  * 
  */
-public class AnalysisSelectEvent extends GwtEvent<AnalysisSelectEventHandler> {
+public class AppSearchResultSelectedEvent extends GwtEvent<AppSearchResultSelectedEventHandler> {
 
     /**
      * Defines the GWT Event Type.
      * 
-     * @see org.iplantc.core.uiapplications.client.events.AnalysisSelectEventHandler
+     * @see org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEventHandler
      */
-    public static final GwtEvent.Type<AnalysisSelectEventHandler> TYPE = new GwtEvent.Type<AnalysisSelectEventHandler>();
+    public static final GwtEvent.Type<AppSearchResultSelectedEventHandler> TYPE = new GwtEvent.Type<AppSearchResultSelectedEventHandler>();
 
     private String tag;
     private String categoryId;
     private String appId;
 
-    public AnalysisSelectEvent(String sourceTag, String categoryId, String appId) {
+    public AppSearchResultSelectedEvent(String sourceTag, String categoryId, String appId) {
         setSourceTag(sourceTag);
         setCategoryId(categoryId);
         setAppId(appId);
     }
 
     @Override
-    protected void dispatch(AnalysisSelectEventHandler handler) {
+    protected void dispatch(AppSearchResultSelectedEventHandler handler) {
         handler.onSelection(this);
     }
 
@@ -37,7 +37,7 @@ public class AnalysisSelectEvent extends GwtEvent<AnalysisSelectEventHandler> {
      * {@inheritDoc}
      */
     @Override
-    public Type<AnalysisSelectEventHandler> getAssociatedType() {
+    public Type<AppSearchResultSelectedEventHandler> getAssociatedType() {
         return TYPE;
     }
 

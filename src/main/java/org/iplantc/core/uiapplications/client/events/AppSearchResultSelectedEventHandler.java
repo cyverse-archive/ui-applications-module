@@ -8,7 +8,7 @@ import com.google.gwt.event.shared.EventHandler;
  * @author psarando
  * 
  */
-public interface AnalysisSelectEventHandler extends EventHandler {
+public interface AppSearchResultSelectedEventHandler extends EventHandler {
 
-    void onSelection(AnalysisSelectEvent event);
+    void onSelection(AppSearchResultSelectedEvent event);
 }
