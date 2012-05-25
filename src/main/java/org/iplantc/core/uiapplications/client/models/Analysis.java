@@ -1,12 +1,12 @@
 package org.iplantc.core.uiapplications.client.models;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uicommons.client.util.DateParser;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONNumber;
@@ -62,31 +62,18 @@ public class Analysis extends AnalysisGroupTreeModel {
         if (num != null) {
             timestamp = num.longValue();
         }
-        setIntegrationDate(DateParser.parseDate(timestamp));
+        if (timestamp != 0) {
+            setIntegrationDate(DateTimeFormat
+                    .getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM)
+                .format(DateParser.parseDate(timestamp)));
+        }
 
         setUser_favourite(JsonUtil.getBoolean(json, FAVOURITE, false));
         setPublic(JsonUtil.getBoolean(json, PUBLIC, false));
         setDisabled(JsonUtil.getBoolean(json, DISABLED, false));
 
         setAnalysisFeedback(new AnalysisFeedback(JsonUtil.getObject(json, RATING)));
-
-        setDeployedComponents(parseDeployedComponents(JsonUtil.getArray(json, DEPLOYED_COMPONENTS)));
-
         setSuggestedCategories(parseSuggestedCategories(JsonUtil.getArray(json, SUGGESTED_CATEGORIES)));
-    }
-
-    private List<DeployedComponent> parseDeployedComponents(JSONArray deployedComponents) {
-        List<DeployedComponent> ret = null;
-
-        if (deployedComponents != null && deployedComponents.size() > 0) {
-            ret = new ArrayList<DeployedComponent>();
-
-            for (int i = 0,size = deployedComponents.size(); i < size; i++) {
-                ret.add(new DeployedComponent(JsonUtil.getObjectAt(deployedComponents, i)));
-            }
-        }
-
-        return ret;
     }
 
     private List<AnalysisGroup> parseSuggestedCategories(JSONArray suggestedCategories) {
@@ -113,7 +100,7 @@ public class Analysis extends AnalysisGroupTreeModel {
      * 
      * @param integrators_date integration date
      */
-    public void setIntegrationDate(Date integration_date) {
+    public void setIntegrationDate(String integration_date) {
         set(INTEGRATION_DATE, integration_date);
     }
 
@@ -158,7 +145,7 @@ public class Analysis extends AnalysisGroupTreeModel {
      * 
      * @return integration date
      */
-    public Date getIntegrationDate() {
+    public String getIntegrationDate() {
         return get(INTEGRATION_DATE);
     }
 
@@ -185,24 +172,6 @@ public class Analysis extends AnalysisGroupTreeModel {
      */
     public String getWikiUrl() {
         return get(WIKI_URL);
-    }
-
-    /**
-     * Sets the list of deployed components used in this App.
-     * 
-     * @param deployedComponents
-     */
-    public void setDeployedComponents(List<DeployedComponent> deployedComponents) {
-        set(DEPLOYED_COMPONENTS, deployedComponents);
-    }
-
-    /**
-     * Retrieves the list of deployed components used in this App.
-     * 
-     * @return A list of DeployedComponent models.
-     */
-    public List<DeployedComponent> getDeployedComponents() {
-        return get(DEPLOYED_COMPONENTS);
     }
 
     /**
@@ -324,7 +293,9 @@ public class Analysis extends AnalysisGroupTreeModel {
 
         long integration_date = 0;
         if (getIntegrationDate() != null) {
-            integration_date = getIntegrationDate().getTime() / 1000;
+            integration_date = (DateTimeFormat
+                    .getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM)
+                    .parse(getIntegrationDate())).getTime() / 1000;
         }
         ret.put(INTEGRATION_DATE, new JSONNumber(integration_date));
 

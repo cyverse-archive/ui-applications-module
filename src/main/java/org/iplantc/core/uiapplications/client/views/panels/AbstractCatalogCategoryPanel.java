@@ -94,31 +94,6 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
         style.setLeafIcon(AbstractImagePrototype.create(Resources.ICONS.subCategory()));
     }
 
-    // @Override
-    // protected void onResize(int width, int height) {
-    // super.onResize(width, height);
-    // resizeContents(getInnerWidth(), getInnerHeight());
-    // }
-    //
-    // @Override
-    // protected void onAfterLayout() {
-    // super.onAfterLayout();
-    //
-    // resizeContents(getInnerWidth(), getInnerHeight());
-    // }
-
-    // /**
-    // * Resizes this panel's inner tree panel.
-    // *
-    // * @param width
-    // * @param height
-    // */
-    // private void resizeContents(int width, int height) {
-    // if (categoryPanel != null) {
-    // categoryPanel.setHeight(height);
-    // }
-    // }
-
     /**
      * Selects a category by ID. If the tree isn't populated yet, the category is set after population.
      * 

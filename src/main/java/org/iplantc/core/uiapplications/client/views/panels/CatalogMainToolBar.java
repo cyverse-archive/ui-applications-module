@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
-import org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEvent;
+import org.iplantc.core.uiapplications.client.events.AppSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.ErrorHandler;
@@ -129,7 +129,7 @@ public class CatalogMainToolBar extends ToolBar {
         };
 
         final ComboBox<Analysis> combo = new ComboBox<Analysis>();
-        combo.setWidth(300);
+        combo.setWidth(225);
         combo.setItemSelector("div.search-item"); //$NON-NLS-1$
         combo.setTemplate(getTemplate());
         combo.setStore(store);
@@ -146,7 +146,7 @@ public class CatalogMainToolBar extends ToolBar {
                 if (app != null) {
                     // Fire the search item selection event.
                     EventBus.getInstance().fireEvent(
-                            new AppSearchResultSelectedEvent(tag, app.getGroupId(), app.getId()));
+                            new AppSelectedEvent(tag, app.getGroupId(), app.getId()));
                 }
             }
         });

@@ -32,7 +32,6 @@ import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.RowExpander;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Label;
 
 /**
@@ -174,7 +173,11 @@ public class BaseCatalogMainPanel extends ContentPanel {
         tmpl.append(I18N.DISPLAY.avgCommunityRating());
         tmpl.append(":</b> {average} "); //$NON-NLS-1$
         tmpl.append(I18N.DISPLAY.ratingOutOfTotal());
+        
 
+        //        tmpl.append("&nbsp;&nbsp;<tpl if=\"integration_date\">"); //$NON-NLS-1$
+        // tmpl.append("<b>" + I18N.DISPLAY.publishedOn());
+        // tmpl.append(":</b> {integration_date}</tpl>");
         tmpl.append("</p>"); //$NON-NLS-1$
 
         return tmpl.toString();
@@ -221,13 +224,6 @@ public class BaseCatalogMainPanel extends ContentPanel {
         integrator.setHeader(I18N.DISPLAY.integratedby());
         integrator.setWidth(130);
 
-        ColumnConfig date = new ColumnConfig();
-        date.setId(Analysis.INTEGRATION_DATE);
-        date.setHeader(I18N.DISPLAY.publishedOn());
-        date.setWidth(125);
-        date.setDateTimeFormat(DateTimeFormat
-                .getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM));
-
         ColumnConfig rate = new ColumnConfig();
         rate.setId(Analysis.RATING);
         rate.setRenderer(new RenderVotingCell());
@@ -236,7 +232,6 @@ public class BaseCatalogMainPanel extends ContentPanel {
 
         configs.add(name);
         configs.add(integrator);
-        configs.add(date);
         configs.add(rate);
 
         return new ColumnModel(configs);

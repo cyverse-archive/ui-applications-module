@@ -14,7 +14,7 @@ public class AnalysisDeleteEvent extends GwtEvent<AnalysisDeleteEventHandler> {
     /**
      * Defines the GWT Event Type.
      * 
-     * @see org.iplantc.core.uiapplications.client.events.AnalysisSelectEventHandler
+     * @see org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEventHandler
      */
     public static final GwtEvent.Type<AnalysisDeleteEventHandler> TYPE = new GwtEvent.Type<AnalysisDeleteEventHandler>();
 
