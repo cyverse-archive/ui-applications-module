@@ -174,10 +174,8 @@ public class BaseCatalogMainPanel extends ContentPanel {
         tmpl.append(":</b> {average} "); //$NON-NLS-1$
         tmpl.append(I18N.DISPLAY.ratingOutOfTotal());
         
-
-        //        tmpl.append("&nbsp;&nbsp;<tpl if=\"integration_date\">"); //$NON-NLS-1$
-        // tmpl.append("<b>" + I18N.DISPLAY.publishedOn());
-        // tmpl.append(":</b> {integration_date}</tpl>");
+        tmpl.append("&nbsp;&nbsp;<b>" + I18N.DISPLAY.publishedOn());
+        tmpl.append(":</b> {integration_date}");
         tmpl.append("</p>"); //$NON-NLS-1$
 
         return tmpl.toString();
