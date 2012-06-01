@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
-import org.iplantc.core.uiapplications.client.events.AppSelectedEvent;
+import org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.ErrorHandler;
@@ -34,7 +34,6 @@ import com.extjs.gxt.ui.client.widget.form.ListModelPropertyEditor;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 /**
  * A ToolBar for the App Catalog main panel that includes a remote search field.
  * 
@@ -146,7 +145,7 @@ public class CatalogMainToolBar extends ToolBar {
                 if (app != null) {
                     // Fire the search item selection event.
                     EventBus.getInstance().fireEvent(
-                            new AppSelectedEvent(tag, app.getGroupId(), app.getId()));
+                            new AppSearchResultSelectedEvent(tag, app.getGroupId(), app.getId()));
                 }
             }
         });
