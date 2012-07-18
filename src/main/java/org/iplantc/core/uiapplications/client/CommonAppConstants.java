@@ -1,8 +1,8 @@
 package org.iplantc.core.uiapplications.client;
 
-import org.iplantc.de.client.CommonConstants;
+import org.iplantc.core.uicommons.client.CommonUiConstants;
 
 /** Configurable constants shared by applications */
-public interface CommonAppConstants extends CommonConstants {
+public interface CommonAppConstants extends CommonUiConstants {
     
 }
