@@ -66,7 +66,7 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
         initListeners();
         setTreeIcons();
         add(categoryPanel);
-        categoryPanel.setDisplayProperty("display_name"); //$NON-NLS-1$
+        categoryPanel.setDisplayProperty(AnalysisGroup.DISPLAY);
         layout(true);
     }
 
@@ -169,6 +169,7 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
             if (model != null) {
                 categoryPanel.setExpanded(model, true, true);
                 categoryPanel.getSelectionModel().select(model, false);
+                categoryPanel.scrollIntoView(model);
             }
         }
     }
