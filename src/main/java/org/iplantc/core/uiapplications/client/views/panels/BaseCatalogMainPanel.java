@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEvent;
+import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEventHandler;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.models.AnalysisFeedback;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.Constants;
 import org.iplantc.core.uicommons.client.ErrorHandler;
+import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.widgets.BetterQuickTip;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
@@ -101,6 +104,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
         setLayout(new FitLayout());
         initToolBar();
         initGrid();
+        initListeners();
     }
 
     private void initGrid() {
@@ -233,6 +237,30 @@ public class BaseCatalogMainPanel extends ContentPanel {
         configs.add(rate);
 
         return new ColumnModel(configs);
+    }
+
+    protected void initListeners() {
+        // TODO cleanup this event handler
+        EventBus.getInstance().addHandler(AppSearchResultLoadEvent.TYPE,
+                new AppSearchResultLoadEventHandler() {
+                    @Override
+                    public void onLoad(AppSearchResultLoadEvent event) {
+                        if (event.getTag().equals(tag)) {
+                            if (event.getResults() == null) {
+                                selectTool(appIdToSelect);
+                            } else {
+                                Analysis selectedApp = getSelectedApp();
+
+                                if (selectedApp != null) {
+                                    appIdToSelect = selectedApp.getId();
+                                }
+
+                                setHeading(I18N.DISPLAY.searchApps());
+                                seed(event.getResults(), current_category);
+                            }
+                        }
+                    }
+                });
     }
 
     /**

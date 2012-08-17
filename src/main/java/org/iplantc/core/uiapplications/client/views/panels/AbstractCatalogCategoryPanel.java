@@ -3,6 +3,8 @@ package org.iplantc.core.uiapplications.client.views.panels;
 import java.util.List;
 
 import org.iplantc.core.uiapplications.client.events.AnalysisCategorySelectedEvent;
+import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEvent;
+import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEventHandler;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroupTreeModel;
 import org.iplantc.core.uicommons.client.I18N;
@@ -31,9 +33,11 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
 
     protected TreePanel<AnalysisGroupTreeModel> categoryPanel;
+    protected String tag;
     private String defaultCategoryId;
 
-    public AbstractCatalogCategoryPanel() {
+    public AbstractCatalogCategoryPanel(String tag) {
+        this.tag = tag;
         setHeading(I18N.DISPLAY.category());
         setLayout(new FitLayout());
 
@@ -41,6 +45,18 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
         pleaseWait.setBusy(""); //$NON-NLS-1$
 
         add(pleaseWait);
+    }
+
+    /**
+     * An util method to force deselect a category programmatically
+     * 
+     */
+    public void deSelectCurrentCategory() {
+        categoryPanel.getSelectionModel().deselectAll();
+    }
+
+    protected AnalysisGroup getSelectedAnalysisGroup() {
+        return (AnalysisGroup)categoryPanel.getSelectionModel().getSelectedItem();
     }
 
     public void seed(TreeStore<AnalysisGroupTreeModel> models) {
@@ -65,9 +81,7 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
         categoryPanel.getSelectionModel().addListener(Events.SelectionChange, new Listener<BaseEvent>() {
             @Override
             public void handleEvent(BaseEvent be) {
-                AnalysisGroup ag = (AnalysisGroup)categoryPanel.getSelectionModel().getSelectedItem();
-                fireCategorySelectedEvent(ag);
-
+                fireCategorySelectedEvent(getSelectedAnalysisGroup());
             }
         });
 
@@ -78,6 +92,26 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
             }
         });
 
+        // TODO cleanup this event handler
+        EventBus.getInstance().addHandler(AppSearchResultLoadEvent.TYPE,
+                new AppSearchResultLoadEventHandler() {
+                    @Override
+                    public void onLoad(AppSearchResultLoadEvent event) {
+                        if (event.getTag().equals(tag)) {
+                            if (event.getResults() == null) {
+                                selectDefault();
+                            } else {
+                                AnalysisGroup selectedGroup = getSelectedAnalysisGroup();
+
+                                if (selectedGroup != null) {
+                                    setDefaultCategoryId(selectedGroup.getId());
+                                }
+
+                                deSelectCurrentCategory();
+                            }
+                        }
+                    }
+                });
     }
 
     protected void fireCategorySelectedEvent(AnalysisGroup ag) {
@@ -117,7 +151,7 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
      */
     public void selectDefault() {
         if (categoryPanel != null) {
-            categoryPanel.getSelectionModel().deselectAll();
+            deSelectCurrentCategory();
 
             AnalysisGroupTreeModel model = null;
             if (defaultCategoryId != null) {
