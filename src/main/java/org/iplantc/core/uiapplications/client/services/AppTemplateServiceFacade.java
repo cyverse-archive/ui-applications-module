@@ -1,5 +1,7 @@
 package org.iplantc.core.uiapplications.client.services;
 
+
+import com.extjs.gxt.ui.client.Style.SortDir;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -14,6 +16,18 @@ public interface AppTemplateServiceFacade {
      * @param callback called when the RPC call is complete.
      */
     void getAnalysis(String analysisGroupId, AsyncCallback<String> callback);
+
+    /**
+     * Retrieves a paged listing of templates in the given group.
+     * @param analysisGroupId unique identifier for the group to search in for analyses.
+     * @param limit
+     * @param sortField
+     * @param offset
+     * @param sortDir
+     * @param callback called when the RPC call is complete.
+     */
+    void getPagedAnalysis(String analysisGroupId, int limit, String sortField, int offset,
+            SortDir sortDir, AsyncCallback<String> callback);
 
     /**
      * Retrieves a hierarchy of all App Categories.

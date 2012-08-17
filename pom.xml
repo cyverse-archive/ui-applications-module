@@ -13,7 +13,7 @@
 		<!-- Target Java Version -->
 		<jdk.version>1.6</jdk.version>
 		<!-- Current GXT Version -->
-		<gxt.version>2.2.5</gxt.version>
+		<gxt.version>3.0.0</gxt.version>
 		<!-- Current GWT Version -->
 		<gwt.version>2.5.0-rc1</gwt.version>
 		<!-- Define OS/Platform Independent Character Encoding -->
@@ -38,10 +38,15 @@
 			<version>1.2.14</version>
 		</dependency>
 		<dependency>
-			<groupId>com.extjs</groupId>
-			<artifactId>gxt</artifactId>
-			<version>${gxt.version}</version>
-		</dependency>
+            <groupId>com.sencha.gxt</groupId>
+            <artifactId>gxt</artifactId>
+            <version>${gxt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.extjs</groupId>
+            <artifactId>gxt</artifactId>
+            <version>2.2.5</version>
+        </dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -53,18 +58,18 @@
 			<artifactId>jsonutil</artifactId>
 			<version>dev-SNAPSHOT</version>
 		</dependency>
-        <dependency>
-            <groupId>org.iplantc.core</groupId>
-            <artifactId>ui-commons</artifactId>
-            <version>dev-SNAPSHOT</version>
-        </dependency>
+		<dependency>
+			<groupId>org.iplantc.core</groupId>
+			<artifactId>ui-commons</artifactId>
+			<version>dev-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>org.jmock</groupId>
 			<artifactId>jmock-junit4</artifactId>
 			<version>2.5.1</version>
 			<scope>test</scope>
 		</dependency>
-		</dependencies>
+	</dependencies>
 	<build>
 		<finalName>ui-applications</finalName>
 		<outputDirectory>${basedir}/war/WEB-INF/classes</outputDirectory>
@@ -140,6 +145,11 @@
 			<name>The iPlant Collaborative local repository</name>
 			<url>http://projects.iplantcollaborative.org/archiva/repository/internal/
 			</url>
+		</repository>
+		<repository>
+			<id>sencha-commercial-release</id>
+			<name>Sencha commercial releases</name>
+			<url>https://maven.sencha.com/repo/commercial-release/</url>
 		</repository>
 	</repositories>
 </project>
