@@ -13,8 +13,16 @@ import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
  */
 public class CatalogMainToolBar extends ToolBar {
 
+    private final AppSearchField searchField;
+
     public CatalogMainToolBar(String tag, AppTemplateServiceFacade templateService) {
+        searchField = new AppSearchField(tag, templateService);
+
         setHeight(25);
-        add(new AppSearchField(tag, templateService));
+        add(searchField);
+    }
+
+    public void cleanup() {
+        searchField.cleanup();
     }
 }

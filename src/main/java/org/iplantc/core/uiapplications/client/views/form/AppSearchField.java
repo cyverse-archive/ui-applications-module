@@ -1,8 +1,11 @@
 package org.iplantc.core.uiapplications.client.views.form;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uiapplications.client.events.AnalysisCategorySelectedEvent;
+import org.iplantc.core.uiapplications.client.events.AnalysisCategorySelectedEventHandler;
 import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEvent;
 import org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.Analysis;
@@ -25,6 +28,7 @@ import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.form.ComboBox;
 import com.extjs.gxt.ui.client.widget.form.ListModelPropertyEditor;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * A ComboBox for the App Catalog main toolbar that performs remote app searches.
@@ -33,14 +37,33 @@ import com.google.gwt.event.dom.client.KeyCodes;
  * 
  */
 public class AppSearchField extends ComboBox<Analysis> {
-    protected String tag;
+    private enum TriggerMode {
+        SEARCH("x-form-search-trigger"), //$NON-NLS-1$
+        CLEAR("x-form-clear-trigger"); //$NON-NLS-1$
+
+        private String triggerStyle;
+
+        TriggerMode(String triggerStyle) {
+            this.triggerStyle = triggerStyle;
+        }
+
+        protected String getTriggerStyle() {
+            return triggerStyle;
+        }
+    }
+
+    private TriggerMode mode = TriggerMode.SEARCH;
     private final AppSearchRpcProxy searchProxy;
+    private ArrayList<HandlerRegistration> handlers;
+
+    protected String tag;
 
     public AppSearchField(String tag, AppTemplateServiceFacade templateService) {
         this.tag = tag;
         this.searchProxy = new AppSearchRpcProxy(tag, templateService);
 
         initComboBox();
+        initHandlers();
         initListeners();
     }
 
@@ -48,8 +71,6 @@ public class AppSearchField extends ComboBox<Analysis> {
         setWidth(255);
         setItemSelector("div.search-item"); //$NON-NLS-1$
         setTemplate(buildTemplate());
-        // TODO temp hide trigger until onTriggerClick logic completed
-        setHideTrigger(true);
         setTriggerStyle("x-form-search-trigger"); //$NON-NLS-1$
         setEmptyText(I18N.DISPLAY.searchApps());
         setMinChars(3);
@@ -90,26 +111,44 @@ public class AppSearchField extends ComboBox<Analysis> {
         setPropertyEditor(propertyEditor);
     }
 
+    private void initHandlers() {
+        EventBus eventbus = EventBus.getInstance();
+        handlers = new ArrayList<HandlerRegistration>();
+
+        handlers.add(eventbus.addHandler(AnalysisCategorySelectedEvent.TYPE,
+                new AnalysisCategorySelectedEventHandler() {
+                    @Override
+                    public void onSelection(AnalysisCategorySelectedEvent event) {
+                        setTriggerMode(TriggerMode.SEARCH);
+                    }
+                }));
+    }
+
+    public void cleanup() {
+        for (HandlerRegistration handler : handlers) {
+            handler.removeHandler();
+        }
+    }
+
     private void initListeners() {
         addKeyListener(new KeyListener() {
             @Override
             public void componentKeyDown(ComponentEvent event) {
                 if (event.getKeyCode() == KeyCodes.KEY_ENTER) {
-                    collapse();
-                    fireSearchLoadedEvent();
+                    if (mode == TriggerMode.SEARCH && getSearchResults() != null) {
+                        collapse();
+                        fireSearchLoadedEvent();
+                        setTriggerMode(TriggerMode.CLEAR);
+                    }
                 }
             }
 
             @Override
             public void componentKeyUp(ComponentEvent event) {
-                int key = event.getKeyCode();
-
-                if (key == KeyCodes.KEY_BACKSPACE || key == KeyCodes.KEY_DELETE) {
+                if (mode == TriggerMode.CLEAR && getSearchResults() != null) {
                     String query = getRawValue();
-
-                    if (query == null || query.isEmpty()) {
-                        // Fire the search results load event.
-                        EventBus.getInstance().fireEvent(new AppSearchResultLoadEvent(tag, null));
+                    if (query != null && !query.equals(searchProxy.getLastQueryText())) {
+                        setTriggerMode(TriggerMode.SEARCH);
                     }
                 }
             }
@@ -138,26 +177,48 @@ public class AppSearchField extends ComboBox<Analysis> {
         });
     }
 
-    @Override
-    protected void onTriggerClick(ComponentEvent ce) {
-        fireEvent(Events.TriggerClick, ce);
-
-        // TODO this logic just fires the search loaded event with the last search results.
-        collapse();
-        setRawValue(searchProxy.getLastQueryText());
-        getInputEl().focus();
-        fireSearchLoadedEvent();
-    }
-
-    private void fireSearchLoadedEvent() {
+    protected List<Analysis> getSearchResults() {
         List<Analysis> searchResults = getStore().getModels();
 
         if (searchResults != null && searchResults.isEmpty()) {
             searchResults = null;
         }
 
+        return searchResults;
+    }
+
+    @Override
+    protected void onTriggerClick(ComponentEvent ce) {
+        fireEvent(Events.TriggerClick, ce);
+
+        if (mode == TriggerMode.SEARCH && getSearchResults() != null) {
+            setRawValue(searchProxy.getLastQueryText());
+            getInputEl().focus();
+
+            collapse();
+            fireSearchLoadedEvent();
+            setTriggerMode(TriggerMode.CLEAR);
+        } else if (mode == TriggerMode.CLEAR) {
+            setRawValue(null);
+            setTriggerMode(TriggerMode.SEARCH);
+
+            collapse();
+        }
+
+    }
+
+    private void setTriggerMode(TriggerMode mode) {
+        this.mode = mode;
+        setTriggerStyle(mode.getTriggerStyle());
+
+        if (isRendered()) {
+            trigger.dom.setClassName("x-form-trigger " + triggerStyle); //$NON-NLS-1$
+        }
+    }
+
+    private void fireSearchLoadedEvent() {
         // Fire the search results load event.
-        EventBus.getInstance().fireEvent(new AppSearchResultLoadEvent(tag, searchResults));
+        EventBus.getInstance().fireEvent(new AppSearchResultLoadEvent(tag, getSearchResults()));
     }
 
     /**
