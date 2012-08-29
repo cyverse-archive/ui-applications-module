@@ -1,5 +1,6 @@
 package org.iplantc.core.uiapplications.client.views.panels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.iplantc.core.uiapplications.client.events.AnalysisCategorySelectedEvent;
@@ -21,6 +22,7 @@ import com.extjs.gxt.ui.client.widget.Status;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.extjs.gxt.ui.client.widget.treepanel.TreeStyle;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 /**
@@ -34,12 +36,15 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
 
     protected TreePanel<AnalysisGroupTreeModel> categoryPanel;
     protected String tag;
+
     private String defaultCategoryId;
+    private ArrayList<HandlerRegistration> handlers;
 
     public AbstractCatalogCategoryPanel(String tag) {
         this.tag = tag;
         setHeading(I18N.DISPLAY.category());
         setLayout(new FitLayout());
+        initHandlers();
 
         Status pleaseWait = new Status();
         pleaseWait.setBusy(""); //$NON-NLS-1$
@@ -91,27 +96,27 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
                 selectDefault();
             }
         });
+    }
 
-        // TODO cleanup this event handler
-        EventBus.getInstance().addHandler(AppSearchResultLoadEvent.TYPE,
+    private void initHandlers() {
+        EventBus eventbus = EventBus.getInstance();
+        handlers = new ArrayList<HandlerRegistration>();
+
+        handlers.add(eventbus.addHandler(AppSearchResultLoadEvent.TYPE,
                 new AppSearchResultLoadEventHandler() {
                     @Override
                     public void onLoad(AppSearchResultLoadEvent event) {
                         if (event.getTag().equals(tag)) {
-                            if (event.getResults() == null) {
-                                selectDefault();
-                            } else {
-                                AnalysisGroup selectedGroup = getSelectedAnalysisGroup();
-
-                                if (selectedGroup != null) {
-                                    setDefaultCategoryId(selectedGroup.getId());
-                                }
-
-                                deSelectCurrentCategory();
-                            }
+                            deSelectCurrentCategory();
                         }
                     }
-                });
+                }));
+    }
+
+    public void cleanup() {
+        for (HandlerRegistration handler : handlers) {
+            handler.removeHandler();
+        }
     }
 
     protected void fireCategorySelectedEvent(AnalysisGroup ag) {

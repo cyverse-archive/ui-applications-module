@@ -49,6 +49,12 @@ public class AppSearchRpcProxy extends RpcProxy<List<Analysis>> {
         // Get the proxy's search params.
         BaseListLoadConfig config = (BaseListLoadConfig)loadConfig;
 
+        // Cache the query text.
+        lastQueryText = (String)config.get("query"); //$NON-NLS-1$
+
+        // Cache the search text for this callback; used to sort the results.
+        final String searchTerm = lastQueryText.toLowerCase();
+
         // Create a callback for the AppTemplateServiceFacade.
         AsyncCallback<String> templateServiceCallback = new AsyncCallback<String>() {
             @Override
@@ -66,8 +72,6 @@ public class AppSearchRpcProxy extends RpcProxy<List<Analysis>> {
                 Collections.sort(analyses, new Comparator<Analysis>() {
                     @Override
                     public int compare(Analysis app1, Analysis app2) {
-                        String searchTerm = lastQueryText.toLowerCase();
-
                         String app1Name = app1.getName();
                         String app2Name = app2.getName();
 
@@ -97,9 +101,6 @@ public class AppSearchRpcProxy extends RpcProxy<List<Analysis>> {
                 callback.onFailure(caught);
             }
         };
-
-        // cache the query text
-        lastQueryText = (String)config.get("query"); //$NON-NLS-1$
 
         // Call the searchAnalysis service with this proxy's query.
         templateService.searchAnalysis(lastQueryText, templateServiceCallback);
