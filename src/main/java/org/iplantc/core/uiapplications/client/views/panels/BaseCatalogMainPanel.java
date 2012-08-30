@@ -34,7 +34,7 @@ import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.RowExpander;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
-import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Label;
 
 /**
@@ -46,13 +46,15 @@ import com.google.gwt.user.client.ui.Label;
  */
 public class BaseCatalogMainPanel extends ContentPanel {
 
-    protected ToolBar toolBar;
+    protected CatalogMainToolBar toolBar;
     protected Grid<Analysis> analysisGrid;
-    private RowExpander expander;
-    private String appIdToSelect;
     protected AnalysisGroup current_category;
     protected String tag;
     protected AppTemplateServiceFacade templateService;
+
+    private RowExpander expander;
+    private String appIdToSelect;
+    private ArrayList<HandlerRegistration> handlers;
 
     public static enum RATING_CONSTANT {
 
@@ -104,7 +106,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
         setLayout(new FitLayout());
         initToolBar();
         initGrid();
-        initListeners();
+        initHandlers();
     }
 
     private void initGrid() {
@@ -229,7 +231,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
         ColumnConfig rate = new ColumnConfig();
         rate.setId(Analysis.RATING);
         rate.setRenderer(new RenderVotingCell());
-        rate.setHeader("Rating"); //$NON-NLS-1$
+        rate.setHeader(I18N.DISPLAY.rating());
         rate.setWidth(105);
 
         configs.add(name);
@@ -239,28 +241,28 @@ public class BaseCatalogMainPanel extends ContentPanel {
         return new ColumnModel(configs);
     }
 
-    protected void initListeners() {
-        // TODO cleanup this event handler
-        EventBus.getInstance().addHandler(AppSearchResultLoadEvent.TYPE,
+    private void initHandlers() {
+        EventBus eventbus = EventBus.getInstance();
+        handlers = new ArrayList<HandlerRegistration>();
+
+        handlers.add(eventbus.addHandler(AppSearchResultLoadEvent.TYPE,
                 new AppSearchResultLoadEventHandler() {
                     @Override
                     public void onLoad(AppSearchResultLoadEvent event) {
                         if (event.getTag().equals(tag)) {
-                            if (event.getResults() == null) {
-                                selectTool(appIdToSelect);
-                            } else {
-                                Analysis selectedApp = getSelectedApp();
-
-                                if (selectedApp != null) {
-                                    appIdToSelect = selectedApp.getId();
-                                }
-
-                                setHeading(I18N.DISPLAY.searchApps());
-                                seed(event.getResults(), current_category);
-                            }
+                            setHeading(I18N.DISPLAY.searchApps());
+                            seed(event.getResults(), current_category);
                         }
                     }
-                });
+                }));
+    }
+
+    public void cleanup() {
+        toolBar.cleanup();
+
+        for (HandlerRegistration handler : handlers) {
+            handler.removeHandler();
+        }
     }
 
     /**
@@ -295,7 +297,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
             analysisGrid.getSelectionModel().select(app, false);
             analysisGrid.getView().ensureVisible(analysisGrid.getStore().indexOf(app), 0, false);
         } else {
-            ErrorHandler.post(org.iplantc.core.uicommons.client.I18N.ERROR.appNotFound());
+            ErrorHandler.post(I18N.ERROR.appNotFound());
         }
     }
 
