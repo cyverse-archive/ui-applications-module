@@ -1,5 +1,6 @@
 package org.iplantc.core.uiapplications.client.services;
 
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AppTemplateUserServiceFacade extends AppTemplateServiceFacade {
@@ -79,4 +80,62 @@ public interface AppTemplateUserServiceFacade extends AppTemplateServiceFacade {
      * @param callback called when the RPC call is complete
      */
     void publishWorkflow(String body, AsyncCallback<String> callback);
+
+    /**
+     * Retrieves a template from the database.
+     * 
+     * @param templateId unique identifier for the template.
+     * @param callback called when the RPC call is complete.
+     */
+    void getTemplate(String tag, AsyncCallback<String> asyncCallback);
+
+    /**
+     * 
+     * @param appId
+     * @param callback
+     */
+    void getDCDetails(String appId, AsyncCallback<String> asyncCallback);
+
+    /**
+     * Checks if the given analysisId is able to be exported to TITo via a copy or edit. The service will
+     * respond with JSON that contains a boolean "can-export" key, and a "cause" key if "can-export" is
+     * false:
+     * 
+     * <code>
+     * { "can-export": false, "cause": "Analysis has multiple templates." }
+     * </code>
+     * 
+     * @param analysisId
+     * @param callback
+     */
+    void analysisExportable(String id, AsyncCallback<String> asyncCallback);
+
+    /**
+     * @param id
+     * @param asyncCallback
+     */
+    void editAnalysis(String id, AsyncCallback<String> asyncCallback);
+
+    /**
+     * @param id
+     * @param asyncCallback
+     */
+    void copyAnalysis(String id, AsyncCallback<String> asyncCallback);
+
+    /**
+     * @param username
+     * @param fullUsername
+     * @param id
+     * @param asyncCallback
+     */
+    void deleteAnalysisFromWorkspace(String username, String fullUsername, String id,
+            AsyncCallback<String> asyncCallback);
+
+    /**
+     * Adds an app to the given public categories.
+     * 
+     * @param application
+     * @param callback
+     */
+    void publishToWorld(JSONObject json, AsyncCallback<String> asyncCallback);
 }
