@@ -231,7 +231,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
         ColumnConfig rate = new ColumnConfig();
         rate.setId(Analysis.RATING);
         rate.setRenderer(new RenderVotingCell());
-        rate.setHeader("Rating"); //$NON-NLS-1$
+        rate.setHeader(I18N.DISPLAY.rating());
         rate.setWidth(105);
 
         configs.add(name);
@@ -297,7 +297,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
             analysisGrid.getSelectionModel().select(app, false);
             analysisGrid.getView().ensureVisible(analysisGrid.getStore().indexOf(app), 0, false);
         } else {
-            ErrorHandler.post(org.iplantc.core.uicommons.client.I18N.ERROR.appNotFound());
+            ErrorHandler.post(I18N.ERROR.appNotFound());
         }
     }
 
