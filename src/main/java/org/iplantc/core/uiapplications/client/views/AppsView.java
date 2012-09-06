@@ -16,7 +16,7 @@ import com.sencha.gxt.data.shared.loader.TreeLoader;
 
 public interface AppsView extends IsWidget {
 
-    public interface Presenter extends org.iplantc.core.uiapplications.client.presenter.Presenter {
+    public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter {
         void onAnalysisSelected(final Analysis analysis);
 
         void onAnalysisGroupSelected(final AnalysisGroup ag);

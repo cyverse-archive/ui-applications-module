@@ -13,6 +13,7 @@ import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFac
 import org.iplantc.core.uiapplications.client.views.AppsView;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.models.UserInfo;
+import org.iplantc.core.uicommons.client.presenter.Presenter;
 import org.iplantc.de.client.CommonDisplayStrings;
 
 import com.google.gwt.core.shared.GWT;
