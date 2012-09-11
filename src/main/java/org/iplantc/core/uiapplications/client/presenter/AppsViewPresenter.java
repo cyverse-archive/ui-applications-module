@@ -9,7 +9,7 @@ import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanF
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisList;
 import org.iplantc.core.uiapplications.client.presenter.proxy.AnalysisGroupProxy;
-import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
+import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uiapplications.client.views.AppsView;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.models.UserInfo;
@@ -25,7 +25,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
     private final AppsView view;
-    private final AppTemplateUserServiceFacade templateService;
+    private final AppTemplateServiceFacade templateService;
     // private final AnalysisPagedProxy analysisPagedProxy;
 
     // private final AnalysisRpcProxy analysisRpcProxy;
@@ -37,8 +37,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     private final CatalogWindowConfig config;
 
 
-    public AppsViewPresenter(final AppsView view, final AppTemplateUserServiceFacade templateService,
-            final CommonDisplayStrings displayStrings, final UserInfo userInfo, final String tag,
+    public AppsViewPresenter(final AppsView view, final AppTemplateServiceFacade templateService,
+            final CommonDisplayStrings displayStrings, final UserInfo userInfo,
             final CatalogWindowConfig config) {
         /*
          * When the view comes in, it will already have: -- all of its stores
@@ -46,28 +46,12 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         this.view = view;
         this.templateService = templateService;
         this.displayStrings = displayStrings;
-        // this.tag = tag;
         this.config = config;
 
         // Initialize AnalysisGroup TreeStore proxy and loader
         analysisGroupProxy = new AnalysisGroupProxy(this.templateService, userInfo);
 
-        // analysisRpcProxy = new AnalysisRpcProxy(this.templateService, this.view, this.displayStrings);
-        // analysisListLoader = new ListLoader<ListLoadConfig,
-        // ListLoadResult<Analysis>>(analysisRpcProxy);
-
-        // Initialize Analysis ListStore proxy and loader
-        // analysisPagedProxy = new AnalysisPagedProxy(this.templateService, this.view,
-        // this.displayStrings);
-        // pagingListLoader = new PagingLoader<PagingLoadConfig, PagingLoadResult<Analysis>>(
-        // this.analysisPagedProxy);
-
         this.view.setPresenter(this);
-        // this.view.setListLoader(analysisListLoader);
-        // this.view.setListLoader(pagingListLoader);
-
-        // When/How do I hide the different panels.
-
     }
 
     @Override
@@ -110,8 +94,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
     @Override
     public void go(final HasOneWidget container) {
-        // What do I need to know when the view comes up?
-        // When do I fetch initial data?
         container.setWidget(view.asWidget());
 
         // Fetch AnalysisGroups
