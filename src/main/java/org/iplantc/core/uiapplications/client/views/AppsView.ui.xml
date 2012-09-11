@@ -5,7 +5,9 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:tree="urn:import:com.sencha.gxt.widget.core.client.tree"
              xmlns:grid="urn:import:com.sencha.gxt.widget.core.client.grid"
-             xmlns:toolbar="urn:import:com.sencha.gxt.widget.core.client.toolbar">
+             xmlns:toolbar="urn:import:com.sencha.gxt.widget.core.client.toolbar"
+             xmlns:MyToolbar="urn:import:org.iplantc.core.uiapplications.client.views.widgets"
+             xmlns:button="urn:import:com.sencha.gxt.widget.core.client.button">
 
     <!-- Nav Panel -->
    <ui:with field="treeStore"
@@ -45,8 +47,8 @@
    </ui:with>
    <ui:with field="northData"
             type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
-      <ui:attributes size="150"
-                     hidden="true"/>
+      <ui:attributes size="25"
+                     hidden="false"/>
    </ui:with>
    <ui:with field="westData"
             type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
@@ -71,9 +73,7 @@
                                           borders="true">
                 <!-- This is the tool bar -->
             <container:north layoutData="{northData}">
-               <gxt:ContentPanel>
-                  <!-- TODO Implement the upper toolbar -->
-               </gxt:ContentPanel>
+                  <MyToolbar:AppsViewToolbar ui:field="toolbar"/>
             </container:north>
                 <!-- This is the navigation panel -->
             <container:west layoutData="{westData}">

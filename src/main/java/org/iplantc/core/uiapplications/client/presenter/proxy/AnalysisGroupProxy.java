@@ -6,7 +6,7 @@ import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanFactory;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroupList;
-import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
+import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 
@@ -17,18 +17,16 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 
 /**
- * XXX JDS Should these proxies be moved to a subpackage?
- * 
  * @author jstroot
  * 
  */
 public class AnalysisGroupProxy extends RpcProxy<AnalysisGroup, List<AnalysisGroup>> {
 
-    private final AppTemplateUserServiceFacade templateServiceFacade;
+    private final AppTemplateServiceFacade templateServiceFacade;
     private final UserInfo userInfo;
     private final AnalysisAutoBeanFactory factory = GWT.create(AnalysisAutoBeanFactory.class);
 
-    public AnalysisGroupProxy(final AppTemplateUserServiceFacade templateServiceFacade,
+    public AnalysisGroupProxy(final AppTemplateServiceFacade templateServiceFacade,
             final UserInfo userInfo) {
         this.templateServiceFacade = templateServiceFacade;
         this.userInfo = userInfo;

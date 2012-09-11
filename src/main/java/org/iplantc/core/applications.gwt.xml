@@ -6,9 +6,15 @@
    <inherits name="org.iplantc.core.ui-commons" />
    <inherits name='com.extjs.gxt.ui.GXT' />
    <inherits name='com.sencha.gxt.ui.GXT' />
+   
+   <inherits name="com.google.gwt.uibinder.UiBinder" />
+   
    <source path="client" />
    <source path="uiapplications" />
    <replace-with class="org.iplantc.core.uiapplications.client.services.TemplateServiceFacade">
       <when-type-is class="org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade"/>
+   </replace-with>
+   <replace-with class="org.iplantc.core.uiapplications.client.services.TemplateServiceFacade">
+      <when-type-is class="org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade"/>
    </replace-with>
 </module>
