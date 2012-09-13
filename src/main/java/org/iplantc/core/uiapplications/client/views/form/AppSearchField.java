@@ -60,7 +60,7 @@ public class AppSearchField extends ComboBox<Analysis> {
 
     public AppSearchField(String tag, AppTemplateServiceFacade templateService) {
         this.tag = tag;
-        this.searchProxy = new AppSearchRpcProxy(tag, templateService);
+        this.searchProxy = new AppSearchRpcProxy(this.tag, templateService);
 
         initComboBox();
         initHandlers();

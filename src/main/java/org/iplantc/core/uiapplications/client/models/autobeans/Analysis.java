@@ -37,6 +37,9 @@ public interface Analysis {
 
     String getDescription();
     
+    @PropertyName("group_id")
+    String getGroupId();
+
     @PropertyName("pipeline_eligibility")
     PipelineEligibility getPipelineEligibility();
 
@@ -68,6 +71,16 @@ public interface Analysis {
     void setDisabled(boolean disabled);
 
     void setDescription(String description);
+
     @PropertyName("pipeline_eligibility")
     void setPipelineEligibility(PipelineEligibility pipelineEligibility);
+
+    @PropertyName("group_id")
+    void setGroupId(String groupId);
+
+    @PropertyName("group_name")
+    String getGroupName();
+
+    @PropertyName("group_name")
+    void setGroupName(String groupName);
 }

@@ -42,13 +42,9 @@
                      left="0" />
    </ui:with>
 
-   <ui:with field="outerData"
-            type="com.sencha.gxt.widget.core.client.container.MarginData">
-   </ui:with>
    <ui:with field="northData"
             type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
-      <ui:attributes size="25"
-                     hidden="false"/>
+      <ui:attributes size="25"/>
    </ui:with>
    <ui:with field="westData"
             type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
@@ -68,7 +64,6 @@
    </ui:with>
 
    <container:SimpleContainer>
-      <container:child layoutData="{outerData}">
          <container:BorderLayoutContainer ui:field="con"
                                           borders="true">
                 <!-- This is the tool bar -->
@@ -77,7 +72,9 @@
             </container:north>
                 <!-- This is the navigation panel -->
             <container:west layoutData="{westData}">
-               <gxt:ContentPanel ui:field="navPanel" bodyBorder="false">
+               <gxt:ContentPanel ui:field="navPanel"
+                                 headingText="Categories" 
+                                 bodyBorder="false">
                   <tree:Tree ui:field="tree"
                              valueProvider="{valueProvider}"
                              store="{treeStore}" 
@@ -87,7 +84,8 @@
 			    <!-- This is the main panel -->
             <container:center layoutData="{centerData}">
                <gxt:ContentPanel ui:field="mainPanel"
-                                 resize="true" bodyBorder="false">
+                                 resize="true" 
+                                 bodyBorder="false">
                         <grid:Grid ui:field="grid"
                                    cm="{cm}"
                                    store="{listStore}"
@@ -99,6 +97,5 @@
                <gxt:ContentPanel ui:field="detailPanel" />
             </container:east>
          </container:BorderLayoutContainer>
-      </container:child>
    </container:SimpleContainer>
 </ui:UiBinder>

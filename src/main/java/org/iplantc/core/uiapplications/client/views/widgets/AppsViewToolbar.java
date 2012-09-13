@@ -1,8 +1,5 @@
 package org.iplantc.core.uiapplications.client.views.widgets;
 
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
-import org.iplantc.core.uiapplications.client.views.form.AppSearchField;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -16,12 +13,27 @@ import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class AppsViewToolbar implements IsWidget {
 
+    public interface Presenter {
+
+        void onAppInfoClicked();
+
+        void onRequestToolClicked();
+
+        void onCopyClicked();
+
+        void onDeleteClicked();
+
+        void submitClicked();
+
+    }
+
     private static AppsViewToolbarUiBinder uiBinder = GWT.create(AppsViewToolbarUiBinder.class);
 
     interface AppsViewToolbarUiBinder extends UiBinder<Widget, AppsViewToolbar> {
     }
 
     private final Widget widget;
+    private Presenter presenter;
 
     @UiField
     ToolBar toolBar;
@@ -50,11 +62,11 @@ public class AppsViewToolbar implements IsWidget {
     @UiField
     TextButton submit;
 
+    @UiField
+    AppSearchField3 appSearch;
+
     public AppsViewToolbar() {
         widget = uiBinder.createAndBindUi(this);
-        AppTemplateServiceFacade templateService = GWT.create(AppTemplateServiceFacade.class);
-        // FIXME JDS Remove hard-coded window "tag", 'de_catalog'
-        toolBar.add(new AppSearchField("de_catalog", templateService));
     }
 
     @Override
@@ -64,27 +76,27 @@ public class AppsViewToolbar implements IsWidget {
 
     @UiHandler("appInfo")
     public void appInfoClicked(SelectEvent event) {
-
+        presenter.onAppInfoClicked();
     }
 
     @UiHandler("requestTool")
     public void requestToolClicked(SelectEvent event) {
-
+        presenter.onRequestToolClicked();
     }
 
     @UiHandler("copy")
     public void copyClicked(SelectEvent event) {
-
+        presenter.onCopyClicked();
     }
 
     @UiHandler("delete")
     public void deleteClicked(SelectEvent event) {
-
+        presenter.onDeleteClicked();
     }
 
     @UiHandler("submit")
     public void submitClicked(SelectEvent event) {
-
+        presenter.submitClicked();
     }
 
 

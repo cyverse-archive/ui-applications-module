@@ -31,6 +31,8 @@ import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.Selecti
 import com.sencha.gxt.widget.core.client.tree.Tree;
 
 /**
+ * TODO JDS Need to implement means of adding to north, east and south panels.
+ * 
  * @author jstroot
  * 
  */

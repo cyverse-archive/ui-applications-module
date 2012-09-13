@@ -4,7 +4,8 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:toolbar="urn:import:com.sencha.gxt.widget.core.client.toolbar"
              xmlns:button="urn:import:com.sencha.gxt.widget.core.client.button"
-             xmlns:menu="urn:import:com.sencha.gxt.widget.core.client.menu">
+             xmlns:menu="urn:import:com.sencha.gxt.widget.core.client.menu"
+             xmlns:MyWidgets="urn:import:org.iplantc.core.uiapplications.client.views.widgets">
              
    <ui:with type="org.iplantc.core.uiapplications.client.images.Icons" field="icons"/>
    
@@ -23,6 +24,7 @@
             </menu:Menu>
          </button:menu>
        </button:TextButton>
+       <toolbar:FillToolItem/>
        <button:TextButton ui:field="appInfo"
                           text="App Info"
                           icon="{icons.info}"/>
@@ -46,6 +48,7 @@
        <button:TextButton ui:field="submit"
                           text="Submit"
                           icon="{icons.submitForPublic}"/>
+       <MyWidgets:AppSearchField3 ui:field="appSearch"/>
      </toolbar:ToolBar>
    </container:SimpleContainer>
 </ui:UiBinder> 
