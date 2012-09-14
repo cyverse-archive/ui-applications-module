@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
@@ -21,6 +22,7 @@ import com.sencha.gxt.data.shared.loader.ListLoader;
 import com.sencha.gxt.data.shared.loader.TreeLoader;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
 import com.sencha.gxt.widget.core.client.event.CellClickEvent;
 import com.sencha.gxt.widget.core.client.event.CellClickEvent.CellClickHandler;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -77,6 +79,11 @@ public class AppsViewImpl implements AppsView {
     @UiField
     ContentPanel detailPanel;
 
+    @UiField
+    BorderLayoutData northData;
+    @UiField
+    BorderLayoutData eastData;
+
     private final Widget widget;
 
     public AppsViewImpl(TreeStore<AnalysisGroup> treeStore, ListStore<Analysis> listStore,
@@ -86,7 +93,6 @@ public class AppsViewImpl implements AppsView {
         this.listStore = listStore;
         this.cm = cm;
         this.widget = uiBinder.createAndBindUi(this);
-        // toolbar.add(new LiveToolItem(grid));
         grid.addCellClickHandler(new CellClickHandler() {
 
             @Override
@@ -111,12 +117,15 @@ public class AppsViewImpl implements AppsView {
                     public void onSelectionChanged(SelectionChangedEvent<AnalysisGroup> event) {
                         if ((event.getSelection() != null) && !event.getSelection().isEmpty()) {
                             presenter.onAnalysisGroupSelected(event.getSelection().get(0));
-                        }
+                    }
                     }
                 });
         setTreeIcons();
     }
 
+    /**
+     * FIXME JDS Move this implementation into the ui.xml
+     */
     private void setTreeIcons() {
         com.sencha.gxt.widget.core.client.tree.TreeStyle style = tree.getStyle();
         style.setNodeCloseIcon(Resources.ICONS.category());
@@ -192,7 +201,6 @@ public class AppsViewImpl implements AppsView {
     @Override
     public void selectAnalysis(String analysisId) {
         Analysis app = listStore.findModelWithKey(analysisId);
-        // TODO JDS Set Heading
         if (app != null) {
             grid.getSelectionModel().select(app, true);
         }
@@ -222,5 +230,22 @@ public class AppsViewImpl implements AppsView {
     public void setAnalyses(final List<Analysis> analyses) {
         listStore.clear();
         listStore.addAll(analyses);
+    }
+
+	@Override
+    public void setNorthWidget(IsWidget widget) {
+        northData.setHidden(false);
+        con.setNorthWidget(widget, northData);
+	}
+
+    @Override
+    public void setEastWidget(IsWidget widget) {
+        eastData.setHidden(false);
+        con.setEastWidget(widget, eastData);
+    }
+
+    @Override
+    public void selectFirstAnalysis() {
+        grid.getSelectionModel().select(0, false);
     }
 }

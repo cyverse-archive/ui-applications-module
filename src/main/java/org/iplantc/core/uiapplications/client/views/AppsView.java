@@ -1,6 +1,5 @@
 package org.iplantc.core.uiapplications.client.views;
 
-
 import java.util.List;
 
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
@@ -51,5 +50,11 @@ public interface AppsView extends IsWidget {
     AnalysisGroup getSelectedAnalysisGroup();
 
     void setAnalyses(List<Analysis> analyses);
+
+    void setNorthWidget(IsWidget widget);
+
+    void setEastWidget(IsWidget widget);
+
+    void selectFirstAnalysis();
 
 }

@@ -11,30 +11,28 @@ import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisList;
 import org.iplantc.core.uiapplications.client.presenter.proxy.AnalysisGroupProxy;
 import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uiapplications.client.views.AppsView;
+import org.iplantc.core.uiapplications.client.views.widgets.AppsViewToolbar;
+import org.iplantc.core.uiapplications.client.views.widgets.AppsViewToolbarImpl;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.presenter.Presenter;
 import org.iplantc.de.client.CommonDisplayStrings;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
-public class AppsViewPresenter implements Presenter, AppsView.Presenter {
+public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsViewToolbar.Presenter {
 
     private final AppsView view;
     private final AppTemplateServiceFacade templateService;
-    // private final AnalysisPagedProxy analysisPagedProxy;
-
-    // private final AnalysisRpcProxy analysisRpcProxy;
-    // private final ListLoader<ListLoadConfig, ListLoadResult<Analysis>> analysisListLoader;
 
     private final AnalysisGroupProxy analysisGroupProxy;
-    // private final PagingLoader<PagingLoadConfig, PagingLoadResult<Analysis>> pagingListLoader;
     private final CommonDisplayStrings displayStrings;
     private final CatalogWindowConfig config;
+    private final AppsViewToolbar toolbar;
 
 
     public AppsViewPresenter(final AppsView view, final AppTemplateServiceFacade templateService,
@@ -44,6 +42,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
          * When the view comes in, it will already have: -- all of its stores
          */
         this.view = view;
+        toolbar = new AppsViewToolbarImpl();
+        view.setNorthWidget(toolbar);
         this.templateService = templateService;
         this.displayStrings = displayStrings;
         this.config = config;
@@ -56,8 +56,29 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
     @Override
     public void onAnalysisGroupSelected(final AnalysisGroup ag) {
+        toolbar.setEditButtonEnabled(false);
+        toolbar.setDeleteButtonEnabled(false);
+        toolbar.setSubmitButtonEnabled(false);
+
         view.setMainPanelHeading(ag.getName());
         fetchApps(ag);
+    }
+
+    @Override
+    public void onAnalysisSelected(final Analysis analysis) {
+        if (analysis == null) {
+            return;
+        }
+        if (analysis.isPublic()) {
+            toolbar.setEditButtonEnabled(false);
+            toolbar.setDeleteButtonEnabled(false);
+            toolbar.setSubmitButtonEnabled(false);
+        } else {
+            toolbar.setEditButtonEnabled(true);
+            toolbar.setDeleteButtonEnabled(true);
+            toolbar.setSubmitButtonEnabled(true);
+        }
+    
     }
 
     /**
@@ -75,6 +96,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
                 AutoBean<AnalysisList> bean = AutoBeanCodex.decode(factory, AnalysisList.class, result);
 
                 view.setAnalyses(bean.as().getAnalyses());
+                view.selectFirstAnalysis();
                 view.unMaskMainPanel();
             }
 
@@ -84,12 +106,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
                 view.unMaskMainPanel();
             }
         });
-    }
-
-    @Override
-    public void onAnalysisSelected(final Analysis analysis) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -141,5 +157,33 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         return view.getSelectedAnalysisGroup();
     }
 
+    @Override
+    public void onAppInfoClicked() {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onRequestToolClicked() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onCopyClicked() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onDeleteClicked() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void submitClicked() {
+        // TODO Auto-generated method stub
+
+    }
 
 }

@@ -41,15 +41,16 @@
                      bottom="0"
                      left="0" />
    </ui:with>
-
    <ui:with field="northData"
             type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
-      <ui:attributes size="25"/>
+      <ui:attributes size="25"
+                     maxSize="25"
+                     hidden="true"/>
    </ui:with>
    <ui:with field="westData"
             type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
       <ui:attributes margins="{westMargins}"
-                     size="150"
+                     size="200"
                      collapsible="true"
                      split="true" />
    </ui:with>
@@ -67,9 +68,7 @@
          <container:BorderLayoutContainer ui:field="con"
                                           borders="true">
                 <!-- This is the tool bar -->
-            <container:north layoutData="{northData}">
-                  <MyToolbar:AppsViewToolbar ui:field="toolbar"/>
-            </container:north>
+            <container:north layoutData="{northData}"/>
                 <!-- This is the navigation panel -->
             <container:west layoutData="{westData}">
                <gxt:ContentPanel ui:field="navPanel"
