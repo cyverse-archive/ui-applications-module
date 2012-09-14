@@ -4,48 +4,52 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:toolbar="urn:import:com.sencha.gxt.widget.core.client.toolbar"
              xmlns:button="urn:import:com.sencha.gxt.widget.core.client.button"
-             xmlns:menu="urn:import:com.sencha.gxt.widget.core.client.menu">
+             xmlns:menu="urn:import:com.sencha.gxt.widget.core.client.menu"
+             xmlns:MyWidgets="urn:import:org.iplantc.core.uiapplications.client.views.widgets">
              
    <ui:with type="org.iplantc.core.uiapplications.client.images.Icons" field="icons"/>
+   <ui:with type="org.iplantc.core.uiapplications.client.CommonAppDisplayStrings" field="strings" />
    
    <container:SimpleContainer>
      <toolbar:ToolBar ui:field="toolBar">
-       <button:TextButton text="Create"
+       <button:TextButton text="{strings.create}"
                           icon="{icons.add}">
          <button:menu>
             <menu:Menu>
                <menu:MenuItem ui:field="createNewApp"
-                              text="New App"
+                              text="{strings.newApp}"
                               icon="{icons.add}"/>
                <menu:MenuItem ui:field="createWorkflow"
-                              text="Workflow"
+                              text="{strings.workflow}"
                               icon="{icons.add}"/>
             </menu:Menu>
          </button:menu>
        </button:TextButton>
+       <toolbar:FillToolItem/>
        <button:TextButton ui:field="appInfo"
-                          text="App Info"
+                          text="{strings.appInfo}"
                           icon="{icons.info}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="requestTool"
-                          text="Request Tool"
+                          text="{strings.requestTool}"
                           icon="{icons.requestTool}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="copy"
-                          text="Copy"
+                          text="{strings.copy}"
                           icon="{icons.copy}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="edit"
-                          text="Edit"
+                          text="{strings.edit}"
                           icon="{icons.edit}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="delete"
-                          text="Delete"
+                          text="{strings.delete}"
                           icon="{icons.delete}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="submit"
-                          text="Submit"
+                          text="{strings.submit}"
                           icon="{icons.submitForPublic}"/>
+       <MyWidgets:AppSearchField3 ui:field="appSearch"/>
      </toolbar:ToolBar>
    </container:SimpleContainer>
 </ui:UiBinder> 

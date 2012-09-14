@@ -19,7 +19,7 @@ import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Display;
@@ -34,6 +34,11 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+/**
+ * TODO JDS Migrate styles to use CSS resource.
+ * @author jstroot
+ *
+ */
 public class AnalysisRatingCell extends AbstractCell<Analysis> {
     private static final String GOLD_STAR_RATING_STYLE = "apps_rating_gold_button"; //$NON-NLS-1$
     private static final String WHITE_STAR_RATING_STYLE = "apps_rating_white_button"; //$NON-NLS-1$
@@ -44,8 +49,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
     private final SafeStyles imgStyle1 = SafeStylesUtils.fromTrustedString("float: left;");
     private final SafeStyles imgStyl2 = SafeStylesUtils.fromTrustedString("float: left; display: none;");
 
-    private final AppTemplateUserServiceFacade templateService = GWT
-            .create(AppTemplateUserServiceFacade.class);
+    private final AppTemplateUserServiceFacade templateService;
 
     public static enum RATING_CONSTANT {
 
@@ -104,8 +108,11 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
 
     private final List<String> ratings;
 
-    public AnalysisRatingCell() {
+
+    public AnalysisRatingCell(final AppTemplateUserServiceFacade templateService) {
         super(CLICK, MOUSEOVER, MOUSEOUT);
+
+        this.templateService = templateService;// GWT.create(AppTemplateUserServiceFacade.class);
 
         ratings = new ArrayList<String>();
         ratings.add(0, RATING_CONSTANT.HATE_IT.displayText);

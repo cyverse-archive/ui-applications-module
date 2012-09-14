@@ -126,4 +126,28 @@ public interface CommonAppDisplayStrings extends CommonUIDisplayStrings {
      * @return a string representing the localized text.
      */
     String ratingEmailText(String appName);
+
+    /**
+     * Localized text for the "App Info" toolbar button.
+     * 
+     * @return a string representing the localized text.
+     */
+    String appInfo();
+
+    /**
+     * Localized text for the "Request Tool" toolbar button.
+     * 
+     * @return a string representing the localized text.
+     */
+    String requestTool();
+
+    /**
+     * @return
+     */
+    String newApp();
+
+    /**
+     * @return
+     */
+    String workflow();
 }

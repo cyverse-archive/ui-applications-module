@@ -7,11 +7,12 @@ import org.iplantc.core.uiapplications.client.CommonAppDisplayStrings;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisProperties;
+import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
 import org.iplantc.core.uiapplications.client.views.cells.AnalysisRatingCell;
 import org.iplantc.core.uiapplications.client.views.cells.HyperlinkCell;
 import org.iplantc.core.uicommons.client.events.EventBus;
 
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
@@ -20,12 +21,13 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 public class AnalysisColumnModel extends ColumnModel<Analysis> {
 
 
-    public AnalysisColumnModel(final EventBus eventBus, final CommonAppDisplayStrings displayStrings) {
-        super(createColumnConfigList(eventBus, displayStrings));
+    public AnalysisColumnModel(final EventBus eventBus, final CommonAppDisplayStrings displayStrings,
+            final AppTemplateUserServiceFacade templateService) {
+        super(createColumnConfigList(eventBus, displayStrings, templateService));
     }
 
     public static List<ColumnConfig<Analysis, ?>> createColumnConfigList(final EventBus eventBus,
-            final CommonAppDisplayStrings displayStrings) {
+            final CommonAppDisplayStrings displayStrings, AppTemplateUserServiceFacade templateService) {
         AnalysisProperties props = GWT.create(AnalysisProperties.class);
         List<ColumnConfig<Analysis, ?>> list = new ArrayList<ColumnConfig<Analysis, ?>>();
 
@@ -40,7 +42,7 @@ public class AnalysisColumnModel extends ColumnModel<Analysis> {
         rating.setResizable(false);
 
         name.setCell(new HyperlinkCell(eventBus, displayStrings));
-        rating.setCell(new AnalysisRatingCell());
+        rating.setCell(new AnalysisRatingCell(templateService));
 
         rating.setAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
