@@ -9,6 +9,8 @@
              xmlns:MyToolbar="urn:import:org.iplantc.core.uiapplications.client.views.widgets"
              xmlns:button="urn:import:com.sencha.gxt.widget.core.client.button">
 
+   <ui:with type="org.iplantc.core.uiapplications.client.CommonAppDisplayStrings" field="strings" />
+
     <!-- Nav Panel -->
    <ui:with field="treeStore"
             type="com.sencha.gxt.data.shared.TreeStore" />
@@ -72,7 +74,7 @@
                 <!-- This is the navigation panel -->
             <container:west layoutData="{westData}">
                <gxt:ContentPanel ui:field="navPanel"
-                                 headingText="Categories" 
+                                 headingText="{strings.category}" 
                                  bodyBorder="false">
                   <tree:Tree ui:field="tree"
                              valueProvider="{valueProvider}"
