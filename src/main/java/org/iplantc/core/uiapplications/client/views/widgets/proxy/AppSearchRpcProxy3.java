@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanFactory;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisList;
@@ -21,9 +22,8 @@ public class AppSearchRpcProxy3 extends RpcProxy<AnalysisLoadConfig, AnalysisLis
     private final AppTemplateServiceFacade templateService;
     private String lastQueryText;
 
-    public AppSearchRpcProxy3(AppTemplateServiceFacade templateService) {
-        // templateService = GWT.create(AppTemplateServiceFacade.class);
-        this.templateService = templateService;
+    public AppSearchRpcProxy3() {
+        this.templateService = Services.TEMPLATE_SERVICE;
     }
 
     @Override

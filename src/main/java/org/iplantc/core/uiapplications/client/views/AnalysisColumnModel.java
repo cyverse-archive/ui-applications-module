@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.iplantc.core.uiapplications.client.CommonAppDisplayStrings;
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisProperties;
 import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
@@ -21,9 +22,9 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 public class AnalysisColumnModel extends ColumnModel<Analysis> {
 
 
-    public AnalysisColumnModel(final EventBus eventBus, final CommonAppDisplayStrings displayStrings,
-            final AppTemplateUserServiceFacade templateService) {
-        super(createColumnConfigList(eventBus, displayStrings, templateService));
+    public AnalysisColumnModel() {
+        super(createColumnConfigList(EventBus.getInstance(), I18N.DISPLAY,
+                Services.USER_TEMPLATE_SERVICE));
     }
 
     public static List<ColumnConfig<Analysis, ?>> createColumnConfigList(final EventBus eventBus,
@@ -41,8 +42,8 @@ public class AnalysisColumnModel extends ColumnModel<Analysis> {
         name.setResizable(true);
         rating.setResizable(false);
 
-        name.setCell(new HyperlinkCell(eventBus, displayStrings));
-        rating.setCell(new AnalysisRatingCell(templateService));
+        name.setCell(new HyperlinkCell());
+        rating.setCell(new AnalysisRatingCell());
 
         rating.setAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 

@@ -4,6 +4,7 @@ import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEDOWN;
 
 import org.iplantc.core.uiapplications.client.CommonAppDisplayStrings;
+import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uicommons.client.Constants;
 import org.iplantc.core.uicommons.client.events.EventBus;
@@ -26,10 +27,10 @@ public class HyperlinkCell extends AbstractCell<Analysis> {
     private final EventBus eventBus;
     private final CommonAppDisplayStrings displayStrings;
 
-    public HyperlinkCell(final EventBus eventBus, final CommonAppDisplayStrings displayStrings) {
+    public HyperlinkCell() {
         super(CLICK, MOUSEDOWN);
-        this.eventBus = eventBus;
-        this.displayStrings = displayStrings;
+        this.eventBus = EventBus.getInstance();
+        this.displayStrings = I18N.DISPLAY;
     }
 
     @Override

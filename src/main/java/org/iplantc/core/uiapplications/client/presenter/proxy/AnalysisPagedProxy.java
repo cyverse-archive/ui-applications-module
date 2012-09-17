@@ -4,14 +4,13 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanFactory;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisList;
 import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
-import org.iplantc.core.uiapplications.client.views.AppsView;
 import org.iplantc.core.uicommons.client.ErrorHandler;
-import org.iplantc.de.client.CommonDisplayStrings;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -26,21 +25,15 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
 
 class AnalysisPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<Analysis>> {
     private final AppTemplateUserServiceFacade service;
-    private final AppsView view;
-    private final CommonDisplayStrings displayStrings;
     private AnalysisGroup currentAg;
 
-    public AnalysisPagedProxy(final AppTemplateUserServiceFacade service, final AppsView view,
-            final CommonDisplayStrings displayStrings) {
-        this.service = service;
-        this.view = view;
-        this.displayStrings = displayStrings;
+    public AnalysisPagedProxy() {
+        this.service = Services.USER_TEMPLATE_SERVICE;
     }
 
     @Override
     public void load(PagingLoadConfig loadConfig,
             final AsyncCallback<PagingLoadResult<Analysis>> callback) {
-        view.maskMainPanel(displayStrings.loadingMask());
 
         int limit = loadConfig.getLimit();
         final int offset = loadConfig.getOffset();
@@ -76,14 +69,12 @@ class AnalysisPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<Ana
                         PagingLoadResult<Analysis> callbackResult = new PagingLoadResultBean<Analysis>(
                                 bean.as().getAnalyses(), total, offset);
                         callback.onSuccess(callbackResult);
-                        view.unMaskMainPanel();
                     }
 
                     @Override
                     public void onFailure(Throwable caught) {
                         ErrorHandler.post(I18N.ERROR.retrieveFolderInfoFailed(), caught);
                         callback.onFailure(caught);
-                        view.unMaskMainPanel();
                     }
                 });
     }

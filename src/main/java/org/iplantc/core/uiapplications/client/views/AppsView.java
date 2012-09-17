@@ -57,4 +57,6 @@ public interface AppsView extends IsWidget {
 
     void selectFirstAnalysis();
 
+    void selectFirstAnalysisGroup();
+
 }
