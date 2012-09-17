@@ -5,7 +5,6 @@ import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisProperties;
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uiapplications.client.views.widgets.proxy.AnalysisListLoadResult;
 import org.iplantc.core.uiapplications.client.views.widgets.proxy.AnalysisLoadConfig;
 import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppSearchAutoBeanFactory;
@@ -50,8 +49,7 @@ public class AppSearchField3 implements IsWidget {
     public Widget asWidget() {
         if (combo == null) {
 
-            AppTemplateServiceFacade templateService = GWT.create(AppTemplateServiceFacade.class);
-            AppSearchRpcProxy3 proxy = new AppSearchRpcProxy3(templateService);
+            AppSearchRpcProxy3 proxy = new AppSearchRpcProxy3();
 
             PagingLoader<AnalysisLoadConfig, AnalysisListLoadResult> loader = new PagingLoader<AnalysisLoadConfig, AnalysisListLoadResult>(
                     proxy);

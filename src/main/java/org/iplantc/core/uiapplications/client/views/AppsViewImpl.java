@@ -248,4 +248,11 @@ public class AppsViewImpl implements AppsView {
     public void selectFirstAnalysis() {
         grid.getSelectionModel().select(0, false);
     }
+
+    @Override
+    public void selectFirstAnalysisGroup() {
+        AnalysisGroup ag = treeStore.getRootItems().get(0);
+        tree.getSelectionModel().select(ag, false);
+    }
+
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisFeedback;
 import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
@@ -109,10 +110,10 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
     private final List<String> ratings;
 
 
-    public AnalysisRatingCell(final AppTemplateUserServiceFacade templateService) {
+    public AnalysisRatingCell() {
         super(CLICK, MOUSEOVER, MOUSEOUT);
 
-        this.templateService = templateService;// GWT.create(AppTemplateUserServiceFacade.class);
+        this.templateService = Services.USER_TEMPLATE_SERVICE;
 
         ratings = new ArrayList<String>();
         ratings.add(0, RATING_CONSTANT.HATE_IT.displayText);

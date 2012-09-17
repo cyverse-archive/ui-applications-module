@@ -3,6 +3,7 @@ package org.iplantc.core.uiapplications.client.presenter;
 import java.util.List;
 
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.CatalogWindowConfig;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanFactory;
@@ -14,7 +15,6 @@ import org.iplantc.core.uiapplications.client.views.AppsView;
 import org.iplantc.core.uiapplications.client.views.widgets.AppsViewToolbar;
 import org.iplantc.core.uiapplications.client.views.widgets.AppsViewToolbarImpl;
 import org.iplantc.core.uicommons.client.ErrorHandler;
-import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.presenter.Presenter;
 import org.iplantc.de.client.CommonDisplayStrings;
 
@@ -35,21 +35,20 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     private final AppsViewToolbar toolbar;
 
 
-    public AppsViewPresenter(final AppsView view, final AppTemplateServiceFacade templateService,
-            final CommonDisplayStrings displayStrings, final UserInfo userInfo,
-            final CatalogWindowConfig config) {
+    public AppsViewPresenter(final AppsView view, final CatalogWindowConfig config) {
         /*
          * When the view comes in, it will already have: -- all of its stores
          */
         this.view = view;
         toolbar = new AppsViewToolbarImpl();
         view.setNorthWidget(toolbar);
-        this.templateService = templateService;
-        this.displayStrings = displayStrings;
+        this.templateService = Services.TEMPLATE_SERVICE;
+        this.displayStrings = I18N.DISPLAY;
         this.config = config;
 
+
         // Initialize AnalysisGroup TreeStore proxy and loader
-        analysisGroupProxy = new AnalysisGroupProxy(this.templateService, userInfo);
+        analysisGroupProxy = new AnalysisGroupProxy();
 
         this.view.setPresenter(this);
     }
@@ -117,11 +116,12 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
             @Override
             public void onSuccess(List<AnalysisGroup> result) {
                 addAnalysisGroup(null, result);
-
                 // Select previous user selections
                 if (config != null) {
                     view.selectAnalysisGroup(config.getCategoryId());
                     view.selectAnalysis(config.getAppId());
+                } else {
+                    view.selectFirstAnalysisGroup();
                 }
             }
 

@@ -11,10 +11,5 @@
    
    <source path="client" />
    <source path="uiapplications" />
-   <replace-with class="org.iplantc.core.uiapplications.client.services.TemplateServiceFacade">
-      <when-type-is class="org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade"/>
-   </replace-with>
-   <replace-with class="org.iplantc.core.uiapplications.client.services.TemplateServiceFacade">
-      <when-type-is class="org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade"/>
-   </replace-with>
+   
 </module>
