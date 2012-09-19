@@ -72,6 +72,7 @@ public class AppsViewImpl implements AppsView {
     @UiField
     BorderLayoutContainer con;
 
+    // TODO JDS rename nav, main, and detail panels to east, center, west
     @UiField
     ContentPanel navPanel;
     @UiField
@@ -106,7 +107,7 @@ public class AppsViewImpl implements AppsView {
             @Override
             public void onSelectionChanged(SelectionChangedEvent<Analysis> event) {
                 if ((event.getSelection() != null) && !event.getSelection().isEmpty()) {
-                    presenter.onAnalysisSelected(event.getSelection().get(0));
+                    presenter.onAppSelected(event.getSelection().get(0));
                 }
             }
         });
@@ -116,7 +117,7 @@ public class AppsViewImpl implements AppsView {
                     @Override
                     public void onSelectionChanged(SelectionChangedEvent<AnalysisGroup> event) {
                         if ((event.getSelection() != null) && !event.getSelection().isEmpty()) {
-                            presenter.onAnalysisGroupSelected(event.getSelection().get(0));
+                            presenter.onAppGroupSelected(event.getSelection().get(0));
                     }
                     }
                 });
@@ -179,18 +180,28 @@ public class AppsViewImpl implements AppsView {
     }
 
     @Override
-    public void setMainPanelHeading(final String name) {
+    public void setCenterPanelHeading(final String name) {
         mainPanel.setHeadingText(name);
     }
 
     @Override
-    public void maskMainPanel(final String loadingMask) {
+    public void maskCenterPanel(final String loadingMask) {
         mainPanel.mask(loadingMask);
     }
 
     @Override
-    public void unMaskMainPanel() {
+    public void unMaskCenterPanel() {
         mainPanel.unmask();
+    }
+
+    @Override
+    public void maskWestPanel(String loadingMask) {
+        navPanel.mask(loadingMask);
+    }
+
+    @Override
+    public void unMaskWestPanel() {
+        navPanel.unmask();
     }
 
     @Override
@@ -212,7 +223,7 @@ public class AppsViewImpl implements AppsView {
         if (ag != null) {
             tree.getSelectionModel().select(ag, true);
             // Set heading
-            setMainPanelHeading(ag.getName());
+            setCenterPanelHeading(ag.getName());
         }
     }
 
@@ -258,8 +269,13 @@ public class AppsViewImpl implements AppsView {
     @Override
     public void removeAnalysis(Analysis analysis) {
         grid.getSelectionModel().deselectAll();
-        presenter.onAnalysisSelected(null);
+        presenter.onAppSelected(null);
         listStore.remove(analysis);
+    }
+
+    @Override
+    public void deSelectAllAppGroups() {
+        tree.getSelectionModel().deselectAll();
     }
 
 }

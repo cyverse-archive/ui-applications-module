@@ -9,7 +9,7 @@ public interface AnalysisGroup {
     String getName();
 
     @PropertyName("template_count")
-    int getTemplateCount();
+    int getAppCount();
 
     List<AnalysisGroup> getGroups();
 

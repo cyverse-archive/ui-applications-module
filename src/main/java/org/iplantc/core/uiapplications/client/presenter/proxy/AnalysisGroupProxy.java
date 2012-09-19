@@ -7,7 +7,6 @@ import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanFactory;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroupList;
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 
@@ -23,18 +22,14 @@ import com.sencha.gxt.data.client.loader.RpcProxy;
  */
 public class AnalysisGroupProxy extends RpcProxy<AnalysisGroup, List<AnalysisGroup>> {
 
-    private final AppTemplateServiceFacade templateServiceFacade;
-    private final UserInfo userInfo;
     private final AnalysisAutoBeanFactory factory = GWT.create(AnalysisAutoBeanFactory.class);
 
     public AnalysisGroupProxy() {
-        this.templateServiceFacade = Services.TEMPLATE_SERVICE;
-        this.userInfo = UserInfo.getInstance();
     }
 
     @Override
     public void load(AnalysisGroup loadConfig, final AsyncCallback<List<AnalysisGroup>> callback) {
-        templateServiceFacade.getAnalysisCategories(userInfo.getWorkspaceId(),
+        Services.TEMPLATE_SERVICE.getAnalysisCategories(UserInfo.getInstance().getWorkspaceId(),
                 new AsyncCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
@@ -48,6 +43,7 @@ public class AnalysisGroupProxy extends RpcProxy<AnalysisGroup, List<AnalysisGro
                     @Override
                     public void onFailure(Throwable caught) {
                         ErrorHandler.post(I18N.ERROR.analysisGroupsLoadFailure(), caught);
+                        callback.onFailure(caught);
                     }
                 });
 

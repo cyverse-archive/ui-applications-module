@@ -16,13 +16,13 @@ import com.sencha.gxt.data.shared.loader.TreeLoader;
 public interface AppsView extends IsWidget {
 
     public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter {
-        void onAnalysisSelected(final Analysis analysis);
+        void onAppSelected(final Analysis analysis);
 
-        void onAnalysisGroupSelected(final AnalysisGroup ag);
+        void onAppGroupSelected(final AnalysisGroup ag);
 
-        Analysis getSelectedAnalysis();
+        Analysis getSelectedApp();
 
-        AnalysisGroup getSelectedAnalysisGroup();
+        AnalysisGroup getSelectedAppGroup();
     }
 
     void setPresenter(final Presenter presenter);
@@ -35,11 +35,15 @@ public interface AppsView extends IsWidget {
 
     void setTreeLoader(final TreeLoader<AnalysisGroup> treeLoader);
 
-    void setMainPanelHeading(final String name);
+    void setCenterPanelHeading(final String name);
 
-    void maskMainPanel(final String loadingMask);
+    void maskCenterPanel(final String loadingMask);
 
-    void unMaskMainPanel();
+    void unMaskCenterPanel();
+
+    void maskWestPanel(String loadingMask);
+
+    void unMaskWestPanel();
 
     void selectAnalysis(String analysisId);
 
@@ -61,4 +65,5 @@ public interface AppsView extends IsWidget {
 
     void removeAnalysis(Analysis analysis);
 
+    void deSelectAllAppGroups();
 }

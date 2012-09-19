@@ -18,7 +18,6 @@ import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanF
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisList;
 import org.iplantc.core.uiapplications.client.presenter.proxy.AnalysisGroupProxy;
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uiapplications.client.views.AppsView;
 import org.iplantc.core.uiapplications.client.views.panels.SubmitAppForPublicUsePanel;
 import org.iplantc.core.uiapplications.client.views.widgets.AppInfoView;
@@ -29,7 +28,6 @@ import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.presenter.Presenter;
-import org.iplantc.de.client.CommonDisplayStrings;
 
 import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
@@ -53,48 +51,43 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  */
 public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsViewToolbar.Presenter {
 
-    private final AppsView view;
-    private final AppTemplateServiceFacade templateService;
+    protected final AppsView view;
 
     private final AnalysisGroupProxy analysisGroupProxy;
-    private final CommonDisplayStrings displayStrings;
-    private final CatalogWindowConfig config;
+    private CatalogWindowConfig config;
     private final AppsViewToolbar toolbar;
 
-
-    public AppsViewPresenter(final AppsView view, final CatalogWindowConfig config) {
-        /*
-         * When the view comes in, it will already have: -- all of its stores
-         */
+    protected AppsViewPresenter(final AppsView view) {
         this.view = view;
-        toolbar = new AppsViewToolbarImpl();
-        view.setNorthWidget(toolbar);
-        this.templateService = Services.TEMPLATE_SERVICE;
-        this.displayStrings = I18N.DISPLAY;
-        this.config = config;
-
 
         // Initialize AnalysisGroup TreeStore proxy and loader
         analysisGroupProxy = new AnalysisGroupProxy();
+        toolbar = new AppsViewToolbarImpl();
+        view.setNorthWidget(toolbar);
 
         this.view.setPresenter(this);
         this.toolbar.setPresenter(this);
     }
 
+    public AppsViewPresenter(final AppsView view, final CatalogWindowConfig config) {
+        this(view);
+        this.config = config;
+    }
+
     @Override
-    public void onAnalysisGroupSelected(final AnalysisGroup ag) {
+    public void onAppGroupSelected(final AnalysisGroup ag) {
         toolbar.setEditButtonEnabled(false);
         toolbar.setDeleteButtonEnabled(false);
         toolbar.setSubmitButtonEnabled(false);
         toolbar.setCopyButtonEnabled(false);
         toolbar.setAppInfoButtonEnabled(false);
 
-        view.setMainPanelHeading(ag.getName());
+        view.setCenterPanelHeading(ag.getName());
         fetchApps(ag);
     }
 
     @Override
-    public void onAnalysisSelected(final Analysis analysis) {
+    public void onAppSelected(final Analysis analysis) {
         if (analysis == null) {
             toolbar.setEditButtonEnabled(false);
             toolbar.setDeleteButtonEnabled(false);
@@ -121,9 +114,9 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
      * 
      * @param ag
      */
-    private void fetchApps(final AnalysisGroup ag) {
-        view.maskMainPanel(displayStrings.loadingMask());
-        templateService.getAnalysis(ag.getId(), new AsyncCallback<String>() {
+    protected void fetchApps(final AnalysisGroup ag) {
+        view.maskCenterPanel(I18N.DISPLAY.loadingMask());
+        Services.TEMPLATE_SERVICE.getAnalysis(ag.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
@@ -131,16 +124,21 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                 AutoBean<AnalysisList> bean = AutoBeanCodex.decode(factory, AnalysisList.class, result);
 
                 view.setAnalyses(bean.as().getAnalyses());
-                view.selectFirstAnalysis();
-                view.unMaskMainPanel();
+
+                selectFirstApp();
+                view.unMaskCenterPanel();
             }
 
             @Override
             public void onFailure(Throwable caught) {
                 ErrorHandler.post(I18N.ERROR.retrieveFolderInfoFailed(), caught);
-                view.unMaskMainPanel();
+                view.unMaskCenterPanel();
             }
         });
+    }
+
+    protected void selectFirstApp() {
+        view.selectFirstAnalysis();
     }
 
     @Override
@@ -184,12 +182,12 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     }
 
     @Override
-    public Analysis getSelectedAnalysis() {
+    public Analysis getSelectedApp() {
         return view.getSelectedAnalysis();
     }
 
     @Override
-    public AnalysisGroup getSelectedAnalysisGroup() {
+    public AnalysisGroup getSelectedAppGroup() {
         return view.getSelectedAnalysisGroup();
     }
 
@@ -209,7 +207,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     @Override
     public void onCopyClicked() {
         // TODO JDS Needs to be tested
-        final Analysis selectedAnalysis = getSelectedAnalysis();
+        final Analysis selectedAnalysis = getSelectedApp();
         Services.USER_TEMPLATE_SERVICE.analysisExportable(selectedAnalysis.getId(),
                 new AsyncCallback<String>() {
 
@@ -261,7 +259,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void onDeleteClicked() {
-        final Analysis app = getSelectedAnalysis();
+        final Analysis app = getSelectedApp();
         ConfirmMessageBox msgBox = new ConfirmMessageBox(I18N.DISPLAY.warning(),
                 I18N.DISPLAY.appDeleteWarning());
 
@@ -302,7 +300,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void submitClicked() {
-        Analysis selectedAnalysis = getSelectedAnalysis();
+        Analysis selectedAnalysis = getSelectedApp();
         final Window makePublicWin = new Window();
         makePublicWin.setModal(true);
 
