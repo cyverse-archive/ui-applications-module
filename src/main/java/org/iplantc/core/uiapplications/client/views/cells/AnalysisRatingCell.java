@@ -12,7 +12,6 @@ import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisFeedback;
-import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
 import org.iplantc.core.uiapplications.client.views.dialogs.AppCommentDialog;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
@@ -26,31 +25,58 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.safecss.shared.SafeStyles;
-import com.google.gwt.safecss.shared.SafeStylesUtils;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * TODO JDS Migrate styles to use CSS resource.
  * @author jstroot
  *
  */
 public class AnalysisRatingCell extends AbstractCell<Analysis> {
-    private static final String GOLD_STAR_RATING_STYLE = "apps_rating_gold_button"; //$NON-NLS-1$
-    private static final String WHITE_STAR_RATING_STYLE = "apps_rating_white_button"; //$NON-NLS-1$
-    private static final String RED_STAR_RATING_STYLE = "apps_rating_red_button"; //$NON-NLS-1$
-    private static final String UNRATE_RATING_STYLE = "apps_rating_unrate_button"; //$NON-NLS-1$
-    private static final String UNRATE_HOVER_RATING_STYLE = "apps_rating_unrate_button_hover"; //$NON-NLS-1$
-    
-    private final SafeStyles imgStyle1 = SafeStylesUtils.fromTrustedString("float: left;");
-    private final SafeStyles imgStyl2 = SafeStylesUtils.fromTrustedString("float: left; display: none;");
 
-    private final AppTemplateUserServiceFacade templateService;
+    interface MyCss extends CssResource {
+        @ClassName("apps_icon")
+        String appsIcon();
+
+        @ClassName("disabled_unrate_button")
+        String disabledUnrateButton();
+    }
+
+    interface Resources extends ClientBundle {
+        @Source("AnalysisRatingCell.css")
+        MyCss css();
+
+        @Source("images/star-gold.gif")
+        ImageResource goldStar();
+
+        @Source("images/star-red.gif")
+        ImageResource redStar();
+
+        @Source("images/star-white.gif")
+        ImageResource whiteStar();
+
+        @Source("images/delete_rating.png")
+        ImageResource deleteRating();
+
+        @Source("images/delete_rating_hover.png")
+        ImageResource deleteRatingHover();
+    }
+
+    /**
+     * The HTML templates used to render the cell.
+     */
+    interface Templates extends SafeHtmlTemplates {
+        @SafeHtmlTemplates.Template("<img name=\"{0}\" title=\"{1}\" class=\"{2}\" src=\"{3}\"></img>")
+        SafeHtml imgCell(String name, String toolTip, String className, SafeUri imgSrc);
+    }
 
     public static enum RATING_CONSTANT {
 
@@ -94,26 +120,16 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
     }
 
     /**
-     * The HTML templates used to render the cell.
-     */
-    interface Templates extends SafeHtmlTemplates {
-
-        @SafeHtmlTemplates.Template("<div name=\"{0}\" title=\"{1}\" class=\"{2}\" style=\"{3}\"></div>")
-        SafeHtml cell(String name, String toolTip, String cssClass, SafeStyles styles);
-    }
-
-    /**
      * Create a singleton instance of the templates used to render the cell.
      */
     private static Templates templates = GWT.create(Templates.class);
-
+    private static final Resources resources = GWT.create(Resources.class);
     private final List<String> ratings;
 
 
     public AnalysisRatingCell() {
         super(CLICK, MOUSEOVER, MOUSEOUT);
-
-        this.templateService = Services.USER_TEMPLATE_SERVICE;
+        resources.css().ensureInjected();
 
         ratings = new ArrayList<String>();
         ratings.add(0, RATING_CONSTANT.HATE_IT.displayText);
@@ -137,24 +153,28 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
         for (int i = 0; i < ratings.size(); i++) {
             if (i < rating) {
                 if (value.getRating().getUserRating() != 0) {
-                    sb.append(templates.cell("Rating-" + i, ratings.get(i), GOLD_STAR_RATING_STYLE,
-                            imgStyle1));
+                    sb.append(templates.imgCell("Rating-" + i, ratings.get(i), resources.css()
+                            .appsIcon(), resources
+                            .goldStar().getSafeUri()));
                 } else {
-                    sb.append(templates.cell("Rating-" + i, ratings.get(i), RED_STAR_RATING_STYLE,
-                            imgStyle1));
+                    sb.append(templates.imgCell("Rating-" + i, ratings.get(i), resources.css()
+                            .appsIcon(), resources
+                            .redStar().getSafeUri()));
                 }
             } else {
-                sb.append(templates.cell("Rating-" + i, ratings.get(i), WHITE_STAR_RATING_STYLE,
-                        imgStyle1));
+                sb.append(templates.imgCell("Rating-" + i, ratings.get(i), resources.css().appsIcon(),
+                        resources.whiteStar().getSafeUri()));
             }
         }
 
         // Determine if user has rated the app, and if so, add the unrate icon/button
         if (value.getRating().getUserRating() > 0) {
             // Add unrate icon
-            sb.append(templates.cell("Unrate", "Unrate", UNRATE_RATING_STYLE, imgStyle1));
+            sb.append(templates.imgCell("Unrate", "Unrate", resources.css().appsIcon(), resources
+                    .deleteRating().getSafeUri()));
         } else {
-            sb.append(templates.cell("Unrate", "Unrate", UNRATE_RATING_STYLE, imgStyl2));
+            sb.append(templates.imgCell("Unrate", "Unrate", resources.css().disabledUnrateButton(),
+                    resources.deleteRating().getSafeUri()));
         }
 
     }
@@ -171,8 +191,8 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
             return;
         }
 
-        if (parent.isOrHasChild(Element.as(event.getEventTarget()))) {
-            Element eventTarget = Element.as(event.getEventTarget());
+        Element eventTarget = Element.as(event.getEventTarget());
+        if (eventTarget.getNodeName().equalsIgnoreCase("img") && parent.isOrHasChild(eventTarget)) {
 
             switch (Event.as(event).getTypeInt()) {
                 case Event.ONCLICK:
@@ -185,7 +205,6 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
                     resetRatingStarColors(parent, value);
                     break;
                 default:
-                    // TODO JDS Handle this case
                     break;
             }
         }
@@ -201,18 +220,18 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
             if (child.getAttribute("name").startsWith("Rating")) {
                 if (i < rating) {
                     if (value.getRating().getUserRating() != 0) {
-                        child.setClassName(GOLD_STAR_RATING_STYLE);
+                        child.setAttribute("src", resources.goldStar().getSafeUri().asString());
                     } else {
-                        child.setClassName(RED_STAR_RATING_STYLE);
+                        child.setAttribute("src", resources.redStar().getSafeUri().asString());
                     }
                 } else {
-                    child.setClassName(WHITE_STAR_RATING_STYLE);
+                    child.setAttribute("src", resources.whiteStar().getSafeUri().asString());
                 }
             } else if (child.getAttribute("name").equalsIgnoreCase("unrate")) {
                 // Show/Hide unrate button
                 if (value.getRating().getUserRating() != 0) {
                     child.getStyle().setDisplay(Display.BLOCK);
-                    child.setClassName(UNRATE_RATING_STYLE);
+                    child.setAttribute("src", resources.deleteRating().getSafeUri().asString());
                 } else {
                     // if there is no rating, hide the cell.
                     child.getStyle().setDisplay(Display.NONE);
@@ -223,21 +242,22 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
 
     private void onRatingMouseOver(Element parent, Element eventTarget) {
         boolean setWhiteStar = false;
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            Element child = Element.as(parent.getChild(i));
-            if (child.getAttribute("name").startsWith("Rating")) {
-                if (setWhiteStar) {
-                    child.setClassName(WHITE_STAR_RATING_STYLE);
-                } else {
-                    child.setClassName(GOLD_STAR_RATING_STYLE);
-                }
-                if (child.getAttribute("name").equals(eventTarget.getAttribute("name"))) {
-                    setWhiteStar = true;
+        if (eventTarget.getAttribute("name").startsWith("Rating")) {
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                Element child = Element.as(parent.getChild(i));
+                if (child.getAttribute("name").startsWith("Rating")) {
+                    if (setWhiteStar) {
+                        child.setAttribute("src", resources.whiteStar().getSafeUri().asString());
+                    } else {
+                        child.setAttribute("src", resources.goldStar().getSafeUri().asString());
+                    }
+                    if (child.getAttribute("name").equals(eventTarget.getAttribute("name"))) {
+                        setWhiteStar = true;
+                    }
                 }
             }
-        }
-        if (eventTarget.getAttribute("name").equalsIgnoreCase("unrate")) {
-            eventTarget.setClassName(UNRATE_HOVER_RATING_STYLE);
+        } else if (eventTarget.getAttribute("name").equalsIgnoreCase("unrate")) {
+            eventTarget.setAttribute("src", resources.deleteRatingHover().getSafeUri().asString());
         }
     }
 
@@ -249,7 +269,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
             // populate dialog via an async call if previous comment ID exists, otherwise show blank dlg
             final AppCommentDialog dlg = new AppCommentDialog(value.getName());
             Long commentId = value.getRating().getCommentId();
-            if (commentId == null) {
+            if ((commentId == null) || (commentId == 0)) {
                 dlg.unmaskDialog();
             } else {
                 ConfluenceServiceFacade.getInstance().getComment(commentId, new AsyncCallback<String>() {
@@ -293,7 +313,8 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
             // comment id empty or not a number, leave it null and proceed
         }
 
-        templateService.deleteRating(value.getId(), parsePageName(value.getWikiUrl()), commentId,
+        Services.USER_TEMPLATE_SERVICE.deleteRating(value.getId(), parsePageName(value.getWikiUrl()),
+                commentId,
                 new AsyncCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
@@ -349,10 +370,12 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
 
         Long commentId = value.getRating().getCommentId();
         if ((commentId == null) || (commentId == 0)) {
-            templateService.rateAnalysis(value.getId(), score, parsePageName(value.getWikiUrl()),
+            Services.USER_TEMPLATE_SERVICE.rateAnalysis(value.getId(), score,
+                    parsePageName(value.getWikiUrl()),
                     comment, value.getIntegratorEmail(), callback);
         } else {
-            templateService.updateRating(value.getId(), score, parsePageName(value.getWikiUrl()),
+            Services.USER_TEMPLATE_SERVICE.updateRating(value.getId(), score,
+                    parsePageName(value.getWikiUrl()),
                     commentId, comment, value.getIntegratorEmail(), callback);
         }
     }
