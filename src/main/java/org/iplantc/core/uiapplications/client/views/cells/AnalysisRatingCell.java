@@ -98,7 +98,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
      */
     interface Templates extends SafeHtmlTemplates {
 
-        @SafeHtmlTemplates.Template("<div  name=\"{0}\" title=\"{1}\" class=\"{2}\" style=\"{3}\"></div>")
+        @SafeHtmlTemplates.Template("<div name=\"{0}\" title=\"{1}\" class=\"{2}\" style=\"{3}\"></div>")
         SafeHtml cell(String name, String toolTip, String cssClass, SafeStyles styles);
     }
 

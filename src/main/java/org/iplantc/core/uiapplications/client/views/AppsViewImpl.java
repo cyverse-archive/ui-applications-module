@@ -255,4 +255,11 @@ public class AppsViewImpl implements AppsView {
         tree.getSelectionModel().select(ag, false);
     }
 
+    @Override
+    public void removeAnalysis(Analysis analysis) {
+        grid.getSelectionModel().deselectAll();
+        presenter.onAnalysisSelected(null);
+        listStore.remove(analysis);
+    }
+
 }

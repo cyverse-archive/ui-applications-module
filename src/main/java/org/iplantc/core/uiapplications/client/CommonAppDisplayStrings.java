@@ -150,4 +150,58 @@ public interface CommonAppDisplayStrings extends CommonUIDisplayStrings {
      * @return
      */
     String workflow();
+
+    String requestConfirmMsg();
+
+
+    String submitRequest();
+
+    String submitting();
+
+    String contactTab();
+
+    String toolTab();
+
+    String otherTab();
+
+    /**
+     * Localized text for multi threaded
+     * 
+     * @return string representing the text
+     */
+    String isMultiThreaded();
+
+
+    String comments();
+
+    String addnlData();
+
+    String cmdLineRun();
+
+    String upldTestData();
+
+    String docLink();
+
+    String version();
+
+    String toolDesc();
+
+    String toolName();
+
+    String srcLinkPrompt();
+
+    String link();
+
+    String requestNewTool();
+
+    /**
+     * Text when an invalid name is entered
+     * 
+     * @return string representing the text
+     */
+    String nameValidationMsg();
+
+    String inValidUrl();
+
+    String appDeleteWarning();
 }

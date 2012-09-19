@@ -13,13 +13,16 @@
    <container:SimpleContainer>
      <toolbar:ToolBar ui:field="toolBar">
        <button:TextButton text="{strings.create}"
+                          debugId="idCreateBtn"
                           icon="{icons.add}">
          <button:menu>
             <menu:Menu>
                <menu:MenuItem ui:field="createNewApp"
+                              debugId="idNewAppBtn"
                               text="{strings.newApp}"
                               icon="{icons.add}"/>
                <menu:MenuItem ui:field="createWorkflow"
+                              debugId="idNewWorkflowBtn"
                               text="{strings.workflow}"
                               icon="{icons.add}"/>
             </menu:Menu>
@@ -27,26 +30,32 @@
        </button:TextButton>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="appInfo"
+                          debugId="idAppInfoBtn"
                           text="{strings.appInfo}"
                           icon="{icons.info}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="requestTool"
+                          debugId="idBtnNewToolBtn"
                           text="{strings.requestTool}"
                           icon="{icons.requestTool}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="copy"
+                          debugId="idCopyBtn"
                           text="{strings.copy}"
                           icon="{icons.copy}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="edit"
+                          debugId="idEditBtn"
                           text="{strings.edit}"
                           icon="{icons.edit}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="delete"
+                          debugId="idDeleteBtn"
                           text="{strings.delete}"
                           icon="{icons.delete}"/>
        <toolbar:FillToolItem/>
        <button:TextButton ui:field="submit"
+                          debugId="idMakePublic"
                           text="{strings.submit}"
                           icon="{icons.submitForPublic}"/>
        <MyWidgets:AppSearchField3 ui:field="appSearch"/>

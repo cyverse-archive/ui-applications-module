@@ -59,4 +59,6 @@ public interface AppsView extends IsWidget {
 
     void selectFirstAnalysisGroup();
 
+    void removeAnalysis(Analysis analysis);
+
 }
