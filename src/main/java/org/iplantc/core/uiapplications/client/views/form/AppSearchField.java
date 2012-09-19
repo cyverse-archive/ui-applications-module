@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.iplantc.core.uiapplications.client.I18N;
-import org.iplantc.core.uiapplications.client.events.AnalysisCategorySelectedEvent;
-import org.iplantc.core.uiapplications.client.events.AnalysisCategorySelectedEventHandler;
+import org.iplantc.core.uiapplications.client.events.AppGroupSelectedEvent;
 import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEvent;
 import org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEvent;
+import org.iplantc.core.uiapplications.client.events.handlers.AppGroupSelectedEventHandler;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.services.AppSearchRpcProxy;
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
+import org.iplantc.core.uiapplications.client.services.AppServiceFacade;
 import org.iplantc.core.uicommons.client.events.EventBus;
 
 import com.extjs.gxt.ui.client.data.BaseListLoader;
@@ -58,7 +58,7 @@ public class AppSearchField extends ComboBox<Analysis> {
 
     protected String tag;
 
-    public AppSearchField(String tag, AppTemplateServiceFacade templateService) {
+    public AppSearchField(String tag, AppServiceFacade templateService) {
         this.tag = tag;
         this.searchProxy = new AppSearchRpcProxy(this.tag, templateService);
 
@@ -115,10 +115,10 @@ public class AppSearchField extends ComboBox<Analysis> {
         EventBus eventbus = EventBus.getInstance();
         handlers = new ArrayList<HandlerRegistration>();
 
-        handlers.add(eventbus.addHandler(AnalysisCategorySelectedEvent.TYPE,
-                new AnalysisCategorySelectedEventHandler() {
+        handlers.add(eventbus.addHandler(AppGroupSelectedEvent.TYPE,
+                new AppGroupSelectedEventHandler() {
                     @Override
-                    public void onSelection(AnalysisCategorySelectedEvent event) {
+                    public void onSelection(AppGroupSelectedEvent event) {
                         setTriggerMode(TriggerMode.SEARCH);
                     }
                 }));

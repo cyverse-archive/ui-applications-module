@@ -3,7 +3,7 @@ package org.iplantc.core.uiapplications.client.views.cells;
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 
 import org.iplantc.core.uiapplications.client.Constants;
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.events.UserEvent;
 
@@ -22,15 +22,15 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.user.client.Event;
 
-public class AnalysisRunCell extends AbstractCell<Analysis> {
+public class AppRunCell extends AbstractCell<App> {
 
     interface MyCss extends CssResource {
-        @ClassName("analysis_run")
-        String analysisRun();
+        @ClassName("app_run")
+        String appRun();
     }
 
     interface Resources extends ClientBundle {
-        @Source("AnalysisRunCell.css")
+        @Source("AppRunCell.css")
         MyCss css();
 
         @Source("images/run.png")
@@ -46,20 +46,20 @@ public class AnalysisRunCell extends AbstractCell<Analysis> {
     private static final Resources resources = GWT.create(Resources.class);
     private static final Templates templates = GWT.create(Templates.class);
 
-    public AnalysisRunCell() {
+    public AppRunCell() {
         // super(CLICK, MOUSEOVER, MOUSEOUT);
         super(CLICK);
         resources.css().ensureInjected();
     }
 
     @Override
-    public void render(Cell.Context context, Analysis value, SafeHtmlBuilder sb) {
-        sb.append(templates.cell(resources.css().analysisRun(), resources.run().getSafeUri()));
+    public void render(Cell.Context context, App value, SafeHtmlBuilder sb) {
+        sb.append(templates.cell(resources.css().appRun(), resources.run().getSafeUri()));
     }
 
     @Override
-    public void onBrowserEvent(Cell.Context context, Element parent, Analysis value, NativeEvent event,
-            ValueUpdater<Analysis> valueUpdater) {
+    public void onBrowserEvent(Cell.Context context, Element parent, App value, NativeEvent event,
+            ValueUpdater<App> valueUpdater) {
         if (value == null) {
             return;
         }
@@ -82,15 +82,15 @@ public class AnalysisRunCell extends AbstractCell<Analysis> {
         }
     }
 
-    private void doOnMouseOut(Element eventTarget, Analysis value) {
+    private void doOnMouseOut(Element eventTarget, App value) {
         // XXX JDS Place holder for switching images on hover
     }
 
-    private void doOnMouseOver(Element eventTarget, Analysis value) {
+    private void doOnMouseOver(Element eventTarget, App value) {
         // XXX JDS Place holder for switching images on hover
     }
 
-    private void doOnClick(Element eventTarget, Analysis value) {
+    private void doOnClick(Element eventTarget, App value) {
         UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), value.getId());
         EventBus.getInstance().fireEvent(e);
     }

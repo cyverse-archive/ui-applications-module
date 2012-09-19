@@ -2,8 +2,8 @@ package org.iplantc.core.uiapplications.client.models.autobeans;
 
 import java.util.List;
 
-public interface AnalysisGroupList {
+public interface AppGroupList {
 
-    List<AnalysisGroup> getGroups();
+    List<AppGroup> getGroups();
 
 }

@@ -5,13 +5,12 @@ import java.util.List;
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
 /**
- * This is a convenience class for retrieving JSON arrays of analyses
- * FIXME JDS Revisit the necessity of this class.
+ * This is a convenience class for retrieving JSON arrays of apps
  * 
  * @author jstroot
  * 
  */
-public interface AnalysisList {
+public interface AppList {
     @PropertyName("templates")
-    List<Analysis> getAnalyses();
+    List<App> getApps();
 }

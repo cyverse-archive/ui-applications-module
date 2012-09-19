@@ -4,14 +4,14 @@ import java.util.List;
 
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
-public interface AnalysisGroup {
+public interface AppGroup {
 
     String getName();
 
     @PropertyName("template_count")
     int getAppCount();
 
-    List<AnalysisGroup> getGroups();
+    List<AppGroup> getGroups();
 
     @PropertyName("is_public")
     boolean isPublic();
@@ -28,7 +28,7 @@ public interface AnalysisGroup {
     @PropertyName("template_count")
     void setTemplateCount(int templateCount);
 
-    void setGroups(List<AnalysisGroup> groups);
+    void setGroups(List<AppGroup> groups);
 
     @PropertyName("is_public")
     void setIsPublic(boolean isPublic);

@@ -5,10 +5,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.iplantc.core.uiapplications.client.Services;
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanFactory;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisList;
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppAutoBeanFactory;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppList;
+import org.iplantc.core.uiapplications.client.services.AppServiceFacade;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 
 import com.google.gwt.core.client.GWT;
@@ -17,20 +17,20 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 
-public class AppSearchRpcProxy3 extends RpcProxy<AnalysisLoadConfig, AnalysisListLoadResult> {
+public class AppSearchRpcProxy3 extends RpcProxy<AppLoadConfig, AppListLoadResult> {
 
-    private final AppTemplateServiceFacade templateService;
+    private final AppServiceFacade templateService;
     private String lastQueryText;
 
     public AppSearchRpcProxy3() {
-        this.templateService = Services.TEMPLATE_SERVICE;
+        this.templateService = Services.APP_SERVICE;
     }
 
     @Override
-    public void load(final AnalysisLoadConfig loadConfig,
-            final AsyncCallback<AnalysisListLoadResult> callback) {
+    public void load(final AppLoadConfig loadConfig,
+            final AsyncCallback<AppListLoadResult> callback) {
         lastQueryText = loadConfig.getQuery();
-        templateService.searchAnalysis(lastQueryText.toLowerCase(), new AsyncCallback<String>() {
+        templateService.searchApp(lastQueryText.toLowerCase(), new AsyncCallback<String>() {
 
             @Override
             public void onFailure(Throwable caught) {
@@ -40,16 +40,16 @@ public class AppSearchRpcProxy3 extends RpcProxy<AnalysisLoadConfig, AnalysisLis
 
             @Override
             public void onSuccess(String result) {
-                AnalysisAutoBeanFactory factory = GWT.create(AnalysisAutoBeanFactory.class);
-                AutoBean<AnalysisList> bean = AutoBeanCodex.decode(factory, AnalysisList.class, result);
+                AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
+                AutoBean<AppList> bean = AutoBeanCodex.decode(factory, AppList.class, result);
 
-                List<Analysis> analyses = bean.as().getAnalyses();
+                List<App> apps = bean.as().getApps();
 
-                Collections.sort(analyses, new AnalysisComparator());
+                Collections.sort(apps, new AppComparator());
                 
-                AnalysisListLoadResult searchResult = AppSearchAutoBeanFactory.instance.dataLoadResult()
+                AppListLoadResult searchResult = AppSearchAutoBeanFactory.instance.dataLoadResult()
                         .as();
-                searchResult.setData(analyses);
+                searchResult.setData(apps);
                 callback.onSuccess(searchResult);
             }
         });
@@ -59,9 +59,9 @@ public class AppSearchRpcProxy3 extends RpcProxy<AnalysisLoadConfig, AnalysisLis
         return lastQueryText;
     }
 
-    private final class AnalysisComparator implements Comparator<Analysis> {
+    private final class AppComparator implements Comparator<App> {
         @Override
-        public int compare(Analysis app1, Analysis app2) {
+        public int compare(App app1, App app2) {
             String app1Name = app1.getName();
             String app2Name = app2.getName();
 

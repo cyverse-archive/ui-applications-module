@@ -9,7 +9,7 @@ import org.iplantc.core.client.widgets.validator.BasicEmailValidator;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroupTreeModel;
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.store.AnalysisToolGroupStoreWrapper;
 import org.iplantc.core.uiapplications.client.views.dialogs.CategorySelectionDialog;
 import org.iplantc.core.uicommons.client.ErrorHandler;
@@ -60,7 +60,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
     private Button btnSubmit;
     private Button btnCancel;
     private FormPanel form;
-    private final Analysis analysis;
+    private final App analysis;
     private final AsyncCallback<String> closeCallback;
 
     private CategorySelectionDialog dialog;
@@ -76,7 +76,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
      *            when the publish form is successfully submitted, and onFailure is called when the
      *            publish fails, or the user cancels the form.
      */
-    public SubmitAppForPublicUsePanel(Analysis analysis, AsyncCallback<String> closeCallback) {
+    public SubmitAppForPublicUsePanel(App analysis, AsyncCallback<String> closeCallback) {
         this.analysis = analysis;
         this.closeCallback = closeCallback;
         setLayout(new FormLayout());
@@ -330,7 +330,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
     }
 
     private void loadCategories() {
-        Services.TEMPLATE_SERVICE.getAnalysisCategories(UserInfo.getInstance().getWorkspaceId(),
+        Services.APP_SERVICE.getAppGroups(UserInfo.getInstance().getWorkspaceId(),
                 new AsyncCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
@@ -383,7 +383,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
                     @Override
                     public void onSuccess(String url) {
                         wikiUrl = url;
-                        Services.USER_TEMPLATE_SERVICE.publishToWorld(toJson(),
+                        Services.USER_APP_SERVICE.publishToWorld(toJson(),
                                 new AsyncCallback<String>() {
                             @Override
                             public void onSuccess(String result) {

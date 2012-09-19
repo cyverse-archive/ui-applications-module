@@ -1,31 +1,32 @@
 package org.iplantc.core.uiapplications.client.events;
 
+import org.iplantc.core.uiapplications.client.events.handlers.AppGroupSelectedEventHandler;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.views.panels.AbstractCatalogCategoryPanel;
 
 import com.google.gwt.event.shared.GwtEvent;
 
-public class AnalysisCategorySelectedEvent extends GwtEvent<AnalysisCategorySelectedEventHandler> {
+public class AppGroupSelectedEvent extends GwtEvent<AppGroupSelectedEventHandler> {
 
     
     /**
      * Defines the GWT Event Type.
      * 
-     * @see org.iplantc.de.client.events.AnalysisCategorySelectedEventHandler
+     * @see org.iplantc.core.uiapplications.client.events.handlers.AppGroupSelectedEventHandler.AnalysisCategorySelectedEventHandler
      */
-    public static final GwtEvent.Type<AnalysisCategorySelectedEventHandler> TYPE = new GwtEvent.Type<AnalysisCategorySelectedEventHandler>();
+    public static final GwtEvent.Type<AppGroupSelectedEventHandler> TYPE = new GwtEvent.Type<AppGroupSelectedEventHandler>();
     
     
     private AnalysisGroup group;
     private AbstractCatalogCategoryPanel sourcePanel;
     
-    public AnalysisCategorySelectedEvent(AnalysisGroup ag, AbstractCatalogCategoryPanel sourcePanel) {
+    public AppGroupSelectedEvent(AnalysisGroup ag, AbstractCatalogCategoryPanel sourcePanel) {
        this.setGroup(ag);
         this.setSourcePanel(sourcePanel);
     }
 
     @Override
-    protected void dispatch(AnalysisCategorySelectedEventHandler handler) {
+    protected void dispatch(AppGroupSelectedEventHandler handler) {
       handler.onSelection(this);
     }
 
@@ -34,7 +35,7 @@ public class AnalysisCategorySelectedEvent extends GwtEvent<AnalysisCategorySele
      * {@inheritDoc}
      */
     @Override
-    public Type<AnalysisCategorySelectedEventHandler> getAssociatedType() {
+    public Type<AppGroupSelectedEventHandler> getAssociatedType() {
         return TYPE;
     }
 

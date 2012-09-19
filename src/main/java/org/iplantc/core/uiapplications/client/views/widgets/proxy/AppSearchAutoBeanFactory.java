@@ -8,7 +8,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanFactory;
 public interface AppSearchAutoBeanFactory extends AutoBeanFactory {
     static AppSearchAutoBeanFactory instance = GWT.create(AppSearchAutoBeanFactory.class);
 
-    AutoBean<AnalysisListLoadResult> dataLoadResult();
+    AutoBean<AppListLoadResult> dataLoadResult();
 
-    AutoBean<AnalysisLoadConfig> loadConfig();
+    AutoBean<AppLoadConfig> loadConfig();
 }
