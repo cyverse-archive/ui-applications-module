@@ -9,8 +9,9 @@ import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
 import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisProperties;
 import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
+import org.iplantc.core.uiapplications.client.views.cells.AnalysisHyperlinkCell;
 import org.iplantc.core.uiapplications.client.views.cells.AnalysisRatingCell;
-import org.iplantc.core.uiapplications.client.views.cells.HyperlinkCell;
+import org.iplantc.core.uiapplications.client.views.cells.AnalysisRunCell;
 import org.iplantc.core.uicommons.client.events.EventBus;
 
 import com.google.gwt.core.client.GWT;
@@ -32,6 +33,9 @@ public class AnalysisColumnModel extends ColumnModel<Analysis> {
         AnalysisProperties props = GWT.create(AnalysisProperties.class);
         List<ColumnConfig<Analysis, ?>> list = new ArrayList<ColumnConfig<Analysis, ?>>();
 
+        ColumnConfig<Analysis, Analysis> run = new ColumnConfig<Analysis, Analysis>(
+                new IdentityValueProvider<Analysis>(), 20);
+
         ColumnConfig<Analysis, Analysis> name = new ColumnConfig<Analysis, Analysis>(
                 new IdentityValueProvider<Analysis>(), 180, I18N.DISPLAY.name());
         ColumnConfig<Analysis, String> integrator = new ColumnConfig<Analysis, String>(
@@ -39,14 +43,17 @@ public class AnalysisColumnModel extends ColumnModel<Analysis> {
         ColumnConfig<Analysis, Analysis> rating = new ColumnConfig<Analysis, Analysis>(
                 new IdentityValueProvider<Analysis>(), 80, "Rating"); //$NON-NLS-1$
 
+        run.setResizable(false);
         name.setResizable(true);
         rating.setResizable(false);
 
-        name.setCell(new HyperlinkCell());
+        run.setCell(new AnalysisRunCell());
+        name.setCell(new AnalysisHyperlinkCell());
         rating.setCell(new AnalysisRatingCell());
 
         rating.setAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
+        list.add(run);
         list.add(name);
         list.add(integrator);
         list.add(rating);

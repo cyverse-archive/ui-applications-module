@@ -1,6 +1,7 @@
 package org.iplantc.core.uiapplications.client.views.widgets;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -8,6 +9,7 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
@@ -61,6 +63,11 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
         return widget;
     }
 
+    @Override
+    public void setPresenter(Presenter presenter) {
+        this.presenter = presenter;
+    }
+
     @UiHandler("appInfo")
     public void appInfoClicked(SelectEvent event) {
         presenter.onAppInfoClicked();
@@ -86,6 +93,16 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
         presenter.submitClicked();
     }
 
+    @UiHandler("createNewApp")
+    public void createNewAppClicked(SelectionEvent<Item> event) {
+        presenter.createNewAppClicked();
+    }
+
+    @UiHandler("createWorkflow")
+    public void createWorkflowClicked(SelectionEvent<Item> event) {
+        presenter.createWorkflowClicked();
+    }
+
     @Override
     public void setEditButtonEnabled(boolean enabled) {
         edit.setEnabled(enabled);
@@ -99,6 +116,16 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     @Override
     public void setDeleteButtonEnabled(boolean enabled) {
         delete.setEnabled(enabled);
+    }
+
+    @Override
+    public void setCopyButtonEnabled(boolean enabled) {
+        copy.setEnabled(enabled);
+    }
+
+    @Override
+    public void setAppInfoButtonEnabled(boolean enabled) {
+        appInfo.setEnabled(enabled);
     }
 
 }

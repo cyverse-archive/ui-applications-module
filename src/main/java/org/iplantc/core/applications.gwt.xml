@@ -6,6 +6,7 @@
    <inherits name="org.iplantc.core.ui-commons" />
    <inherits name='com.extjs.gxt.ui.GXT' />
    <inherits name='com.sencha.gxt.ui.GXT' />
+   <inherits name="org.iplantc.core.Widgets"/>
    
    <inherits name="com.google.gwt.uibinder.UiBinder" />
    
