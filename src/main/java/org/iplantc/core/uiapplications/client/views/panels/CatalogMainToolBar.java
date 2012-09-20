@@ -1,6 +1,6 @@
 package org.iplantc.core.uiapplications.client.views.panels;
 
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
+import org.iplantc.core.uiapplications.client.services.AppServiceFacade;
 import org.iplantc.core.uiapplications.client.views.form.AppSearchField;
 
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
@@ -15,7 +15,7 @@ public class CatalogMainToolBar extends ToolBar {
 
     private final AppSearchField searchField;
 
-    public CatalogMainToolBar(String tag, AppTemplateServiceFacade templateService) {
+    public CatalogMainToolBar(String tag, AppServiceFacade templateService) {
         searchField = new AppSearchField(tag, templateService);
 
         setHeight(25);

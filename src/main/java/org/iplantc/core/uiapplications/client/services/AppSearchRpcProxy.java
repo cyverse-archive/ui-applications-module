@@ -23,10 +23,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public class AppSearchRpcProxy extends RpcProxy<List<Analysis>> {
     protected String tag;
-    protected AppTemplateServiceFacade templateService;
+    protected AppServiceFacade templateService;
     private String lastQueryText = ""; //$NON-NLS-1$
 
-    public AppSearchRpcProxy(String tag, AppTemplateServiceFacade templateService) {
+    public AppSearchRpcProxy(String tag, AppServiceFacade templateService) {
         this.tag = tag;
         this.templateService = templateService;
     }
@@ -103,6 +103,6 @@ public class AppSearchRpcProxy extends RpcProxy<List<Analysis>> {
         };
 
         // Call the searchAnalysis service with this proxy's query.
-        templateService.searchAnalysis(lastQueryText, templateServiceCallback);
+        templateService.searchApp(lastQueryText, templateServiceCallback);
     }
 }

@@ -7,7 +7,7 @@ import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 import org.iplantc.core.uiapplications.client.Constants;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.events.UserEvent;
@@ -36,19 +36,19 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author jstroot
  * 
  */
-public class AnalysisHyperlinkCell extends AbstractCell<Analysis> {
+public class AppHyperlinkCell extends AbstractCell<App> {
 
 
     interface MyCss extends CssResource {
-        @ClassName("analysis_name")
-        String analysisName();
+        @ClassName("app_name")
+        String appName();
 
-        @ClassName("fav_analysis")
-        String favAnalysis();
+        @ClassName("fav_app")
+        String favApp();
     }
 
     interface Resources extends ClientBundle {
-        @Source("HyperlinkCell.css")
+        @Source("AppHyperlinkCell.css")
         MyCss css();
 
         @Source("images/award_star_gold_3.png")
@@ -82,27 +82,27 @@ public class AnalysisHyperlinkCell extends AbstractCell<Analysis> {
     final Resources resources = GWT.create(Resources.class);
     final Templates templates = GWT.create(Templates.class);
 
-    public AnalysisHyperlinkCell() {
+    public AppHyperlinkCell() {
         super(CLICK, MOUSEOVER, MOUSEOUT);
         resources.css().ensureInjected();
     }
 
     @Override
-    public void render(Cell.Context context, Analysis value, SafeHtmlBuilder sb) {
+    public void render(Cell.Context context, App value, SafeHtmlBuilder sb) {
         if (value == null) {
             return;
         }
         SafeHtml safeHtmlName = SafeHtmlUtils.fromString(value.getName());
         if (!value.isDisabled() && value.isFavorite()) {
             // Set Normal favorite
-            sb.append(templates.cell(resources.css().favAnalysis(), resources.favIcon().getSafeUri(),
-                    resources.css().analysisName(),
+            sb.append(templates.cell(resources.css().favApp(), resources.favIcon().getSafeUri(),
+                    resources.css().appName(),
                     safeHtmlName));
         } else if (!value.isDisabled() && !value.isFavorite()) {
             // Set disabled favorite
-            sb.append(templates.cell(resources.css().favAnalysis(), resources.disabledFavIcon()
+            sb.append(templates.cell(resources.css().favApp(), resources.disabledFavIcon()
                     .getSafeUri(), resources.css()
-                    .analysisName(), safeHtmlName));
+                    .appName(), safeHtmlName));
         } else {
             sb.append(templates.appUnavailable(I18N.DISPLAY.appUnavailable(), resources
                     .appUnavailableIcon().getSafeUri(), safeHtmlName));
@@ -111,8 +111,8 @@ public class AnalysisHyperlinkCell extends AbstractCell<Analysis> {
     }
 
     @Override
-    public void onBrowserEvent(Cell.Context context, Element parent, Analysis value, NativeEvent event,
-            ValueUpdater<Analysis> valueUpdater) {
+    public void onBrowserEvent(Cell.Context context, Element parent, App value, NativeEvent event,
+            ValueUpdater<App> valueUpdater) {
         if (value == null) {
             return;
         }
@@ -136,7 +136,7 @@ public class AnalysisHyperlinkCell extends AbstractCell<Analysis> {
         }
     }
 
-    private void doOnMouseOut(Element eventTarget, Analysis value) {
+    private void doOnMouseOut(Element eventTarget, App value) {
 
         if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
             eventTarget.getStyle().setTextDecoration(TextDecoration.NONE);
@@ -149,7 +149,7 @@ public class AnalysisHyperlinkCell extends AbstractCell<Analysis> {
         }
     }
 
-    private void doOnMouseOver(Element eventTarget, Analysis value) {
+    private void doOnMouseOver(Element eventTarget, App value) {
 
         if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
             eventTarget.getStyle().setTextDecoration(TextDecoration.UNDERLINE);
@@ -162,13 +162,13 @@ public class AnalysisHyperlinkCell extends AbstractCell<Analysis> {
         }
     }
 
-    private void doOnClick(final Element eventTarget, final Analysis value) {
+    private void doOnClick(final Element eventTarget, final App value) {
 
         if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
             UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), value.getId());
             EventBus.getInstance().fireEvent(e);
         } else if (eventTarget.getNodeName().equalsIgnoreCase("img")) {
-            Services.USER_TEMPLATE_SERVICE.favoriteAnalysis(UserInfo.getInstance().getWorkspaceId(),
+            Services.USER_APP_SERVICE.favoriteApp(UserInfo.getInstance().getWorkspaceId(),
                     value.getId(), !value.isFavorite(), new AsyncCallback<String>() {
 
                         @Override

@@ -1,7 +1,7 @@
 package org.iplantc.core.uiapplications.client;
 
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
-import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
+import org.iplantc.core.uiapplications.client.services.AppServiceFacade;
+import org.iplantc.core.uiapplications.client.services.AppUserServiceFacade;
 
 import com.google.gwt.core.client.GWT;
 
@@ -12,8 +12,8 @@ import com.google.gwt.core.client.GWT;
  * 
  */
 public class Services {
-    public static AppTemplateServiceFacade TEMPLATE_SERVICE = GWT.create(AppTemplateServiceFacade.class);
-    public static AppTemplateUserServiceFacade USER_TEMPLATE_SERVICE = GWT
-            .create(AppTemplateUserServiceFacade.class);
+    public static AppServiceFacade APP_SERVICE = GWT.create(AppServiceFacade.class);
+    public static AppUserServiceFacade USER_APP_SERVICE = GWT
+            .create(AppUserServiceFacade.class);
 
 }

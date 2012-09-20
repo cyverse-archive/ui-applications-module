@@ -1,4 +1,4 @@
-.analysis_name {
+.app_name {
 	cursor: pointer;
 	text-decoration: none;
 	color: black;
@@ -8,6 +8,6 @@
 	padding-bottom: 2px;
 }
 
-.fav_analysis {
+.fav_app {
 	cursor: pointer;
 }

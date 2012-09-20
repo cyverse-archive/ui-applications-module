@@ -3,9 +3,9 @@ package org.iplantc.core.uiapplications.client.views.panels;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.iplantc.core.uiapplications.client.events.AnalysisCategorySelectedEvent;
+import org.iplantc.core.uiapplications.client.events.AppGroupSelectedEvent;
 import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEvent;
-import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEventHandler;
+import org.iplantc.core.uiapplications.client.events.handlers.AppSearchResultLoadEventHandler;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroup;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroupTreeModel;
 import org.iplantc.core.uicommons.client.I18N;
@@ -121,7 +121,7 @@ public abstract class AbstractCatalogCategoryPanel extends ContentPanel {
 
     protected void fireCategorySelectedEvent(AnalysisGroup ag) {
         if (ag != null) {
-            AnalysisCategorySelectedEvent event = new AnalysisCategorySelectedEvent(ag, this);
+            AppGroupSelectedEvent event = new AppGroupSelectedEvent(ag, this);
             EventBus.getInstance().fireEvent(event);
         }
     }

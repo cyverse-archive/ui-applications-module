@@ -10,8 +10,8 @@ import java.util.List;
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisFeedback;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppFeedback;
 import org.iplantc.core.uiapplications.client.views.dialogs.AppCommentDialog;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
@@ -40,7 +40,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author jstroot
  *
  */
-public class AnalysisRatingCell extends AbstractCell<Analysis> {
+public class AppRatingCell extends AbstractCell<App> {
 
     interface MyCss extends CssResource {
         @ClassName("apps_icon")
@@ -51,7 +51,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
     }
 
     interface Resources extends ClientBundle {
-        @Source("AnalysisRatingCell.css")
+        @Source("AppRatingCell.css")
         MyCss css();
 
         @Source("images/star-gold.gif")
@@ -127,7 +127,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
     private final List<String> ratings;
 
 
-    public AnalysisRatingCell() {
+    public AppRatingCell() {
         super(CLICK, MOUSEOVER, MOUSEOUT);
         resources.css().ensureInjected();
 
@@ -141,7 +141,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
     }
 
     @Override
-    public void render(Cell.Context context, Analysis value, SafeHtmlBuilder sb) {
+    public void render(Cell.Context context, App value, SafeHtmlBuilder sb) {
         if (value == null) {
             return;
         }
@@ -185,8 +185,8 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
     }
 
     @Override
-    public void onBrowserEvent(Cell.Context context, Element parent, Analysis value, NativeEvent event,
-            ValueUpdater<Analysis> valueUpdater) {
+    public void onBrowserEvent(Cell.Context context, Element parent, App value, NativeEvent event,
+            ValueUpdater<App> valueUpdater) {
         if (value == null) {
             return;
         }
@@ -210,7 +210,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
         }
     }
 
-    private void resetRatingStarColors(Element parent, Analysis value) {
+    private void resetRatingStarColors(Element parent, App value) {
         int rating = (int)((value.getRating().getUserRating() != 0) ? value.getRating().getUserRating()
                 : Math.floor(value.getRating().getAverageRating()));
 
@@ -261,7 +261,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
         }
     }
 
-    private void onRatingClicked(final Element parent, Element eventTarget, final Analysis value) {
+    private void onRatingClicked(final Element parent, Element eventTarget, final App value) {
         if (eventTarget.getAttribute("name").startsWith("Rating")) {
             String[] g = eventTarget.getAttribute("name").split("-");
             final int score = Integer.parseInt(g[1]) + 1;
@@ -302,10 +302,10 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
 
     }
 
-    private void onUnrate(final Element parent, final Analysis value) {
+    private void onUnrate(final Element parent, final App value) {
         Long commentId = null;
         try {
-            AnalysisFeedback feedback = value.getRating();
+            AppFeedback feedback = value.getRating();
             if (feedback != null) {
                 commentId = feedback.getCommentId();
             }
@@ -313,7 +313,7 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
             // comment id empty or not a number, leave it null and proceed
         }
 
-        Services.USER_TEMPLATE_SERVICE.deleteRating(value.getId(), parsePageName(value.getWikiUrl()),
+        Services.USER_APP_SERVICE.deleteRating(value.getId(), parsePageName(value.getWikiUrl()),
                 commentId,
                 new AsyncCallback<String>() {
                     @Override
@@ -343,13 +343,13 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
     }
 
     /** saves a rating to the database and the wiki page */
-    private void persistRating(final Analysis value, final int score, String comment,
+    private void persistRating(final App value, final int score, String comment,
             final Element parent) {
 
         AsyncCallback<String> callback = new AsyncCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                AnalysisFeedback userFeedback = value.getRating();
+                AppFeedback userFeedback = value.getRating();
 
                 try {
                     userFeedback.setCommentId(Long.valueOf(result));
@@ -370,11 +370,11 @@ public class AnalysisRatingCell extends AbstractCell<Analysis> {
 
         Long commentId = value.getRating().getCommentId();
         if ((commentId == null) || (commentId == 0)) {
-            Services.USER_TEMPLATE_SERVICE.rateAnalysis(value.getId(), score,
+            Services.USER_APP_SERVICE.rateApp(value.getId(), score,
                     parsePageName(value.getWikiUrl()),
                     comment, value.getIntegratorEmail(), callback);
         } else {
-            Services.USER_TEMPLATE_SERVICE.updateRating(value.getId(), score,
+            Services.USER_APP_SERVICE.updateRating(value.getId(), score,
                     parsePageName(value.getWikiUrl()),
                     commentId, comment, value.getIntegratorEmail(), callback);
         }

@@ -2,8 +2,8 @@ package org.iplantc.core.uiapplications.client.views;
 
 import java.util.List;
 
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroup;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.sencha.gxt.data.shared.ListStore;
@@ -16,49 +16,54 @@ import com.sencha.gxt.data.shared.loader.TreeLoader;
 public interface AppsView extends IsWidget {
 
     public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter {
-        void onAnalysisSelected(final Analysis analysis);
+        void onAppSelected(final App app);
 
-        void onAnalysisGroupSelected(final AnalysisGroup ag);
+        void onAppGroupSelected(final AppGroup ag);
 
-        Analysis getSelectedAnalysis();
+        App getSelectedApp();
 
-        AnalysisGroup getSelectedAnalysisGroup();
+        AppGroup getSelectedAppGroup();
     }
 
     void setPresenter(final Presenter presenter);
 
-    ListStore<Analysis> getListStore();
+    ListStore<App> getListStore();
 
-    TreeStore<AnalysisGroup> getTreeStore();
+    TreeStore<AppGroup> getTreeStore();
 
-    void setListLoader(final ListLoader<ListLoadConfig, ListLoadResult<Analysis>> listLoader);
+    void setListLoader(final ListLoader<ListLoadConfig, ListLoadResult<App>> listLoader);
 
-    void setTreeLoader(final TreeLoader<AnalysisGroup> treeLoader);
+    void setTreeLoader(final TreeLoader<AppGroup> treeLoader);
 
-    void setMainPanelHeading(final String name);
+    void setCenterPanelHeading(final String name);
 
-    void maskMainPanel(final String loadingMask);
+    void maskCenterPanel(final String loadingMask);
 
-    void unMaskMainPanel();
+    void unMaskCenterPanel();
 
-    void selectAnalysis(String analysisId);
+    void maskWestPanel(String loadingMask);
 
-    void selectAnalysisGroup(String analysisGroupId);
+    void unMaskWestPanel();
 
-    Analysis getSelectedAnalysis();
+    void selectApp(String appId);
 
-    AnalysisGroup getSelectedAnalysisGroup();
+    void selectAppGroup(String appGroupId);
 
-    void setAnalyses(List<Analysis> analyses);
+    App getSelectedApp();
+
+    AppGroup getSelectedAppGroup();
+
+    void setApps(List<App> apps);
 
     void setNorthWidget(IsWidget widget);
 
     void setEastWidget(IsWidget widget);
 
-    void selectFirstAnalysis();
+    void selectFirstApp();
 
-    void selectFirstAnalysisGroup();
+    void selectFirstAppGroup();
 
-    void removeAnalysis(Analysis analysis);
+    void removeApp(App app);
 
+    void deSelectAllAppGroups();
 }

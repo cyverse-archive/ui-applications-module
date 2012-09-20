@@ -1,5 +1,7 @@
 package org.iplantc.core.uiapplications.client.events;
 
+import org.iplantc.core.uiapplications.client.events.handlers.AppSearchResultSelectedEventHandler;
+
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
@@ -14,7 +16,7 @@ public class AppSearchResultSelectedEvent extends GwtEvent<AppSearchResultSelect
     /**
      * Defines the GWT Event Type.
      * 
-     * @see org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEventHandler
+     * @see org.iplantc.core.uiapplications.client.events.handlers.AppSearchResultSelectedEventHandler
      */
     public static final GwtEvent.Type<AppSearchResultSelectedEventHandler> TYPE = new GwtEvent.Type<AppSearchResultSelectedEventHandler>();
 

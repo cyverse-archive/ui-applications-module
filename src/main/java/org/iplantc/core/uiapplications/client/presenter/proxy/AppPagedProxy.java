@@ -5,11 +5,11 @@ import java.util.List;
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisAutoBeanFactory;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroup;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisList;
-import org.iplantc.core.uiapplications.client.services.AppTemplateUserServiceFacade;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppAutoBeanFactory;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppList;
+import org.iplantc.core.uiapplications.client.services.AppUserServiceFacade;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 
 import com.google.gwt.core.client.GWT;
@@ -23,17 +23,17 @@ import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
 
-class AnalysisPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<Analysis>> {
-    private final AppTemplateUserServiceFacade service;
-    private AnalysisGroup currentAg;
+class AppPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<App>> {
+    private final AppUserServiceFacade service;
+    private AppGroup currentAg;
 
-    public AnalysisPagedProxy() {
-        this.service = Services.USER_TEMPLATE_SERVICE;
+    public AppPagedProxy() {
+        this.service = Services.USER_APP_SERVICE;
     }
 
     @Override
     public void load(PagingLoadConfig loadConfig,
-            final AsyncCallback<PagingLoadResult<Analysis>> callback) {
+            final AsyncCallback<PagingLoadResult<App>> callback) {
 
         int limit = loadConfig.getLimit();
         final int offset = loadConfig.getOffset();
@@ -49,25 +49,25 @@ class AnalysisPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<Ana
                 : com.extjs.gxt.ui.client.Style.SortDir.DESC;
 
         String sortField = (sortInfo == null) ? "name" : sortInfo.getSortField();
-        service.getPagedAnalysis(currentAg.getId(), limit, sortField, offset, sortDir,
+        service.getPagedApps(currentAg.getId(), limit, sortField, offset, sortDir,
                 new AsyncCallback<String>() {
 
                     @Override
                     public void onSuccess(String result) {
-                        AnalysisAutoBeanFactory factory = GWT.create(AnalysisAutoBeanFactory.class);
-                        AutoBean<AnalysisList> bean = AutoBeanCodex.decode(factory, AnalysisList.class,
+                        AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
+                        AutoBean<AppList> bean = AutoBeanCodex.decode(factory, AppList.class,
                                 result);
 
                         // Get Total count of paged call
-                        int total = bean.as().getAnalyses().size();
+                        int total = bean.as().getApps().size();
                         Number jsonTotal = JsonUtil.getNumber(JsonUtil.getObject(result),
                                 "template_count");
                         if (jsonTotal != null) {
                             total = jsonTotal.intValue();
                         }
 
-                        PagingLoadResult<Analysis> callbackResult = new PagingLoadResultBean<Analysis>(
-                                bean.as().getAnalyses(), total, offset);
+                        PagingLoadResult<App> callbackResult = new PagingLoadResultBean<App>(
+                                bean.as().getApps(), total, offset);
                         callback.onSuccess(callbackResult);
                     }
 
@@ -79,7 +79,7 @@ class AnalysisPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<Ana
                 });
     }
 
-    public void setCurrentAnalysisGroup(AnalysisGroup ag) {
+    public void setCurrentAnalysisGroup(AppGroup ag) {
         this.currentAg = ag;
     }
 

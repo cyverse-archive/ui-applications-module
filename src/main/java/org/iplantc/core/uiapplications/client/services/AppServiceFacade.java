@@ -5,37 +5,38 @@ import com.extjs.gxt.ui.client.Style.SortDir;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
- * An interface that provides access to remote services related to analyses.
+ * An interface that provides access to remote services related to apps.
  */
-public interface AppTemplateServiceFacade {
+public interface AppServiceFacade {
 
     /**
      * Retrieves list of templates in the given group.
      * 
-     * @param analysisGroupId unique identifier for the group to search in for analyses.
+     * @param appGroupId unique identifier for the group to search in for apps.
      * @param callback called when the RPC call is complete.
      */
-    void getAnalysis(String analysisGroupId, AsyncCallback<String> callback);
+    void getApp(String appGroupId, AsyncCallback<String> callback);
 
     /**
      * Retrieves a paged listing of templates in the given group.
-     * @param analysisGroupId unique identifier for the group to search in for analyses.
+     * 
+     * @param appGroupId unique identifier for the group to search in for apps.
      * @param limit
      * @param sortField
      * @param offset
      * @param sortDir
      * @param callback called when the RPC call is complete.
      */
-    void getPagedAnalysis(String analysisGroupId, int limit, String sortField, int offset,
+    void getPagedApps(String appGroupId, int limit, String sortField, int offset,
             SortDir sortDir, AsyncCallback<String> callback);
 
     /**
-     * Retrieves a hierarchy of all App Categories.
+     * Retrieves a hierarchy of all App Groups.
      * 
      * @param workspaceId
      * @param callback
      */
-    void getAnalysisCategories(String workspaceId, AsyncCallback<String> callback);
+    void getAppGroups(String workspaceId, AsyncCallback<String> callback);
 
     /**
      * Searches for all active Apps with a name or description that contains the given search term.
@@ -43,5 +44,5 @@ public interface AppTemplateServiceFacade {
      * @param search
      * @param callback called when the RPC call is complete.
      */
-    void searchAnalysis(String search, AsyncCallback<String> callback);
+    void searchApp(String search, AsyncCallback<String> callback);
 }

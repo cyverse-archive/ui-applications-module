@@ -2,8 +2,8 @@ package org.iplantc.core.uiapplications.client.views;
 
 import java.util.List;
 
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisGroup;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
 import org.iplantc.core.uicommons.client.images.Resources;
 
 import com.google.gwt.core.client.GWT;
@@ -52,26 +52,27 @@ public class AppsViewImpl implements AppsView {
     private Presenter presenter;
 
     @UiField
-    Tree<AnalysisGroup, String> tree;
+    Tree<AppGroup, String> tree;
 
     @UiField(provided = true)
-    final TreeStore<AnalysisGroup> treeStore;
+    final TreeStore<AppGroup> treeStore;
 
     @UiField
-    Grid<Analysis> grid;
+    Grid<App> grid;
 
     @UiField
-    GridView<Analysis> gridView;
+    GridView<App> gridView;
 
     @UiField(provided = true)
-    final ListStore<Analysis> listStore;
+    final ListStore<App> listStore;
 
     @UiField(provided = true)
-    final ColumnModel<Analysis> cm;
+    final ColumnModel<App> cm;
 
     @UiField
     BorderLayoutContainer con;
 
+    // TODO JDS rename nav, main, and detail panels to east, center, west
     @UiField
     ContentPanel navPanel;
     @UiField
@@ -86,8 +87,8 @@ public class AppsViewImpl implements AppsView {
 
     private final Widget widget;
 
-    public AppsViewImpl(TreeStore<AnalysisGroup> treeStore, ListStore<Analysis> listStore,
-            ColumnModel<Analysis> cm) {
+    public AppsViewImpl(TreeStore<AppGroup> treeStore, ListStore<App> listStore,
+            ColumnModel<App> cm) {
         // XXX JDS Using Dependency injection, you can get global references to stores
         this.treeStore = treeStore;
         this.listStore = listStore;
@@ -102,21 +103,21 @@ public class AppsViewImpl implements AppsView {
             }
         });
 
-        grid.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<Analysis>() {
+        grid.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<App>() {
             @Override
-            public void onSelectionChanged(SelectionChangedEvent<Analysis> event) {
+            public void onSelectionChanged(SelectionChangedEvent<App> event) {
                 if ((event.getSelection() != null) && !event.getSelection().isEmpty()) {
-                    presenter.onAnalysisSelected(event.getSelection().get(0));
+                    presenter.onAppSelected(event.getSelection().get(0));
                 }
             }
         });
 
         tree.getSelectionModel().addSelectionChangedHandler(
-                new SelectionChangedHandler<AnalysisGroup>() {
+                new SelectionChangedHandler<AppGroup>() {
                     @Override
-                    public void onSelectionChanged(SelectionChangedEvent<AnalysisGroup> event) {
+                    public void onSelectionChanged(SelectionChangedEvent<AppGroup> event) {
                         if ((event.getSelection() != null) && !event.getSelection().isEmpty()) {
-                            presenter.onAnalysisGroupSelected(event.getSelection().get(0));
+                            presenter.onAppGroupSelected(event.getSelection().get(0));
                     }
                     }
                 });
@@ -134,16 +135,16 @@ public class AppsViewImpl implements AppsView {
     }
 
     @UiFactory
-    public ValueProvider<AnalysisGroup, String> createValueProvider() {
-        return new ValueProvider<AnalysisGroup, String>() {
+    public ValueProvider<AppGroup, String> createValueProvider() {
+        return new ValueProvider<AppGroup, String>() {
 
             @Override
-            public String getValue(AnalysisGroup object) {
+            public String getValue(AppGroup object) {
                 return object.getName();
             }
 
             @Override
-            public void setValue(AnalysisGroup object, String value) {
+            public void setValue(AppGroup object, String value) {
             }
 
             @Override
@@ -164,72 +165,82 @@ public class AppsViewImpl implements AppsView {
     }
 
     @Override
-    public ListStore<Analysis> getListStore() {
+    public ListStore<App> getListStore() {
         return listStore;
     }
 
     @Override
-    public TreeStore<AnalysisGroup> getTreeStore() {
+    public TreeStore<AppGroup> getTreeStore() {
         return treeStore;
     }
 
     @Override
-    public void setTreeLoader(final TreeLoader<AnalysisGroup> treeLoader) {
+    public void setTreeLoader(final TreeLoader<AppGroup> treeLoader) {
         this.tree.setLoader(treeLoader);
     }
 
     @Override
-    public void setMainPanelHeading(final String name) {
+    public void setCenterPanelHeading(final String name) {
         mainPanel.setHeadingText(name);
     }
 
     @Override
-    public void maskMainPanel(final String loadingMask) {
+    public void maskCenterPanel(final String loadingMask) {
         mainPanel.mask(loadingMask);
     }
 
     @Override
-    public void unMaskMainPanel() {
+    public void unMaskCenterPanel() {
         mainPanel.unmask();
     }
 
     @Override
-    public void setListLoader(ListLoader<ListLoadConfig, ListLoadResult<Analysis>> listLoader) {
+    public void maskWestPanel(String loadingMask) {
+        navPanel.mask(loadingMask);
+    }
+
+    @Override
+    public void unMaskWestPanel() {
+        navPanel.unmask();
+    }
+
+    @Override
+    public void setListLoader(ListLoader<ListLoadConfig, ListLoadResult<App>> listLoader) {
         grid.setLoader(listLoader);
     }
 
     @Override
-    public void selectAnalysis(String analysisId) {
-        Analysis app = listStore.findModelWithKey(analysisId);
+    public void selectApp(String appId) {
+        App app = listStore.findModelWithKey(appId);
         if (app != null) {
             grid.getSelectionModel().select(app, true);
         }
     }
 
     @Override
-    public void selectAnalysisGroup(String analysisGroupId) {
-        AnalysisGroup ag = treeStore.findModelWithKey(analysisGroupId);
+    public void selectAppGroup(String appGroupId) {
+        AppGroup ag = treeStore.findModelWithKey(appGroupId);
         if (ag != null) {
             tree.getSelectionModel().select(ag, true);
             // Set heading
-            setMainPanelHeading(ag.getName());
+            setCenterPanelHeading(ag.getName());
         }
     }
 
     @Override
-    public Analysis getSelectedAnalysis() {
+    public App getSelectedApp() {
         return grid.getSelectionModel().getSelectedItem();
     }
 
     @Override
-    public AnalysisGroup getSelectedAnalysisGroup() {
+    public AppGroup getSelectedAppGroup() {
         return tree.getSelectionModel().getSelectedItem();
     }
 
     @Override
-    public void setAnalyses(final List<Analysis> analyses) {
+    public void setApps(final List<App> apps) {
         listStore.clear();
-        listStore.addAll(analyses);
+        listStore.addAll(apps);
     }
 
 	@Override
@@ -245,21 +256,26 @@ public class AppsViewImpl implements AppsView {
     }
 
     @Override
-    public void selectFirstAnalysis() {
+    public void selectFirstApp() {
         grid.getSelectionModel().select(0, false);
     }
 
     @Override
-    public void selectFirstAnalysisGroup() {
-        AnalysisGroup ag = treeStore.getRootItems().get(0);
+    public void selectFirstAppGroup() {
+        AppGroup ag = treeStore.getRootItems().get(0);
         tree.getSelectionModel().select(ag, false);
     }
 
     @Override
-    public void removeAnalysis(Analysis analysis) {
+    public void removeApp(App app) {
         grid.getSelectionModel().deselectAll();
-        presenter.onAnalysisSelected(null);
-        listStore.remove(analysis);
+        presenter.onAppSelected(null);
+        listStore.remove(app);
+    }
+
+    @Override
+    public void deSelectAllAppGroups() {
+        tree.getSelectionModel().deselectAll();
     }
 
 }

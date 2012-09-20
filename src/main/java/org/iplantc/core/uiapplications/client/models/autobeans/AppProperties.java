@@ -6,14 +6,14 @@ import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
-public interface AnalysisProperties extends PropertyAccess<Analysis>{
+public interface AppProperties extends PropertyAccess<App>{
 
-    ModelKeyProvider<Analysis> id();
+    ModelKeyProvider<App> id();
 
-    LabelProvider<Analysis> name();
+    LabelProvider<App> name();
 
-    ValueProvider<Analysis, String> integratorName();
+    ValueProvider<App, String> integratorName();
 
-    ValueProvider<Analysis, AnalysisFeedback> rating();
+    ValueProvider<App, AppFeedback> rating();
 
 }

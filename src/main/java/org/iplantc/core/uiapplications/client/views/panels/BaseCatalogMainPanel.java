@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEvent;
-import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEventHandler;
+import org.iplantc.core.uiapplications.client.events.handlers.AppSearchResultLoadEventHandler;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.models.AnalysisFeedback;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroup;
-import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
+import org.iplantc.core.uiapplications.client.services.AppServiceFacade;
 import org.iplantc.core.uicommons.client.Constants;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
@@ -50,7 +50,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
     protected Grid<Analysis> analysisGrid;
     protected AnalysisGroup current_category;
     protected String tag;
-    protected AppTemplateServiceFacade templateService;
+    protected AppServiceFacade templateService;
 
     private RowExpander expander;
     private String appIdToSelect;
@@ -99,7 +99,7 @@ public class BaseCatalogMainPanel extends ContentPanel {
         }
     }
 
-    public BaseCatalogMainPanel(String tag, AppTemplateServiceFacade templateService) {
+    public BaseCatalogMainPanel(String tag, AppServiceFacade templateService) {
         this.tag = tag;
         this.templateService = templateService;
 

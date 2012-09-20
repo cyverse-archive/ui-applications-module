@@ -3,10 +3,10 @@ package org.iplantc.core.uiapplications.client.views.widgets;
 
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.events.AppSearchResultSelectedEvent;
-import org.iplantc.core.uiapplications.client.models.autobeans.Analysis;
-import org.iplantc.core.uiapplications.client.models.autobeans.AnalysisProperties;
-import org.iplantc.core.uiapplications.client.views.widgets.proxy.AnalysisListLoadResult;
-import org.iplantc.core.uiapplications.client.views.widgets.proxy.AnalysisLoadConfig;
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppProperties;
+import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppListLoadResult;
+import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppLoadConfig;
 import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppSearchAutoBeanFactory;
 import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppSearchRpcProxy3;
 import org.iplantc.core.uicommons.client.events.EventBus;
@@ -36,7 +36,7 @@ import com.sencha.gxt.widget.core.client.form.ComboBox;
 
 public class AppSearchField3 implements IsWidget {
 
-    private ComboBox<Analysis> combo;
+    private ComboBox<App> combo;
 
     public AppSearchField3() {
         // Create liststore
@@ -51,13 +51,13 @@ public class AppSearchField3 implements IsWidget {
 
             AppSearchRpcProxy3 proxy = new AppSearchRpcProxy3();
 
-            PagingLoader<AnalysisLoadConfig, AnalysisListLoadResult> loader = new PagingLoader<AnalysisLoadConfig, AnalysisListLoadResult>(
+            PagingLoader<AppLoadConfig, AppListLoadResult> loader = new PagingLoader<AppLoadConfig, AppListLoadResult>(
                     proxy);
             loader.useLoadConfig(AppSearchAutoBeanFactory.instance.loadConfig().as());
             // Ensure that the query string is placed into the
-            loader.addBeforeLoadHandler(new BeforeLoadHandler<AnalysisLoadConfig>() {
+            loader.addBeforeLoadHandler(new BeforeLoadHandler<AppLoadConfig>() {
                 @Override
-                public void onBeforeLoad(BeforeLoadEvent<AnalysisLoadConfig> event) {
+                public void onBeforeLoad(BeforeLoadEvent<AppLoadConfig> event) {
                     String query = combo.getText();
                     if (query != null && !query.equals("")) {
                         event.getLoadConfig().setQuery(query);
@@ -65,32 +65,32 @@ public class AppSearchField3 implements IsWidget {
                 }
             });
 
-            AnalysisProperties props = GWT.create(AnalysisProperties.class);
+            AppProperties props = GWT.create(AppProperties.class);
 
-            ListStore<Analysis> store = new ListStore<Analysis>(props.id());
-            loader.addLoadHandler(new LoadResultListStoreBinding<AnalysisLoadConfig, Analysis, AnalysisListLoadResult>(
+            ListStore<App> store = new ListStore<App>(props.id());
+            loader.addLoadHandler(new LoadResultListStoreBinding<AppLoadConfig, App, AppListLoadResult>(
                     store));
 
-            ListView<Analysis, Analysis> view = new ListView<Analysis, Analysis>(store,
-                    new IdentityValueProvider<Analysis>());
-            view.setCell(new AnalysisListViewCell());
+            ListView<App, App> view = new ListView<App, App>(store,
+                    new IdentityValueProvider<App>());
+            view.setCell(new AppListViewCell());
             
 
-            ComboBoxCell<Analysis> cell = new ComboBoxCell<Analysis>(store, props.name(), view);
+            ComboBoxCell<App> cell = new ComboBoxCell<App>(store, props.name(), view);
 
             cell.setLoader(loader);
-            combo = new ComboBox<Analysis>(cell);
+            combo = new ComboBox<App>(cell);
             combo.setWidth(255);
             combo.setMinChars(3);
             combo.setLoader(loader);
-            combo.addBeforeSelectionHandler(new BeforeSelectionHandler<Analysis>() {
+            combo.addBeforeSelectionHandler(new BeforeSelectionHandler<App>() {
                 @Override
-                public void onBeforeSelection(BeforeSelectionEvent<Analysis> event) {
+                public void onBeforeSelection(BeforeSelectionEvent<App> event) {
                     event.cancel();
-                    Analysis selectedAnalysis = event.getItem();
+                    App selectedApp = event.getItem();
                     EventBus.getInstance().fireEvent(
-                            new AppSearchResultSelectedEvent("", selectedAnalysis.getGroupId(),
-                                    selectedAnalysis.getId()));
+                            new AppSearchResultSelectedEvent("", selectedApp.getGroupId(),
+                                    selectedApp.getId()));
                 }
             });
             combo.addTriggerClickHandler(new TriggerClickHandler() {
@@ -111,7 +111,7 @@ public class AppSearchField3 implements IsWidget {
 
     interface ExampleTemplate extends XTemplates {
         @XTemplate("<div class=\"search-item\"><h3>{post.name}</h3></div>")
-        SafeHtml render(Analysis post);
+        SafeHtml render(App post);
     }
 
     /**
@@ -120,11 +120,11 @@ public class AppSearchField3 implements IsWidget {
      * @author jstroot
      * 
      */
-    private final class AnalysisListViewCell extends AbstractCell<Analysis> {
+    private final class AppListViewCell extends AbstractCell<App> {
         // final ExampleTemplate template = GWT.create(ExampleTemplate.class);
 
         @Override
-        public void render(com.google.gwt.cell.client.Cell.Context context, Analysis value,
+        public void render(com.google.gwt.cell.client.Cell.Context context, App value,
                 SafeHtmlBuilder sb) {
             String searchItem = "search-item";//$NON-NLS-1$
             // sb.append(template.render(value));

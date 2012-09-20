@@ -2,7 +2,7 @@ package org.iplantc.core.uiapplications.client.models.autobeans;
 
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
-public interface AnalysisFeedback {
+public interface AppFeedback {
 
     @PropertyName("average")
     double getAverageRating();

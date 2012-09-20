@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
-public interface Analysis {
+public interface App {
     
     @PropertyName("is_favorite")
     boolean isFavorite();
@@ -17,7 +17,7 @@ public interface Analysis {
     @PropertyName("integrator_name")
     String getIntegratorName();
     
-    AnalysisFeedback getRating();
+    AppFeedback getRating();
     
     @PropertyName("integration_date")
     Date getIntegrationDate();
