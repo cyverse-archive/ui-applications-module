@@ -76,7 +76,7 @@ public class AppSearchField3 implements IsWidget {
             view.setCell(new AppListViewCell());
             
 
-            ComboBoxCell<App> cell = new ComboBoxCell<App>(store, props.name(), view);
+            ComboBoxCell<App> cell = new ComboBoxCell<App>(store, props.nameLabel(), view);
 
             cell.setLoader(loader);
             combo = new ComboBox<App>(cell);

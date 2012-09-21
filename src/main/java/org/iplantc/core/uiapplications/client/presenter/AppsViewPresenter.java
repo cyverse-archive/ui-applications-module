@@ -3,6 +3,7 @@ package org.iplantc.core.uiapplications.client.presenter;
 import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
+import org.iplantc.core.uiapplications.client.Constants;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.events.AppDeleteEvent;
@@ -26,6 +27,7 @@ import org.iplantc.core.uiapplications.client.views.widgets.AppsViewToolbarImpl;
 import org.iplantc.core.uiapplications.client.views.windows.NewToolRequestWindow;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uicommons.client.events.UserEvent;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.presenter.Presenter;
 
@@ -346,6 +348,12 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     @Override
     public void createWorkflowClicked() {
         EventBus.getInstance().fireEvent(new CreateNewWorkflowEvent());
+    }
+
+    @Override
+    public void onAppNameSelected(App app) {
+        UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), app.getId());
+        EventBus.getInstance().fireEvent(e);
     }
 
 }

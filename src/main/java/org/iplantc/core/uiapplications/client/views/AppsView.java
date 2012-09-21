@@ -23,6 +23,8 @@ public interface AppsView extends IsWidget {
         App getSelectedApp();
 
         AppGroup getSelectedAppGroup();
+
+        void onAppNameSelected(App app);
     }
 
     void setPresenter(final Presenter presenter);
