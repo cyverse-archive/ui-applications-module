@@ -46,7 +46,11 @@ import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 
 /**
- * The presenter for the AppsView. TODO JDS Document responsibility and intent of presenter.
+ * The presenter for the AppsView.
+ * 
+ * 
+ * TODO JDS Document responsibility and intent of presenter.
+ * 
  * 
  * @author jstroot
  * 
