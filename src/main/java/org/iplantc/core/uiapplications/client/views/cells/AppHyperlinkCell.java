@@ -4,13 +4,12 @@ import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
-import org.iplantc.core.uiapplications.client.Constants;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
+import org.iplantc.core.uiapplications.client.events.AppSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
-import org.iplantc.core.uicommons.client.events.UserEvent;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -72,11 +71,10 @@ public class AppHyperlinkCell extends AbstractCell<App> {
      */
     interface Templates extends SafeHtmlTemplates {
 
-        @SafeHtmlTemplates.Template("<img class=\"{0}\" src=\"{1}\">&nbsp;<span class=\"{2}\">{3}</span>")
-        SafeHtml cell(String imgClassName, SafeUri img, String textClassName, SafeHtml name);
-
-        @SafeHtmlTemplates.Template("<img title=\"{0}\" src=\"{1}\"/>&nbsp;{2}")
-        SafeHtml appUnavailable(String imgTitle, SafeUri img, SafeHtml name);
+        @SafeHtmlTemplates.Template("<img name=\"{0}\" class=\"{1}\" title=\"{2}\" src=\"{3}\">&nbsp;<span class=\"{4}\">{5}</span>")
+        SafeHtml cell(String imgName, String imgClassName, String imgTitle, SafeUri img,
+                String textClassName,
+                SafeHtml name);
     }
 
     final Resources resources = GWT.create(Resources.class);
@@ -95,17 +93,19 @@ public class AppHyperlinkCell extends AbstractCell<App> {
         SafeHtml safeHtmlName = SafeHtmlUtils.fromString(value.getName());
         if (!value.isDisabled() && value.isFavorite()) {
             // Set Normal favorite
-            sb.append(templates.cell(resources.css().favApp(), resources.favIcon().getSafeUri(),
+            sb.append(templates.cell("fav", resources.css().favApp(), "", resources.favIcon()
+                    .getSafeUri(),
                     resources.css().appName(),
                     safeHtmlName));
         } else if (!value.isDisabled() && !value.isFavorite()) {
             // Set disabled favorite
-            sb.append(templates.cell(resources.css().favApp(), resources.disabledFavIcon()
+            sb.append(templates.cell("fav", resources.css().favApp(), "", resources.disabledFavIcon()
                     .getSafeUri(), resources.css()
                     .appName(), safeHtmlName));
         } else {
-            sb.append(templates.appUnavailable(I18N.DISPLAY.appUnavailable(), resources
-                    .appUnavailableIcon().getSafeUri(), safeHtmlName));
+            sb.append(templates.cell("disabled", resources.css().favApp(),
+                    I18N.DISPLAY.appUnavailable(), resources
+                    .appUnavailableIcon().getSafeUri(), resources.css().appName(), safeHtmlName));
         }
 
     }
@@ -140,7 +140,7 @@ public class AppHyperlinkCell extends AbstractCell<App> {
 
         if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
             eventTarget.getStyle().setTextDecoration(TextDecoration.NONE);
-        } else if (eventTarget.getNodeName().equalsIgnoreCase("img")) {
+        } else if (eventTarget.getAttribute("name").equalsIgnoreCase("fav")) {
             if (value.isFavorite()) {
                 eventTarget.setAttribute("src", resources.favIcon().getSafeUri().asString());
             } else {
@@ -153,7 +153,7 @@ public class AppHyperlinkCell extends AbstractCell<App> {
 
         if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
             eventTarget.getStyle().setTextDecoration(TextDecoration.UNDERLINE);
-        } else if (eventTarget.getNodeName().equalsIgnoreCase("img")) {
+        } else if (eventTarget.getAttribute("name").equalsIgnoreCase("fav")) {
             if (value.isFavorite()) {
                 eventTarget.setAttribute("src", resources.favIconDelete().getSafeUri().asString());
             } else {
@@ -165,9 +165,10 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     private void doOnClick(final Element eventTarget, final App value) {
 
         if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
-            UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), value.getId());
-            EventBus.getInstance().fireEvent(e);
-        } else if (eventTarget.getNodeName().equalsIgnoreCase("img")) {
+            // UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), value.getId());
+            // EventBus.getInstance().fireEvent(e);
+            EventBus.getInstance().fireEvent(new AppSelectedEvent(value.getId(), this));
+        } else if (eventTarget.getAttribute("name").equalsIgnoreCase("fav")) {
             Services.USER_APP_SERVICE.favoriteApp(UserInfo.getInstance().getWorkspaceId(),
                     value.getId(), !value.isFavorite(), new AsyncCallback<String>() {
 

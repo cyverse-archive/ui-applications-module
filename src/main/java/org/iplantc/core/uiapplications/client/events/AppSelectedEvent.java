@@ -20,18 +20,16 @@ public class AppSelectedEvent extends GwtEvent<AppSelectedEventHandler> {
      */
     public static final GwtEvent.Type<AppSelectedEventHandler> TYPE = new GwtEvent.Type<AppSelectedEventHandler>();
 
-    private String tag;
-    private String categoryId;
-    private String appId;
+    private final String appId;
+    private final Object source;
 
-    public AppSelectedEvent(String tag, String categoryId, String appId) {
-        this.tag = tag;
-        this.categoryId = categoryId;
+    public AppSelectedEvent(String appId, Object source) {
         this.appId = appId;
+        this.source = source;
     }
 
     @Override
-    public com.google.gwt.event.shared.GwtEvent.Type<AppSelectedEventHandler> getAssociatedType() {
+    public GwtEvent.Type<AppSelectedEventHandler> getAssociatedType() {
         return TYPE;
     }
 
@@ -41,24 +39,15 @@ public class AppSelectedEvent extends GwtEvent<AppSelectedEventHandler> {
     }
 
     /**
-     * @return the tag
-     */
-    public String getTag() {
-        return tag;
-    }
-
-    /**
-     * @return the categoryId
-     */
-    public String getCategoryId() {
-        return categoryId;
-    }
-
-    /**
      * @return the appId
      */
     public String getAppId() {
         return appId;
+    }
+
+    @Override
+    public Object getSource() {
+        return source;
     }
 
 }
