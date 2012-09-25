@@ -1,6 +1,7 @@
 package org.iplantc.core.uiapplications.client.events;
 
 import org.iplantc.core.uiapplications.client.events.handlers.AppSearchResultSelectedEventHandler;
+import org.iplantc.core.uiapplications.client.views.form.AppSearchField;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -9,8 +10,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * category and app should be selected.
  * 
  * @author psarando
+ * @deprecated this event will become obsolete when {@link AppSearchField} is deleted.
  * 
  */
+@Deprecated
 public class AppSearchResultSelectedEvent extends GwtEvent<AppSearchResultSelectedEventHandler> {
 
     /**
@@ -67,7 +70,7 @@ public class AppSearchResultSelectedEvent extends GwtEvent<AppSearchResultSelect
     /**
      * @return the Category ID to select
      */
-    public String getCategoryId() {
+    public String getAppGroupId() {
         return categoryId;
     }
 

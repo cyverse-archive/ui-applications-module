@@ -13,6 +13,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author psarando
  * 
  */
+@Deprecated
 public class AppSearchResultLoadEvent extends GwtEvent<AppSearchResultLoadEventHandler> {
 
     /**
