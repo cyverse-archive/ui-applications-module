@@ -15,7 +15,7 @@ public interface AppServiceFacade {
      * @param appGroupId unique identifier for the group to search in for apps.
      * @param callback called when the RPC call is complete.
      */
-    void getApp(String appGroupId, AsyncCallback<String> callback);
+    void getApps(String appGroupId, AsyncCallback<String> callback);
 
     /**
      * Retrieves a paged listing of templates in the given group.
