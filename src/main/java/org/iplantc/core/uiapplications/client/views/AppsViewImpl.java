@@ -36,9 +36,9 @@ import com.sencha.gxt.widget.core.client.grid.GridView;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
 import com.sencha.gxt.widget.core.client.tree.Tree;
+import com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance;
 
 /**
- * TODO JDS Need to implement means of adding to north, east and south panels.
  * 
  * @author jstroot
  * 
@@ -160,7 +160,7 @@ public class AppsViewImpl implements AppsView {
     }
 
     /**
-     * FIXME JDS Move this implementation into the ui.xml
+     * FIXME JDS This needs to be implemented in an {@link TreeAppearance}
      */
     private void setTreeIcons() {
         com.sencha.gxt.widget.core.client.tree.TreeStyle style = tree.getStyle();
@@ -175,7 +175,7 @@ public class AppsViewImpl implements AppsView {
 
             @Override
             public String getValue(AppGroup object) {
-                return object.getName();
+                return object.getName() + " (" + object.getAppCount() + ")";
             }
 
             @Override
@@ -248,7 +248,7 @@ public class AppsViewImpl implements AppsView {
     public void selectApp(String appId) {
         App app = listStore.findModelWithKey(appId);
         if (app != null) {
-            grid.getSelectionModel().select(app, true);
+            grid.getSelectionModel().select(app, false);
         }
     }
 
@@ -256,7 +256,8 @@ public class AppsViewImpl implements AppsView {
     public void selectAppGroup(String appGroupId) {
         AppGroup ag = treeStore.findModelWithKey(appGroupId);
         if (ag != null) {
-            tree.getSelectionModel().select(ag, true);
+            tree.getSelectionModel().select(ag, false);
+            tree.scrollIntoView(ag);
             // Set heading
             setCenterPanelHeading(ag.getName());
         }
@@ -277,6 +278,7 @@ public class AppsViewImpl implements AppsView {
         listStore.clear();
         listStore.addAll(apps);
     }
+
 
 	@Override
     public void setNorthWidget(IsWidget widget) {
@@ -299,6 +301,7 @@ public class AppsViewImpl implements AppsView {
     public void selectFirstAppGroup() {
         AppGroup ag = treeStore.getRootItems().get(0);
         tree.getSelectionModel().select(ag, false);
+        tree.scrollIntoView(ag);
     }
 
     @Override
@@ -311,6 +314,33 @@ public class AppsViewImpl implements AppsView {
     @Override
     public void deSelectAllAppGroups() {
         tree.getSelectionModel().deselectAll();
+    }
+
+    @Override
+    public void updateAppGroup(AppGroup appGroup) {
+        treeStore.update(appGroup);
+    }
+
+    @Override
+    public AppGroup findAppGroup(String id) {
+        return treeStore.findModelWithKey(id);
+    }
+
+    @Override
+    public void updateAppGroupAppCount(AppGroup appGroup, int newCount) {
+        int difference = appGroup.getAppCount() - newCount;
+
+        while (appGroup != null) {
+            appGroup.setAppCount(appGroup.getAppCount() - difference);
+            updateAppGroup(appGroup);
+            appGroup = treeStore.getParent(appGroup);
+        }
+
+    }
+
+    @Override
+    public App findApp(String appId) {
+        return listStore.findModelWithKey(appId);
     }
 
 }

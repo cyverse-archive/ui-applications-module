@@ -40,12 +40,17 @@ public class AppColumnModel extends ColumnModel<App> {
                 new IdentityValueProvider<App>(), 180, I18N.DISPLAY.name());
         ColumnConfig<App, String> integrator = new ColumnConfig<App, String>(
                 props.integratorName(), 130, I18N.DISPLAY.integratedby());
-        ColumnConfig<App, App> rating = new ColumnConfig<App, App>(
-                new IdentityValueProvider<App>(), 80, "Rating"); //$NON-NLS-1$
+        ColumnConfig<App, App> rating = new ColumnConfig<App, App>(new IdentityValueProvider<App>(),
+                105, "Rating"); //$NON-NLS-1$
+
+        run.setSortable(false);
 
         run.setResizable(false);
         name.setResizable(true);
         rating.setResizable(false);
+
+        run.setFixed(true);
+        rating.setFixed(true);
 
         run.setCell(new AppRunCell());
         name.setCell(new AppHyperlinkCell());

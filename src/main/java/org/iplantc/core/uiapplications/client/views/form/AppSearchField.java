@@ -11,6 +11,7 @@ import org.iplantc.core.uiapplications.client.events.handlers.AppGroupSelectedEv
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.services.AppSearchRpcProxy;
 import org.iplantc.core.uiapplications.client.services.AppServiceFacade;
+import org.iplantc.core.uiapplications.client.views.widgets.AppSearchField3;
 import org.iplantc.core.uicommons.client.events.EventBus;
 
 import com.extjs.gxt.ui.client.data.BaseListLoader;
@@ -34,7 +35,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * A ComboBox for the App Catalog main toolbar that performs remote app searches.
  * 
  * @author psarando
- * 
+ * @deprecated this is a GXT2 class which is being replaced by {@link AppSearchField3}
  */
 public class AppSearchField extends ComboBox<Analysis> {
     private enum TriggerMode {

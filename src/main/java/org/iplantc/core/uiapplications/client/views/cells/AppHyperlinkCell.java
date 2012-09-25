@@ -6,6 +6,7 @@ import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
+import org.iplantc.core.uiapplications.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapplications.client.events.AppSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uicommons.client.ErrorHandler;
@@ -165,8 +166,6 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     private void doOnClick(final Element eventTarget, final App value) {
 
         if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
-            // UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), value.getId());
-            // EventBus.getInstance().fireEvent(e);
             EventBus.getInstance().fireEvent(new AppSelectedEvent(value.getId(), this));
         } else if (eventTarget.getAttribute("name").equalsIgnoreCase("fav")) {
             Services.USER_APP_SERVICE.favoriteApp(UserInfo.getInstance().getWorkspaceId(),
@@ -177,6 +176,8 @@ public class AppHyperlinkCell extends AbstractCell<App> {
                             value.setFavorite(!value.isFavorite());
                             // Reset favorite icon
                             doOnMouseOut(eventTarget, value);
+                            EventBus.getInstance().fireEvent(
+                                    new AppFavoritedEvent(value.getId(), value.isFavorite()));
                         }
 
                         @Override

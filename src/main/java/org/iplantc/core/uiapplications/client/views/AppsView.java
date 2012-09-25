@@ -68,4 +68,12 @@ public interface AppsView extends IsWidget {
     void removeApp(App app);
 
     void deSelectAllAppGroups();
+
+    void updateAppGroup(AppGroup appGroup);
+
+    AppGroup findAppGroup(String id);
+
+    void updateAppGroupAppCount(AppGroup appGroup, int newCount);
+
+    App findApp(String appId);
 }

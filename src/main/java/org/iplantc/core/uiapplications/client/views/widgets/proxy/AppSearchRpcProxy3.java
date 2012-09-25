@@ -30,6 +30,9 @@ public class AppSearchRpcProxy3 extends RpcProxy<AppLoadConfig, AppListLoadResul
     public void load(final AppLoadConfig loadConfig,
             final AsyncCallback<AppListLoadResult> callback) {
         lastQueryText = loadConfig.getQuery();
+        if (lastQueryText == null) {
+            return;
+        }
         templateService.searchApp(lastQueryText.toLowerCase(), new AsyncCallback<String>() {
 
             @Override

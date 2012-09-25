@@ -31,7 +31,7 @@ public class AppRpcProxy extends RpcProxy<ListLoadConfig, ListLoadResult<App>> {
     public void load(final ListLoadConfig loadConfig,
             final AsyncCallback<ListLoadResult<App>> callback) {
 
-        service.getApp(currentAg.getId(), new AsyncCallback<String>() {
+        service.getApps(currentAg.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
