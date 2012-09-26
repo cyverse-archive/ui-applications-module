@@ -75,7 +75,6 @@ public class AppSearchField3 implements IsWidget {
 
             cell.setLoader(loader);
             combo = new ComboBox<App>(cell);
-            combo.setWidth(255);
             combo.setMinChars(3);
             combo.setLoader(loader);
             combo.addBeforeSelectionHandler(new BeforeSelectionHandler<App>() {

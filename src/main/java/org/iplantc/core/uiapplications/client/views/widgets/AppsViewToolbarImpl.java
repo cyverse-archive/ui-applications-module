@@ -11,7 +11,6 @@ import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class AppsViewToolbarImpl implements AppsViewToolbar {
 
@@ -23,9 +22,6 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
 
     private final Widget widget;
     private Presenter presenter;
-
-    @UiField
-    ToolBar toolBar;
 
     @UiField
     MenuItem createNewApp;
