@@ -66,10 +66,8 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  */
 public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsViewToolbar.Presenter {
 
-    public static String WORKSPACE;
-    public static String FAVORITES;
-    public static String APPLICATIONS_UNDER_DEVLOPMENT;
-    public static String BETA_GROUP_ID;
+    private static String WORKSPACE;
+    private static String FAVORITES;
 
     protected final AppsView view;
 
@@ -140,13 +138,11 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
         WORKSPACE = properties.getPrivateWorkspace();
 
-        JSONArray items = JSONParser.parseStrict(properties.getPrivateWorkspaceItems()).isArray();
-        if (items != null) {
-            APPLICATIONS_UNDER_DEVLOPMENT = JsonUtil.getRawValueAsString(items.get(0));
+        if (properties.getPrivateWorkspaceItems() != null) {
+            JSONArray items = JSONParser.parseStrict(properties.getPrivateWorkspaceItems()).isArray();
             FAVORITES = JsonUtil.getRawValueAsString(items.get(1));
         }
 
-        BETA_GROUP_ID = properties.getDefaultBetaCategoryId();
     }
 
     /**
@@ -386,7 +382,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                                         view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() - 1);
                                     }
 
-                                    // TODO Launch Tito window
                                     EventBus.getInstance().fireEvent(new AppDeleteEvent(app.getId()));
                                 }
                             });
