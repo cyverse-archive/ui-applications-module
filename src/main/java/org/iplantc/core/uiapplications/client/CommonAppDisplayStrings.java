@@ -204,4 +204,39 @@ public interface CommonAppDisplayStrings extends CommonUIDisplayStrings {
     String inValidUrl();
 
     String appDeleteWarning();
+
+    /**
+     * Text displayed when hovering over the app "run" button.
+     * 
+     * @return string representing the text
+     */
+    String run();
+
+    /**
+     * Text displayed when hovering over the text hyperlink in the App view.
+     * 
+     * @return string representing the text
+     */
+    String clickAppInfo();
+
+    /**
+     * Text displayed when hovering over the app favorite icon when the app is not yet marked favorite.
+     * 
+     * @return
+     */
+    String addAppToFav();
+
+    /**
+     * Text displayed when hovering over the app favorite icon when the app is marked favorite.
+     * 
+     * @return
+     */
+    String remAppFromFav();
+
+    /**
+     * Text displayed when hovering over the App "Submit" button.
+     * 
+     * @return
+     */
+    String submitForPublicUse();
 }

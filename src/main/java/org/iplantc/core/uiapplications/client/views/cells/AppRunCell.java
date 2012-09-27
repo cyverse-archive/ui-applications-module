@@ -3,6 +3,7 @@ package org.iplantc.core.uiapplications.client.views.cells;
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 
 import org.iplantc.core.uiapplications.client.Constants;
+import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.events.UserEvent;
@@ -39,8 +40,8 @@ public class AppRunCell extends AbstractCell<App> {
 
     interface Templates extends SafeHtmlTemplates {
 
-        @SafeHtmlTemplates.Template("<img class=\"{0}\" src=\"{1}\"/>")
-        SafeHtml cell(String imgClassName, SafeUri img);
+        @SafeHtmlTemplates.Template("<img class=\"{0}\" qtip=\"{2}\" src=\"{1}\"/>")
+        SafeHtml cell(String imgClassName, SafeUri img, String toolTip);
     }
 
     private static final Resources resources = GWT.create(Resources.class);
@@ -50,11 +51,13 @@ public class AppRunCell extends AbstractCell<App> {
         // super(CLICK, MOUSEOVER, MOUSEOUT);
         super(CLICK);
         resources.css().ensureInjected();
+
     }
 
     @Override
     public void render(Cell.Context context, App value, SafeHtmlBuilder sb) {
-        sb.append(templates.cell(resources.css().appRun(), resources.run().getSafeUri()));
+        sb.append(templates.cell(resources.css().appRun(), resources.run().getSafeUri(),
+                I18N.DISPLAY.run()));
     }
 
     @Override

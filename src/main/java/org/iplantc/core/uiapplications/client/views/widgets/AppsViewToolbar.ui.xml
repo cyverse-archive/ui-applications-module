@@ -27,6 +27,11 @@
             type="com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutData">
       <ui:attributes margins="{margins0}" />
    </ui:with>
+   
+   <ui:with type="com.sencha.gxt.widget.core.client.tips.ToolTipConfig" field="submitToolTip">
+    <ui:attributes titleText="{strings.submitForPublicUse}" trackMouse="true" />
+  </ui:with>
+  
    <toolbar:ToolBar ui:field="toolBar">
       <toolbar:child layoutData="{boxDataNoFlex}">
          <button:TextButton text="{strings.create}"
@@ -80,7 +85,8 @@
          <button:TextButton ui:field="submit"
                             debugId="idMakePublic"
                             text="{strings.submit}"
-                            icon="{icons.submitForPublic}" />
+                            icon="{icons.submitForPublic}" 
+                            toolTipConfig="{submitToolTip}"/>
       </toolbar:child>
       <toolbar:child layoutData="{boxData}">
          <MyWidgets:AppSearchField3 ui:field="appSearch" />

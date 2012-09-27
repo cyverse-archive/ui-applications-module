@@ -35,6 +35,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.GridView;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
+import com.sencha.gxt.widget.core.client.tips.QuickTip;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance;
 
@@ -127,6 +128,7 @@ public class AppsViewImpl implements AppsView {
                     }
                 });
         setTreeIcons();
+        new QuickTip(grid).getToolTipConfig().setTrackMouse(true);
     }
 
     private void initHandlers() {
