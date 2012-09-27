@@ -34,6 +34,7 @@ public class Analysis extends AnalysisGroupTreeModel {
     public static final String DISABLED = "disabled"; //$NON-NLS-1$
     public static final String GROUP_ID = "group_id"; //$NON-NLS-1$
     public static final String GROUP_NAME = "group_name"; //$NON-NLS-1$
+    public static final String PIPELINE_ELIGIBILITY = "pipeline_eligibility"; //$NON-NLS-1$
 
     /**
      * Creates a new App.
@@ -73,6 +74,7 @@ public class Analysis extends AnalysisGroupTreeModel {
         setDisabled(JsonUtil.getBoolean(json, DISABLED, false));
 
         setAnalysisFeedback(new AnalysisFeedback(JsonUtil.getObject(json, RATING)));
+        setPipelineEligibility(new PipelineEligibility(JsonUtil.getObject(json, PIPELINE_ELIGIBILITY)));
         setSuggestedCategories(parseSuggestedCategories(JsonUtil.getArray(json, SUGGESTED_CATEGORIES)));
     }
 
@@ -274,6 +276,14 @@ public class Analysis extends AnalysisGroupTreeModel {
      */
     public String getGroupName() {
         return get(GROUP_NAME);
+    }
+
+    private void setPipelineEligibility(PipelineEligibility eligibility) {
+        set(PIPELINE_ELIGIBILITY, eligibility);
+    }
+
+    public PipelineEligibility getPipelineEligibility() {
+        return get(PIPELINE_ELIGIBILITY);
     }
 
     /**
