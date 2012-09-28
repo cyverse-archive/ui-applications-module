@@ -45,8 +45,8 @@
    </ui:with>
    <ui:with field="northData"
             type="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData">
-      <ui:attributes size="25"
-                     maxSize="25"
+      <ui:attributes size="30"
+                     maxSize="30"
                      hidden="true"/>
    </ui:with>
    <ui:with field="westData"

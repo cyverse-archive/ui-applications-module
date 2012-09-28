@@ -10,6 +10,7 @@ import com.google.gwt.event.shared.EventHandler;
  * @author psarando
  * 
  */
+@Deprecated
 public interface AppSearchResultLoadEventHandler extends EventHandler {
 
     void onLoad(AppSearchResultLoadEvent event);

@@ -26,7 +26,7 @@ public interface AppGroup {
     void setName(String name);
 
     @PropertyName("template_count")
-    void setTemplateCount(int templateCount);
+    void setAppCount(int templateCount);
 
     void setGroups(List<AppGroup> groups);
 
