@@ -1,4 +1,4 @@
-.app_name {
+.appName {
 	cursor: pointer;
 	text-decoration: none;
 	color: black;
@@ -8,6 +8,10 @@
 	padding-bottom: 2px;
 }
 
-.fav_app {
-	cursor: pointer;
+.appDisabled {
+	color: black;
+	font-size: 12px;
+	height: 15px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }

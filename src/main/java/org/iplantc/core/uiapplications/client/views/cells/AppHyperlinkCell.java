@@ -5,13 +5,9 @@ import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
 import org.iplantc.core.uiapplications.client.I18N;
-import org.iplantc.core.uiapplications.client.Services;
-import org.iplantc.core.uiapplications.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapplications.client.events.AppSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
-import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
-import org.iplantc.core.uicommons.client.models.UserInfo;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
@@ -22,16 +18,15 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style.TextDecoration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
+ * This is a custom cell which combines the functionality of the {@link AppFavoriteCell} with a clickable
+ * hyper-link of an app name.
  * 
  * @author jstroot
  * 
@@ -40,31 +35,14 @@ public class AppHyperlinkCell extends AbstractCell<App> {
 
 
     interface MyCss extends CssResource {
-        @ClassName("app_name")
         String appName();
-
-        @ClassName("fav_app")
-        String favApp();
+        
+        String appDisabled();
     }
 
     interface Resources extends ClientBundle {
         @Source("AppHyperlinkCell.css")
         MyCss css();
-
-        @Source("images/award_star_gold_3.png")
-        ImageResource favIcon();
-
-        @Source("images/award_star_add.png")
-        ImageResource favIconAdd();
-
-        @Source("images/award_star_delete.png")
-        ImageResource favIconDelete();
-
-        @Source("images/award_star_silver_3.png")
-        ImageResource disabledFavIcon();
-
-        @Source("images/exclamation.png")
-        ImageResource appUnavailableIcon();
     }
 
     /**
@@ -72,13 +50,14 @@ public class AppHyperlinkCell extends AbstractCell<App> {
      */
     interface Templates extends SafeHtmlTemplates {
 
-        @SafeHtmlTemplates.Template("<img name=\"{0}\" class=\"{1}\" qtip=\"{2}\" src=\"{3}\">&nbsp;<span class=\"{4}\" qtip=\"{6}\">{5}</span>")
-        SafeHtml cell(String imgName, String imgClassName, String imgToolTip, SafeUri img,
-                String textClassName, SafeHtml name, String textToolTip);
+        @SafeHtmlTemplates.Template("<span name=\"{3}\" class=\"{0}\" qtip=\"{2}\">{1}</span>")
+        SafeHtml cell(String textClassName, SafeHtml name, String textToolTip, String elementName);
     }
 
-    final Resources resources = GWT.create(Resources.class);
-    final Templates templates = GWT.create(Templates.class);
+    private final Resources resources = GWT.create(Resources.class);
+    private final Templates templates = GWT.create(Templates.class);
+    private final AppFavoriteCell favoriteCell = new AppFavoriteCell();
+    private static final String ELEMENT_NAME = "appName";
 
     public AppHyperlinkCell() {
         super(CLICK, MOUSEOVER, MOUSEOUT);
@@ -90,21 +69,15 @@ public class AppHyperlinkCell extends AbstractCell<App> {
         if (value == null) {
             return;
         }
+        favoriteCell.render(context, value, sb);
+        sb.appendHtmlConstant("&nbsp;");
         SafeHtml safeHtmlName = SafeHtmlUtils.fromString(value.getName());
-        if (!value.isDisabled() && value.isFavorite()) {
-            // Set Normal favorite
-            sb.append(templates.cell("fav", resources.css().favApp(), I18N.DISPLAY.remAppFromFav(),
-                    resources.favIcon()
-                    .getSafeUri(), resources.css().appName(), safeHtmlName, I18N.DISPLAY.clickAppInfo()));
-        } else if (!value.isDisabled() && !value.isFavorite()) {
-            // Set disabled favorite
-            sb.append(templates.cell("fav", resources.css().favApp(), I18N.DISPLAY.addAppToFav(),
-                    resources.disabledFavIcon()
-                    .getSafeUri(), resources.css().appName(), safeHtmlName, I18N.DISPLAY.clickAppInfo()));
+        if (!value.isDisabled()) {
+            sb.append(templates.cell(resources.css().appName(), safeHtmlName,
+                    I18N.DISPLAY.clickAppInfo(), ELEMENT_NAME));
         } else {
-            sb.append(templates.cell("disabled", resources.css().favApp(),
-                    I18N.DISPLAY.appUnavailable(), resources.appUnavailableIcon().getSafeUri(),
-                    resources.css().appName(), safeHtmlName, I18N.DISPLAY.appUnavailable()));
+            sb.append(templates.cell(resources.css().appDisabled(), safeHtmlName,
+                    I18N.DISPLAY.appUnavailable(), ELEMENT_NAME));
         }
 
     }
@@ -112,12 +85,13 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     @Override
     public void onBrowserEvent(Cell.Context context, Element parent, App value, NativeEvent event,
             ValueUpdater<App> valueUpdater) {
-        if (value == null) {
+        Element eventTarget = Element.as(event.getEventTarget());
+        if ((value == null) && !parent.isOrHasChild(eventTarget)) {
             return;
         }
+        favoriteCell.onBrowserEvent(context, parent, value, event, valueUpdater);
 
-        Element eventTarget = Element.as(event.getEventTarget());
-        if (parent.isOrHasChild(eventTarget)) {
+        if (eventTarget.getAttribute("name").equalsIgnoreCase(ELEMENT_NAME)) {
 
             switch (Event.as(event).getTypeInt()) {
                 case Event.ONCLICK:
@@ -136,56 +110,14 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     }
 
     private void doOnMouseOut(Element eventTarget, App value) {
-
-        if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
-            eventTarget.getStyle().setTextDecoration(TextDecoration.NONE);
-        } else if (eventTarget.getAttribute("name").equalsIgnoreCase("fav")) {
-            if (value.isFavorite()) {
-                eventTarget.setAttribute("src", resources.favIcon().getSafeUri().asString());
-                eventTarget.setAttribute("qtip", I18N.DISPLAY.remAppFromFav());
-            } else {
-                eventTarget.setAttribute("src", resources.disabledFavIcon().getSafeUri().asString());
-                eventTarget.setAttribute("qtip", I18N.DISPLAY.addAppToFav());
-            }
-        }
+        eventTarget.getStyle().setTextDecoration(TextDecoration.NONE);
     }
 
     private void doOnMouseOver(Element eventTarget, App value) {
-
-        if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
-            eventTarget.getStyle().setTextDecoration(TextDecoration.UNDERLINE);
-        } else if (eventTarget.getAttribute("name").equalsIgnoreCase("fav")) {
-            if (value.isFavorite()) {
-                eventTarget.setAttribute("src", resources.favIconDelete().getSafeUri().asString());
-            } else {
-                eventTarget.setAttribute("src", resources.favIconAdd().getSafeUri().asString());
-            }
-        }
+        eventTarget.getStyle().setTextDecoration(TextDecoration.UNDERLINE);
     }
 
     private void doOnClick(final Element eventTarget, final App value) {
-
-        if (eventTarget.getNodeName().equalsIgnoreCase("span")) {
-            EventBus.getInstance().fireEvent(new AppSelectedEvent(value.getId(), this));
-        } else if (eventTarget.getAttribute("name").equalsIgnoreCase("fav")) {
-            Services.USER_APP_SERVICE.favoriteApp(UserInfo.getInstance().getWorkspaceId(),
-                    value.getId(), !value.isFavorite(), new AsyncCallback<String>() {
-
-                        @Override
-                        public void onSuccess(String result) {
-                            value.setFavorite(!value.isFavorite());
-                            
-                            // Reset favorite icon
-                            doOnMouseOut(eventTarget, value);
-                            EventBus.getInstance().fireEvent(
-                                    new AppFavoritedEvent(value.getId(), value.isFavorite()));
-                        }
-
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            ErrorHandler.post(I18N.ERROR.favServiceFailure(), caught);
-                        }
-                    });
-        }
+        EventBus.getInstance().fireEvent(new AppSelectedEvent(value.getId(), this));
     }
 }

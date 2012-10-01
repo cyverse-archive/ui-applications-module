@@ -24,6 +24,8 @@ public interface AppsViewToolbar extends IsWidget {
         void createNewAppClicked();
 
         void createWorkflowClicked();
+
+        void onEditClicked();
     }
 
     void setPresenter(Presenter presenter);
