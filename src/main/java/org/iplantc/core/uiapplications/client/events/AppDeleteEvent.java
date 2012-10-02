@@ -1,7 +1,9 @@
 package org.iplantc.core.uiapplications.client.events;
 
-import org.iplantc.core.uiapplications.client.events.handlers.AppDeleteEventHandler;
 
+import org.iplantc.core.uiapplications.client.events.AppDeleteEvent.AppDeleteEventHandler;
+
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
@@ -12,6 +14,10 @@ import com.google.gwt.event.shared.GwtEvent;
  * 
  */
 public class AppDeleteEvent extends GwtEvent<AppDeleteEventHandler> {
+
+    public interface AppDeleteEventHandler extends EventHandler {
+        public void onDelete(AppDeleteEvent ade);
+    }
 
     /**
      * Defines the GWT Event Type.
@@ -32,7 +38,7 @@ public class AppDeleteEvent extends GwtEvent<AppDeleteEventHandler> {
     }
 
     @Override
-    public com.google.gwt.event.shared.GwtEvent.Type<AppDeleteEventHandler> getAssociatedType() {
+    public GwtEvent.Type<AppDeleteEventHandler> getAssociatedType() {
         return TYPE;
     }
 

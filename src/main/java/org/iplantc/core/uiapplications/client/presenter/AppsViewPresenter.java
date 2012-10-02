@@ -11,10 +11,10 @@ import org.iplantc.core.uiapplications.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapplications.client.events.AppFavoritedEventHander;
 import org.iplantc.core.uiapplications.client.events.AppGroupCountUpdateEvent;
 import org.iplantc.core.uiapplications.client.events.AppGroupCountUpdateEvent.AppGroupType;
+import org.iplantc.core.uiapplications.client.events.AppLoadEvent;
+import org.iplantc.core.uiapplications.client.events.AppLoadEvent.MODE;
 import org.iplantc.core.uiapplications.client.events.CreateNewAppEvent;
 import org.iplantc.core.uiapplications.client.events.CreateNewWorkflowEvent;
-import org.iplantc.core.uiapplications.client.events.TemplateLoadEvent;
-import org.iplantc.core.uiapplications.client.events.TemplateLoadEvent.MODE;
 import org.iplantc.core.uiapplications.client.models.CatalogWindowConfig;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppAutoBeanFactory;
@@ -339,8 +339,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                         view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() + 1);
                     }
                     // Open TITO
-                    // TODO JDS Rename the "TemplateLoadEvent"
-                    EventBus.getInstance().fireEvent(new TemplateLoadEvent(copiedAppId, MODE.EDIT));
+                    EventBus.getInstance().fireEvent(new AppLoadEvent(copiedAppId, MODE.EDIT));
                 }
             }
 
