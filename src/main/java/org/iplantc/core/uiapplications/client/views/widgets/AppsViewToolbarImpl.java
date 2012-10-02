@@ -79,6 +79,11 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
         presenter.onCopyClicked();
     }
 
+    @UiHandler("edit")
+    public void editClicked(SelectEvent event) {
+        presenter.onEditClicked();
+    }
+
     @UiHandler("delete")
     public void deleteClicked(SelectEvent event) {
         presenter.onDeleteClicked();

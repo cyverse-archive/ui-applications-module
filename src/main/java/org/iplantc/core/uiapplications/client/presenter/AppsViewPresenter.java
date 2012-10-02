@@ -289,7 +289,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     public void onAppInfoClicked() {
         Window appInfoWin = new Window();
         appInfoWin.setPixelSize(200, 200);
-        appInfoWin.add(new AppInfoView());
+        appInfoWin.add(new AppInfoView(getSelectedApp()));
         appInfoWin.show();
     }
 
@@ -450,6 +450,12 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     public void onAppNameSelected(App app) {
         UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), app.getId());
         EventBus.getInstance().fireEvent(e);
+    }
+
+    @Override
+    public void onEditClicked() {
+        // TODO JDS To be implemented
+
     }
 
 }
