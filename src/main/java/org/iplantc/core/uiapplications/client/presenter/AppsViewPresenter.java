@@ -453,8 +453,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void onEditClicked() {
-        // TODO JDS To be implemented
-
+        // Open TITO
+        EventBus.getInstance().fireEvent(new AppLoadEvent(getSelectedApp().getId(), MODE.EDIT));
     }
 
 }
