@@ -57,8 +57,20 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 /**
  * The presenter for the AppsView.
  * 
- * 
  * TODO JDS Document responsibility and intent of presenter.
+ * <p>
+ * Events fired from this presenter:
+ * <ul>
+ * <li> {@link AppLoadEvent}</li>
+ * <li> {@link AppDeleteEvent}</li>
+ * <li> {@link AppGroupCountUpdateEvent}</li>
+ * <li> {@link CreateNewAppEvent}</li>
+ * <li> {@link CreateNewWorkflowEvent}</li>
+ * <li> {@link UserEvent}</li>
+ * <li> {@link AppLoadEvent}</li>
+ * <ul>
+ * 
+ * 
  * 
  * 
  * @author jstroot
@@ -392,9 +404,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     }
 
-    /*
-     * TODO JDS Verify functionality
-     */
     @Override
     public void submitClicked() {
         App selectedApp = getSelectedApp();
