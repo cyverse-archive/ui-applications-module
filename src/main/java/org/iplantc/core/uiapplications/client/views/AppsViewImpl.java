@@ -78,13 +78,12 @@ public class AppsViewImpl implements AppsView {
     @UiField
     BorderLayoutContainer con;
 
-    // TODO JDS rename nav, main, and detail panels to east, center, west
     @UiField
-    ContentPanel navPanel;
+    ContentPanel westPanel;
     @UiField
-    ContentPanel mainPanel;
+    ContentPanel centerPanel;
     @UiField
-    ContentPanel detailPanel;
+    ContentPanel eastPanel;
 
     @UiField
     BorderLayoutData northData;
@@ -218,27 +217,27 @@ public class AppsViewImpl implements AppsView {
 
     @Override
     public void setCenterPanelHeading(final String name) {
-        mainPanel.setHeadingText(name);
+        centerPanel.setHeadingText(name);
     }
 
     @Override
     public void maskCenterPanel(final String loadingMask) {
-        mainPanel.mask(loadingMask);
+        centerPanel.mask(loadingMask);
     }
 
     @Override
     public void unMaskCenterPanel() {
-        mainPanel.unmask();
+        centerPanel.unmask();
     }
 
     @Override
     public void maskWestPanel(String loadingMask) {
-        navPanel.mask(loadingMask);
+        westPanel.mask(loadingMask);
     }
 
     @Override
     public void unMaskWestPanel() {
-        navPanel.unmask();
+        westPanel.unmask();
     }
 
     @Override

@@ -70,9 +70,6 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  * <li> {@link AppLoadEvent}</li>
  * <ul>
  * 
- * 
- * 
- * 
  * @author jstroot
  * 
  */

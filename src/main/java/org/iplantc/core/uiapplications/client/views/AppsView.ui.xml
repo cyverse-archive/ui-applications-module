@@ -73,7 +73,7 @@
             <container:north layoutData="{northData}"/>
                 <!-- This is the navigation panel -->
             <container:west layoutData="{westData}">
-               <gxt:ContentPanel ui:field="navPanel"
+               <gxt:ContentPanel ui:field="westPanel"
                                  headingText="{strings.category}" 
                                  bodyBorder="false">
                   <tree:Tree ui:field="tree"
@@ -84,7 +84,7 @@
             </container:west>
 			    <!-- This is the main panel -->
             <container:center layoutData="{centerData}">
-               <gxt:ContentPanel ui:field="mainPanel"
+               <gxt:ContentPanel ui:field="centerPanel"
                                  resize="true" 
                                  bodyBorder="false">
                         <grid:Grid ui:field="grid"
@@ -95,7 +95,7 @@
             </container:center>
 				<!-- This is the details panel -->
             <container:east layoutData="{eastData}">
-               <gxt:ContentPanel ui:field="detailPanel" />
+               <gxt:ContentPanel ui:field="eastPanel" />
             </container:east>
          </container:BorderLayoutContainer>
    </container:SimpleContainer>
