@@ -11,10 +11,10 @@ import org.iplantc.core.uiapplications.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapplications.client.events.AppFavoritedEventHander;
 import org.iplantc.core.uiapplications.client.events.AppGroupCountUpdateEvent;
 import org.iplantc.core.uiapplications.client.events.AppGroupCountUpdateEvent.AppGroupType;
+import org.iplantc.core.uiapplications.client.events.AppLoadEvent;
+import org.iplantc.core.uiapplications.client.events.AppLoadEvent.MODE;
 import org.iplantc.core.uiapplications.client.events.CreateNewAppEvent;
 import org.iplantc.core.uiapplications.client.events.CreateNewWorkflowEvent;
-import org.iplantc.core.uiapplications.client.events.TemplateLoadEvent;
-import org.iplantc.core.uiapplications.client.events.TemplateLoadEvent.MODE;
 import org.iplantc.core.uiapplications.client.models.CatalogWindowConfig;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppAutoBeanFactory;
@@ -57,8 +57,20 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 /**
  * The presenter for the AppsView.
  * 
- * 
  * TODO JDS Document responsibility and intent of presenter.
+ * <p>
+ * Events fired from this presenter:
+ * <ul>
+ * <li> {@link AppLoadEvent}</li>
+ * <li> {@link AppDeleteEvent}</li>
+ * <li> {@link AppGroupCountUpdateEvent}</li>
+ * <li> {@link CreateNewAppEvent}</li>
+ * <li> {@link CreateNewWorkflowEvent}</li>
+ * <li> {@link UserEvent}</li>
+ * <li> {@link AppLoadEvent}</li>
+ * <ul>
+ * 
+ * 
  * 
  * 
  * @author jstroot
@@ -339,8 +351,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                         view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() + 1);
                     }
                     // Open TITO
-                    // TODO JDS Rename the "TemplateLoadEvent"
-                    EventBus.getInstance().fireEvent(new TemplateLoadEvent(copiedAppId, MODE.EDIT));
+                    EventBus.getInstance().fireEvent(new AppLoadEvent(copiedAppId, MODE.EDIT));
                 }
             }
 
@@ -393,9 +404,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     }
 
-    /*
-     * TODO JDS Verify functionality
-     */
     @Override
     public void submitClicked() {
         App selectedApp = getSelectedApp();
@@ -454,8 +462,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void onEditClicked() {
-        // TODO JDS To be implemented
-
+        // Open TITO
+        EventBus.getInstance().fireEvent(new AppLoadEvent(getSelectedApp().getId(), MODE.EDIT));
     }
 
 }

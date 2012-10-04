@@ -3,6 +3,7 @@ package org.iplantc.core.uiapplications.client.views.widgets;
 
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppProperties;
+import org.iplantc.core.uiapplications.client.views.cells.AppListViewCell;
 import org.iplantc.core.uiapplications.client.views.widgets.events.AppSearch3ResultLoadEvent;
 import org.iplantc.core.uiapplications.client.views.widgets.events.AppSearch3ResultSelectedEvent;
 import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppListLoadResult;

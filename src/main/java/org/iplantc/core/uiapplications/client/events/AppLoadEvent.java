@@ -1,8 +1,9 @@
 package org.iplantc.core.uiapplications.client.events;
 
 
-import org.iplantc.core.uiapplications.client.events.handlers.TemplateLoadEventHandler;
+import org.iplantc.core.uiapplications.client.events.AppLoadEvent.AppLoadEventHandler;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
@@ -11,7 +12,23 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author sriram
  * 
  */
-public class TemplateLoadEvent extends GwtEvent<TemplateLoadEventHandler> {
+public class AppLoadEvent extends GwtEvent<AppLoadEventHandler> {
+
+    /**
+     * An event handler for TemplateLoadEvent
+     * 
+     * @author sriram
+     * 
+     */
+    public interface AppLoadEventHandler extends EventHandler {
+
+        /**
+         * invoked when template is loaded
+         * 
+         * @param event
+         */
+        void onLoad(AppLoadEvent event);
+    }
 
     public static enum MODE {
         EDIT,
@@ -24,12 +41,12 @@ public class TemplateLoadEvent extends GwtEvent<TemplateLoadEventHandler> {
      * 
      * @see org.iplantc.core.tito.client.events.NavigationTreeAddEventHandler
      */
-    public static final GwtEvent.Type<TemplateLoadEventHandler> TYPE = new GwtEvent.Type<TemplateLoadEventHandler>();
+    public static final GwtEvent.Type<AppLoadEventHandler> TYPE = new GwtEvent.Type<AppLoadEventHandler>();
 
     private final String idTemplate;
     private final MODE mode;
 
-    public TemplateLoadEvent(String id, MODE mode) {
+    public AppLoadEvent(String id, MODE mode) {
         this.idTemplate = id;
         this.mode = mode;
     }
@@ -42,12 +59,12 @@ public class TemplateLoadEvent extends GwtEvent<TemplateLoadEventHandler> {
     }
 
     @Override
-    protected void dispatch(TemplateLoadEventHandler handler) {
+    protected void dispatch(AppLoadEventHandler handler) {
         handler.onLoad(this);
     }
 
     @Override
-    public com.google.gwt.event.shared.GwtEvent.Type<TemplateLoadEventHandler> getAssociatedType() {
+    public GwtEvent.Type<AppLoadEventHandler> getAssociatedType() {
         return TYPE;
     }
 

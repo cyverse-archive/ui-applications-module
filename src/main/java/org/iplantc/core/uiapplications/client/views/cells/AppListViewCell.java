@@ -1,4 +1,4 @@
-package org.iplantc.core.uiapplications.client.views.widgets;
+package org.iplantc.core.uiapplications.client.views.cells;
 
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 
@@ -16,7 +16,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Event;
 
 /**
- * TODO JDS
+ * TODO JDS This cell needs to be refactored to use safehtml templates.
  * 
  * @author jstroot
  * 
