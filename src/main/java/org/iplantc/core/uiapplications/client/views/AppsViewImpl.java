@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
@@ -60,8 +61,8 @@ public class AppsViewImpl implements AppsView {
     @UiField
     Tree<AppGroup, String> tree;
 
-    @UiField(provided = true)
-    final TreeStore<AppGroup> treeStore;
+    @UiField
+    TreeStore<AppGroup> treeStore;
 
     @UiField
     Grid<App> grid;
@@ -69,11 +70,11 @@ public class AppsViewImpl implements AppsView {
     @UiField
     GridView<App> gridView;
 
-    @UiField(provided = true)
-    final ListStore<App> listStore;
+    @UiField
+    ListStore<App> listStore;
 
-    @UiField(provided = true)
-    final ColumnModel<App> cm;
+    @UiField
+    ColumnModel<App> cm;
 
     @UiField
     BorderLayoutContainer con;
@@ -92,12 +93,8 @@ public class AppsViewImpl implements AppsView {
 
     private final Widget widget;
 
-    public AppsViewImpl(TreeStore<AppGroup> treeStore, ListStore<App> listStore,
-            ColumnModel<App> cm) {
+    public AppsViewImpl() {
         initHandlers();
-        this.treeStore = treeStore;
-        this.listStore = listStore;
-        this.cm = cm;
         this.widget = uiBinder.createAndBindUi(this);
         grid.addCellClickHandler(new CellClickHandler() {
 
@@ -128,6 +125,33 @@ public class AppsViewImpl implements AppsView {
                 });
         setTreeIcons();
         new QuickTip(grid).getToolTipConfig().setTrackMouse(true);
+    }
+
+    @UiFactory
+    TreeStore<AppGroup> createTreeStore() {
+        return new TreeStore<AppGroup>(new ModelKeyProvider<AppGroup>() {
+            @Override
+            public String getKey(AppGroup item) {
+                return item.getId();
+            }
+
+        });
+    }
+
+    @UiFactory
+    ListStore<App> createListStore() {
+        return new ListStore<App>(new ModelKeyProvider<App>() {
+            @Override
+            public String getKey(App item) {
+                return item.getId();
+            }
+
+        });
+    }
+
+    @UiFactory
+    ColumnModel<App> createColumnModel() {
+        return new AppColumnModel();
     }
 
     private void initHandlers() {
