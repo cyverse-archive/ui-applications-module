@@ -1,7 +1,7 @@
 package org.iplantc.core.uiapplications.client.models.autobeans;
 
 import java.util.Date;
-
+import java.util.List;
 
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
@@ -84,4 +84,8 @@ public interface App {
 
     @PropertyName("group_name")
     void setGroupName(String groupName);
+
+    List<String> getReferences();
+
+    void setReferences(List<String> references);
 }
