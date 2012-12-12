@@ -9,6 +9,7 @@ import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEventHan
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uiapplications.client.models.AnalysisFeedback;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroup;
+import org.iplantc.core.uiapplications.client.services.AppSearchRpcProxy;
 import org.iplantc.core.uiapplications.client.services.AppTemplateServiceFacade;
 import org.iplantc.core.uicommons.client.Constants;
 import org.iplantc.core.uicommons.client.ErrorHandler;
@@ -17,9 +18,16 @@ import org.iplantc.core.uicommons.client.widgets.BetterQuickTip;
 
 import com.extjs.gxt.ui.client.Style.SelectionMode;
 import com.extjs.gxt.ui.client.core.XTemplate;
+import com.extjs.gxt.ui.client.data.BaseFilterPagingLoadConfig;
+import com.extjs.gxt.ui.client.data.BaseListLoader;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.data.ListLoader;
+import com.extjs.gxt.ui.client.data.LoadEvent;
+import com.extjs.gxt.ui.client.data.ModelKeyProvider;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.LoadListener;
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -33,6 +41,7 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.RowExpander;
+import com.extjs.gxt.ui.client.widget.grid.filters.GridFilters;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Label;
@@ -110,19 +119,72 @@ public class BaseCatalogMainPanel extends ContentPanel {
     }
 
     private void initGrid() {
-        analysisGrid = new Grid<Analysis>(new ListStore<Analysis>(), buildColumnModel());
+        analysisGrid = new Grid<Analysis>(buildGridStore(), buildColumnModel());
 
         new BetterQuickTip(analysisGrid);
 
         analysisGrid.setSelectionModel(buildSelectionModel());
         analysisGrid.addPlugin(expander);
+
+        // Add the GridFilters plugin.
+        GridFilters filters = new GridFilters();
+        filters.addFilter(toolBar.getSearchField().getFilter());
+        analysisGrid.addPlugin(filters);
+
         analysisGrid.getView().setEmptyText(I18N.DISPLAY.noAnalyses());
         analysisGrid.getView().setForceFit(true);
+
         add(analysisGrid);
     }
 
     public void addGridSelectionChangeListener(Listener<BaseEvent> listener) {
         analysisGrid.getSelectionModel().addListener(Events.SelectionChange, listener);
+    }
+
+    private ListStore<Analysis> buildGridStore() {
+        // Create an App Search loader with our custom RpcProxy.
+        AppSearchRpcProxy proxy = new AppSearchRpcProxy(tag, templateService);
+
+        ListLoader<ListLoadResult<Analysis>> loader = new BaseListLoader<ListLoadResult<Analysis>>(proxy) {
+
+            @Override
+            protected Object newLoadConfig() {
+                // AppSearchRpcProxy expects a FilterPagingLoadConfig.
+                return new BaseFilterPagingLoadConfig();
+            }
+        };
+
+        loader.addLoadListener(new LoadListener() {
+            @Override
+            public void loaderBeforeLoad(LoadEvent le) {
+                mask(I18N.DISPLAY.loadingMask());
+            }
+
+            @Override
+            public void loaderLoadException(LoadEvent le) {
+                unmask();
+            }
+
+            @Override
+            public void loaderLoad(LoadEvent le) {
+                unmask();
+            }
+        });
+
+        // Create the store with the remote loader and custom RpcProxy.
+        ListStore<Analysis> store = new ListStore<Analysis>(loader);
+
+        // We need to use a custom model key that will allow the store to find the correct model if an
+        // App is in more than one group.
+        final ModelKeyProvider<Analysis> storeKeyProvider = new ModelKeyProvider<Analysis>() {
+            @Override
+            public String getKey(Analysis model) {
+                return model.getId() + model.getGroupId();
+            }
+        };
+        store.setKeyProvider(storeKeyProvider);
+
+        return store;
     }
 
     protected GridSelectionModel<Analysis> buildSelectionModel() {
@@ -250,16 +312,13 @@ public class BaseCatalogMainPanel extends ContentPanel {
                     @Override
                     public void onLoad(AppSearchResultLoadEvent event) {
                         if (event.getTag().equals(tag)) {
-                            setHeading(I18N.DISPLAY.searchApps());
-                            seed(event.getResults(), current_category);
+                            setHeading(I18N.DISPLAY.searchAppResultsHeader(event.getSearchText()));
                         }
                     }
                 }));
     }
 
     public void cleanup() {
-        toolBar.cleanup();
-
         for (HandlerRegistration handler : handlers) {
             handler.removeHandler();
         }

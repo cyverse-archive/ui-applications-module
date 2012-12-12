@@ -22,7 +22,7 @@ public class CatalogMainToolBar extends ToolBar {
         add(searchField);
     }
 
-    public void cleanup() {
-        searchField.cleanup();
+    public AppSearchField getSearchField() {
+        return searchField;
     }
 }

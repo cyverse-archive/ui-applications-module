@@ -6,10 +6,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
+import org.iplantc.core.uiapplications.client.events.AppSearchResultLoadEvent;
 import org.iplantc.core.uiapplications.client.models.Analysis;
 import org.iplantc.core.uicommons.client.ErrorHandler;
+import org.iplantc.core.uicommons.client.events.EventBus;
 
-import com.extjs.gxt.ui.client.data.BaseListLoadConfig;
+import com.extjs.gxt.ui.client.data.FilterConfig;
+import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
 import com.extjs.gxt.ui.client.data.RpcProxy;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -47,13 +50,23 @@ public class AppSearchRpcProxy extends RpcProxy<List<Analysis>> {
         }
 
         // Get the proxy's search params.
-        BaseListLoadConfig config = (BaseListLoadConfig)loadConfig;
+        FilterPagingLoadConfig config = (FilterPagingLoadConfig)loadConfig;
 
         // Cache the query text.
-        lastQueryText = (String)config.get("query"); //$NON-NLS-1$
+        lastQueryText = ""; //$NON-NLS-1$
+
+        List<FilterConfig> filterConfigs = config.getFilterConfigs();
+        if (filterConfigs != null && !filterConfigs.isEmpty()) {
+            lastQueryText = (String)filterConfigs.get(0).getValue();
+        }
+
+        if (lastQueryText == null || lastQueryText.isEmpty()) {
+            // nothing to search
+            return;
+        }
 
         // Cache the search text for this callback; used to sort the results.
-        final String searchTerm = lastQueryText.toLowerCase();
+        final String searchText = lastQueryText;
 
         // Create a callback for the AppTemplateServiceFacade.
         AsyncCallback<String> templateServiceCallback = new AsyncCallback<String>() {
@@ -75,8 +88,9 @@ public class AppSearchRpcProxy extends RpcProxy<List<Analysis>> {
                         String app1Name = app1.getName();
                         String app2Name = app2.getName();
 
-                        boolean app1NameMatches = app1Name.toLowerCase().contains(searchTerm);
-                        boolean app2NameMatches = app2Name.toLowerCase().contains(searchTerm);
+                        String lowerSearchText = searchText.toLowerCase();
+                        boolean app1NameMatches = app1Name.toLowerCase().contains(lowerSearchText);
+                        boolean app2NameMatches = app2Name.toLowerCase().contains(lowerSearchText);
 
                         if (app1NameMatches && !app2NameMatches) {
                             // Only app1's name contains the search term, so order it before app2
@@ -93,6 +107,10 @@ public class AppSearchRpcProxy extends RpcProxy<List<Analysis>> {
 
                 // Pass the Analysis list to this proxy's load callback.
                 callback.onSuccess(analyses);
+
+                // Fire the search results load event.
+                EventBus eventBus = EventBus.getInstance();
+                eventBus.fireEvent(new AppSearchResultLoadEvent(tag, searchText, analyses));
             }
 
             @Override
