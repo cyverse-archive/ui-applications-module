@@ -35,6 +35,7 @@ public class Analysis extends AnalysisGroupTreeModel {
     public static final String GROUP_ID = "group_id"; //$NON-NLS-1$
     public static final String GROUP_NAME = "group_name"; //$NON-NLS-1$
     public static final String PIPELINE_ELIGIBILITY = "pipeline_eligibility"; //$NON-NLS-1$
+    public static final String CAN_RUN = "can_run"; //$NON-NLS-1$
 
     /**
      * Creates a new App.
@@ -72,6 +73,7 @@ public class Analysis extends AnalysisGroupTreeModel {
         setUser_favourite(JsonUtil.getBoolean(json, FAVOURITE, false));
         setPublic(JsonUtil.getBoolean(json, PUBLIC, false));
         setDisabled(JsonUtil.getBoolean(json, DISABLED, false));
+        setRunnable(JsonUtil.getBoolean(json, CAN_RUN, false));
 
         setAnalysisFeedback(new AnalysisFeedback(JsonUtil.getObject(json, RATING)));
         setPipelineEligibility(new PipelineEligibility(JsonUtil.getObject(json, PIPELINE_ELIGIBILITY)));
@@ -240,6 +242,24 @@ public class Analysis extends AnalysisGroupTreeModel {
      */
     public Boolean isDisabled() {
         return get(DISABLED);
+    }
+
+    /**
+     * set if the app can run
+     * 
+     * @param canRun
+     */
+    public void setRunnable(boolean canRun) {
+        set(CAN_RUN, canRun);
+    }
+
+    /**
+     * check if the app can run
+     * 
+     * @return
+     */
+    public Boolean isRunnable() {
+        return get(CAN_RUN);
     }
 
     /**
