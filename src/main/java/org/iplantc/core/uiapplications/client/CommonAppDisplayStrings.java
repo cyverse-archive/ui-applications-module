@@ -95,4 +95,11 @@ public interface CommonAppDisplayStrings extends CommonUIDisplayStrings {
      * @return a string representing the localized text.
      */
     String searchApps();
+
+    /**
+     * Localized display text for an App Search Results Header.
+     * 
+     * @return a string representing the localized text.
+     */
+    String searchAppResultsHeader(String searchText);
 }

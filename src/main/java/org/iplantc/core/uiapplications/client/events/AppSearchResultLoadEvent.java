@@ -22,10 +22,12 @@ public class AppSearchResultLoadEvent extends GwtEvent<AppSearchResultLoadEventH
     public static final GwtEvent.Type<AppSearchResultLoadEventHandler> TYPE = new GwtEvent.Type<AppSearchResultLoadEventHandler>();
 
     private String tag;
+    private String searchText;
     private List<Analysis> results;
 
-    public AppSearchResultLoadEvent(String tag, List<Analysis> results) {
+    public AppSearchResultLoadEvent(String tag, String searchText, List<Analysis> results) {
         setTag(tag);
+        setSearchText(searchText);
         setResults(results);
     }
 
@@ -45,6 +47,14 @@ public class AppSearchResultLoadEvent extends GwtEvent<AppSearchResultLoadEventH
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
     }
 
     public List<Analysis> getResults() {
