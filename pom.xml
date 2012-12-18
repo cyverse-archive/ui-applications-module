@@ -4,7 +4,7 @@
 	<groupId>org.iplantc.core</groupId>
 	<artifactId>applications</artifactId>
 	<packaging>jar</packaging>
-	<version>dev-SNAPSHOT</version>
+	<version>gxt3Sandbox-SNAPSHOT</version>
 	<name>The iPlant Collaborative Discovery Environment apps models</name>
 	<url>http://project.iplantcollaborative.org</url>
 	<!-- convenience to define GWT version in one place -->
@@ -15,7 +15,7 @@
 		<!-- Current GXT Version -->
 		<gxt.version>3.0.1</gxt.version>
 		<!-- Current GWT Version -->
-		<gwt.version>2.5.0-rc1</gwt.version>
+		<gwt.version>2.5.0</gwt.version>
 		<!-- Define OS/Platform Independent Character Encoding -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -31,6 +31,7 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
+            <scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -56,17 +57,17 @@
 		<dependency>
 			<groupId>org.iplantc.core</groupId>
 			<artifactId>jsonutil</artifactId>
-			<version>dev-SNAPSHOT</version>
+			<version>gxt3Sandbox-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iplantc.core</groupId>
 			<artifactId>ui-commons</artifactId>
-			<version>dev-SNAPSHOT</version>
+			<version>gxt3Sandbox-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>org.iplantc.core</groupId>
             <artifactId>widgets</artifactId>
-            <version>dev-SNAPSHOT</version>
+            <version>gxt3Sandbox-SNAPSHOT</version>
         </dependency>
 		<dependency>
 			<groupId>org.jmock</groupId>
@@ -82,7 +83,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.5.0-rc1</version>
+				<version>${gwt.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -142,19 +143,9 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>gwt-maven</id>
-			<url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
-		</repository>
-		<repository>
 			<id>iplantCollaborative</id>
 			<name>The iPlant Collaborative local repository</name>
-			<url>http://projects.iplantcollaborative.org/archiva/repository/internal/
-			</url>
-		</repository>
-		<repository>
-			<id>sencha-commercial-release</id>
-			<name>Sencha commercial releases</name>
-			<url>https://maven.sencha.com/repo/commercial-release/</url>
+			<url>http://projects.iplantcollaborative.org/archiva/repository/internal/</url>
 		</repository>
 	</repositories>
 </project>

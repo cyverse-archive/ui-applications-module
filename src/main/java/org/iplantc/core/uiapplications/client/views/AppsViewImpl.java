@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
@@ -60,8 +61,8 @@ public class AppsViewImpl implements AppsView {
     @UiField
     Tree<AppGroup, String> tree;
 
-    @UiField(provided = true)
-    final TreeStore<AppGroup> treeStore;
+    @UiField
+    TreeStore<AppGroup> treeStore;
 
     @UiField
     Grid<App> grid;
@@ -69,22 +70,21 @@ public class AppsViewImpl implements AppsView {
     @UiField
     GridView<App> gridView;
 
-    @UiField(provided = true)
-    final ListStore<App> listStore;
+    @UiField
+    ListStore<App> listStore;
 
-    @UiField(provided = true)
-    final ColumnModel<App> cm;
+    @UiField
+    ColumnModel<App> cm;
 
     @UiField
     BorderLayoutContainer con;
 
-    // TODO JDS rename nav, main, and detail panels to east, center, west
     @UiField
-    ContentPanel navPanel;
+    ContentPanel westPanel;
     @UiField
-    ContentPanel mainPanel;
+    ContentPanel centerPanel;
     @UiField
-    ContentPanel detailPanel;
+    ContentPanel eastPanel;
 
     @UiField
     BorderLayoutData northData;
@@ -93,12 +93,8 @@ public class AppsViewImpl implements AppsView {
 
     private final Widget widget;
 
-    public AppsViewImpl(TreeStore<AppGroup> treeStore, ListStore<App> listStore,
-            ColumnModel<App> cm) {
+    public AppsViewImpl() {
         initHandlers();
-        this.treeStore = treeStore;
-        this.listStore = listStore;
-        this.cm = cm;
         this.widget = uiBinder.createAndBindUi(this);
         grid.addCellClickHandler(new CellClickHandler() {
 
@@ -129,6 +125,33 @@ public class AppsViewImpl implements AppsView {
                 });
         setTreeIcons();
         new QuickTip(grid).getToolTipConfig().setTrackMouse(true);
+    }
+
+    @UiFactory
+    TreeStore<AppGroup> createTreeStore() {
+        return new TreeStore<AppGroup>(new ModelKeyProvider<AppGroup>() {
+            @Override
+            public String getKey(AppGroup item) {
+                return item.getId();
+            }
+
+        });
+    }
+
+    @UiFactory
+    ListStore<App> createListStore() {
+        return new ListStore<App>(new ModelKeyProvider<App>() {
+            @Override
+            public String getKey(App item) {
+                return item.getId();
+            }
+
+        });
+    }
+
+    @UiFactory
+    ColumnModel<App> createColumnModel() {
+        return new AppColumnModel();
     }
 
     private void initHandlers() {
@@ -218,27 +241,27 @@ public class AppsViewImpl implements AppsView {
 
     @Override
     public void setCenterPanelHeading(final String name) {
-        mainPanel.setHeadingText(name);
+        centerPanel.setHeadingText(name);
     }
 
     @Override
     public void maskCenterPanel(final String loadingMask) {
-        mainPanel.mask(loadingMask);
+        centerPanel.mask(loadingMask);
     }
 
     @Override
     public void unMaskCenterPanel() {
-        mainPanel.unmask();
+        centerPanel.unmask();
     }
 
     @Override
     public void maskWestPanel(String loadingMask) {
-        navPanel.mask(loadingMask);
+        westPanel.mask(loadingMask);
     }
 
     @Override
     public void unMaskWestPanel() {
-        navPanel.unmask();
+        westPanel.unmask();
     }
 
     @Override

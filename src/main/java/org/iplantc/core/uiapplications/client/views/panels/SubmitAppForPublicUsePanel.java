@@ -60,7 +60,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
     private Button btnSubmit;
     private Button btnCancel;
     private FormPanel form;
-    private final App analysis;
+    private final App app;
     private final AsyncCallback<String> closeCallback;
 
     private CategorySelectionDialog dialog;
@@ -71,13 +71,13 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
     /**
      * Creates a new instance of PublishToWorldPanel
      * 
-     * @param analysis the analysis to make public
+     * @param app the app to make public
      * @param closeCallback a command to execute when one of the buttons is clicked. onSuccess is called
      *            when the publish form is successfully submitted, and onFailure is called when the
      *            publish fails, or the user cancels the form.
      */
-    public SubmitAppForPublicUsePanel(App analysis, AsyncCallback<String> closeCallback) {
-        this.analysis = analysis;
+    public SubmitAppForPublicUsePanel(App app, AsyncCallback<String> closeCallback) {
+        this.app = app;
         this.closeCallback = closeCallback;
         setLayout(new FormLayout());
         initForm();
@@ -111,7 +111,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
     private JSONObject toJson() {
         JSONObject json = new JSONObject();
 
-        json.put("analysis_id", getJsonString(analysis.getId())); //$NON-NLS-1$
+        json.put("analysis_id", getJsonString(app.getId())); //$NON-NLS-1$
         json.put("integrator", getJsonString(integratorNameField.getValue())); //$NON-NLS-1$
         json.put("email", getJsonString(emailField.getValue())); //$NON-NLS-1$
         json.put("desc", getJsonString(descField.getValue())); //$NON-NLS-1$
@@ -210,7 +210,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
         emailField = buildTextField(I18N.DISPLAY.integratorEmail(), false, getEmail(), EMAIL,
                 new BasicEmailValidator(), 256);
 
-        descField = buildTextArea(I18N.DISPLAY.analysisDesc(), true, analysis.getDescription(), DESC,
+        descField = buildTextArea(I18N.DISPLAY.analysisDesc(), true, app.getDescription(), DESC,
                 255);
 
         categoryField = buildCategoryField();
@@ -372,11 +372,11 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
      * Adds a page to the wiki.
      */
     private void createDocumentationPage() {
-        ConfluenceServiceFacade.getInstance().createDocumentationPage(analysis.getName(),
-                analysis.getDescription(), new AsyncCallback<String>() {
+        ConfluenceServiceFacade.getInstance().createDocumentationPage(app.getName(),
+                app.getDescription(), new AsyncCallback<String>() {
                     @Override
                     public void onFailure(Throwable caught) {
-                        ErrorHandler.post(I18N.ERROR.cantCreateConfluencePage(analysis.getName()),
+                        ErrorHandler.post(I18N.ERROR.cantCreateConfluencePage(app.getName()),
                                 caught);
                     }
 

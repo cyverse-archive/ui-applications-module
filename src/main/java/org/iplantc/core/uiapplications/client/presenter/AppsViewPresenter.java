@@ -70,9 +70,6 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  * <li> {@link AppLoadEvent}</li>
  * <ul>
  * 
- * 
- * 
- * 
  * @author jstroot
  * 
  */
@@ -95,7 +92,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
         // Initialize AppGroup TreeStore proxy and loader
         appGroupProxy = new AppGroupProxy();
         toolbar = new AppsViewToolbarImpl();
-        view.setNorthWidget(toolbar);
+        this.view.setNorthWidget(toolbar);
 
         this.view.setPresenter(this);
         this.toolbar.setPresenter(this);
@@ -249,7 +246,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void go(final HasOneWidget container) {
-        container.setWidget(view.asWidget());
+        container.setWidget(view);
 
         // Fetch AppGroups
         appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
