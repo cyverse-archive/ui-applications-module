@@ -3,8 +3,8 @@ package org.iplantc.core.uiapplications.client.views.panels;
 import java.util.Arrays;
 import java.util.List;
 
-import org.iplantc.core.client.widgets.BoundedTextArea;
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uicommons.client.widgets.BoundedTextArea;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.SelectionMode;
