@@ -2,7 +2,6 @@ package org.iplantc.core.uiapplications.client.views.windows;
 
 import org.iplantc.core.client.widgets.BoundedTextArea;
 import org.iplantc.core.client.widgets.BoundedTextField;
-import org.iplantc.core.client.widgets.validator.BasicEmailValidator;
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.events.NewToolRequestSubmitEvent;
@@ -11,6 +10,7 @@ import org.iplantc.core.uiapplications.client.views.windows.validators.BasicUrlV
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.models.UserInfo;
+import org.iplantc.core.uicommons.client.validators.BasicEmailValidator;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Scroll;
