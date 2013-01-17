@@ -37,8 +37,8 @@ import org.iplantc.core.uicommons.client.events.UserEvent;
 import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.presenter.Presenter;
+import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 
-import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -413,8 +413,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                     public void onSuccess(String url) {
                         makePublicWin.hide();
 
-                        MessageBox.info(I18N.DISPLAY.makePublicSuccessTitle(),
-                                I18N.DISPLAY.makePublicSuccessMessage(url), null);
+                        new IplantInfoBox(I18N.DISPLAY.makePublicSuccessTitle(), I18N.DISPLAY.makePublicSuccessMessage(url)).show();
 
                         // Create and fire event
                         AppGroupCountUpdateEvent event = new AppGroupCountUpdateEvent(false,
