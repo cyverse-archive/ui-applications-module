@@ -5,9 +5,8 @@ import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
 import org.iplantc.core.uiapplications.client.I18N;
-import org.iplantc.core.uiapplications.client.events.AppSelectedEvent;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
-import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uiapplications.client.views.AppsView;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
@@ -57,10 +56,12 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     private final Resources resources = GWT.create(Resources.class);
     private final Templates templates = GWT.create(Templates.class);
     private final AppFavoriteCell favoriteCell = new AppFavoriteCell();
+    private final AppsView view;
     private static final String ELEMENT_NAME = "appName";
 
-    public AppHyperlinkCell() {
+    public AppHyperlinkCell(AppsView view) {
         super(CLICK, MOUSEOVER, MOUSEOUT);
+        this.view = view;
         resources.css().ensureInjected();
     }
 
@@ -118,6 +119,6 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     }
 
     private void doOnClick(final Element eventTarget, final App value) {
-        EventBus.getInstance().fireEvent(new AppSelectedEvent(value.getId(), this));
+        view.onAppHyperlinkSelected(value);
     }
 }

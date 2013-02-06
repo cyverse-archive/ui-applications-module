@@ -3,7 +3,6 @@ package org.iplantc.core.uiapplications.client.presenter;
 import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
-import org.iplantc.core.uiapplications.client.Constants;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.events.AppDeleteEvent;
@@ -15,7 +14,6 @@ import org.iplantc.core.uiapplications.client.events.AppLoadEvent;
 import org.iplantc.core.uiapplications.client.events.AppLoadEvent.MODE;
 import org.iplantc.core.uiapplications.client.events.CreateNewAppEvent;
 import org.iplantc.core.uiapplications.client.events.CreateNewWorkflowEvent;
-import org.iplantc.core.uiapplications.client.models.CatalogWindowConfig;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
@@ -33,7 +31,6 @@ import org.iplantc.core.uiapplications.client.views.widgets.events.AppSearch3Res
 import org.iplantc.core.uiapplications.client.views.windows.NewToolRequestWindow;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
-import org.iplantc.core.uicommons.client.events.UserEvent;
 import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.presenter.Presenter;
@@ -66,7 +63,6 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  * <li> {@link AppGroupCountUpdateEvent}</li>
  * <li> {@link CreateNewAppEvent}</li>
  * <li> {@link CreateNewWorkflowEvent}</li>
- * <li> {@link UserEvent}</li>
  * <li> {@link AppLoadEvent}</li>
  * <ul>
  * 
@@ -75,18 +71,18 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  */
 public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsViewToolbar.Presenter {
 
+    private final EventBus eventBus = EventBus.getInstance();
     private static String WORKSPACE;
     private static String FAVORITES;
 
     protected final AppsView view;
 
     private final AppGroupProxy appGroupProxy;
-    private CatalogWindowConfig config;
     private final AppsViewToolbar toolbar;
 
     private String desiredSelectedAppId;
 
-    protected AppsViewPresenter(final AppsView view) {
+    public AppsViewPresenter(final AppsView view) {
         this.view = view;
 
         // Initialize AppGroup TreeStore proxy and loader
@@ -102,7 +98,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     }
 
     private void initHandlers() {
-        EventBus.getInstance().addHandler(AppSearch3ResultSelectedEvent.TYPE,
+        eventBus.addHandler(AppSearch3ResultSelectedEvent.TYPE,
                 new AppSearch3ResultSelectedEventHandler() {
                     @Override
                     public void onSelect(AppSearch3ResultSelectedEvent event) {
@@ -111,14 +107,14 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                     }
 
                 });
-        EventBus.getInstance().addHandler(AppSearch3ResultLoadEvent.TYPE,
+        eventBus.addHandler(AppSearch3ResultLoadEvent.TYPE,
                 new AppSearch3ResultLoadEventHandler() {
                     @Override
                     public void onLoad(AppSearch3ResultLoadEvent event) {
                         view.setApps(event.getResults());
                     }
                 });
-        EventBus.getInstance().addHandler(AppFavoritedEvent.TYPE, new AppFavoritedEventHander() {
+        eventBus.addHandler(AppFavoritedEvent.TYPE, new AppFavoritedEventHander() {
 
             @Override
             public void onAppFavorited(AppFavoritedEvent event) {
@@ -165,11 +161,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     private String getDesiredSelectedApp() {
         return desiredSelectedAppId;
-    }
-
-    public AppsViewPresenter(final AppsView view, final CatalogWindowConfig config) {
-        this(view);
-        this.config = config;
     }
 
     @Override
@@ -245,18 +236,17 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     }
 
     @Override
-    public void go(final HasOneWidget container) {
-        container.setWidget(view);
-
+    public void go(HasOneWidget container, final AppGroup selectedAppGroup, final App selectedApp) {
+        go(container);
         // Fetch AppGroups
         appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
             @Override
             public void onSuccess(List<AppGroup> result) {
                 addAppGroup(null, result);
                 // Select previous user selections
-                if (config != null) {
-                    view.selectAppGroup(config.getCategoryId());
-                    view.selectApp(config.getAppId());
+                if ((selectedAppGroup != null) && (selectedApp != null)) {
+                    view.selectAppGroup(selectedAppGroup.getId());
+                    view.selectApp(selectedApp.getId());
                 } else {
                     view.selectFirstAppGroup();
                 }
@@ -285,6 +275,12 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     }
 
     @Override
+    public void go(final HasOneWidget container) {
+        container.setWidget(view);
+
+    }
+
+    @Override
     public App getSelectedApp() {
         return view.getSelectedApp();
     }
@@ -296,9 +292,13 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void onAppInfoClicked() {
+        showAppInfoWindow(getSelectedApp());
+    }
+
+    private void showAppInfoWindow(App app) {
         Window appInfoWin = new Window();
         appInfoWin.setPixelSize(200, 200);
-        appInfoWin.add(new AppInfoView(getSelectedApp()));
+        appInfoWin.add(new AppInfoView(app));
         appInfoWin.show();
     }
 
@@ -348,7 +348,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                         view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() + 1);
                     }
                     // Open TITO
-                    EventBus.getInstance().fireEvent(new AppLoadEvent(copiedAppId, MODE.EDIT));
+                    eventBus.fireEvent(new AppLoadEvent(copiedAppId, MODE.EDIT));
                 }
             }
 
@@ -390,7 +390,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                                         view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() - 1);
                                     }
 
-                                    EventBus.getInstance().fireEvent(new AppDeleteEvent(app.getId()));
+                                    eventBus.fireEvent(new AppDeleteEvent(app.getId()));
                                 }
                             });
                 }
@@ -418,7 +418,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                         // Create and fire event
                         AppGroupCountUpdateEvent event = new AppGroupCountUpdateEvent(false,
                                 AppGroupType.BETA);
-                        EventBus.getInstance().fireEvent(event);
+                        eventBus.fireEvent(event);
                     }
 
                     @Override
@@ -442,24 +442,23 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void createNewAppClicked() {
-        EventBus.getInstance().fireEvent(new CreateNewAppEvent());
+        eventBus.fireEvent(new CreateNewAppEvent());
     }
 
     @Override
     public void createWorkflowClicked() {
-        EventBus.getInstance().fireEvent(new CreateNewWorkflowEvent());
+        eventBus.fireEvent(new CreateNewWorkflowEvent());
     }
 
     @Override
     public void onAppNameSelected(App app) {
-        UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), app.getId());
-        EventBus.getInstance().fireEvent(e);
+        showAppInfoWindow(app);
     }
 
     @Override
     public void onEditClicked() {
         // Open TITO
-        EventBus.getInstance().fireEvent(new AppLoadEvent(getSelectedApp().getId(), MODE.EDIT));
+        eventBus.fireEvent(new AppLoadEvent(getSelectedApp().getId(), MODE.EDIT));
     }
 
 }
