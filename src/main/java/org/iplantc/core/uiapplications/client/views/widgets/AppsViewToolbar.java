@@ -10,6 +10,23 @@ import com.google.gwt.user.client.ui.IsWidget;
  */
 public interface AppsViewToolbar extends IsWidget {
     public interface Presenter {
+        interface Builder extends org.iplantc.core.uicommons.client.presenter.Presenter {
+            Builder hideToolbarButtonCreate();
+
+            Builder hideToolbarButtonCopy();
+
+            Builder hideToolbarButtonEdit();
+
+            Builder hideToolbarButtonDelete();
+
+            Builder hideToolbarButtonSubmit();
+
+            Builder hideToolbarButtonRequestTool();
+        }
+
+        public Builder builder();
+
+        AppsViewToolbar getToolbar();
 
         void onAppInfoClicked();
 
@@ -40,4 +57,15 @@ public interface AppsViewToolbar extends IsWidget {
 
     void setAppInfoButtonEnabled(boolean enabled);
 
+    void setCreateButtonVisible(boolean visible);
+
+    void setCopyButtonVisible(boolean visible);
+
+    void setEditButtonVisible(boolean visible);
+
+    void setDeleteButtonVisible(boolean visible);
+
+    void setSubmitButtonVisible(boolean visible);
+
+    void setRequestToolButtonVisible(boolean visible);
 }

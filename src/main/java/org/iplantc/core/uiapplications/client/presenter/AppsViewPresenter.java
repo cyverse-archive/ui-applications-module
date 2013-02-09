@@ -76,6 +76,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     private static String FAVORITES;
 
     protected final AppsView view;
+    protected Builder builder;
 
     private final AppGroupProxy appGroupProxy;
     private final AppsViewToolbar toolbar;
@@ -84,6 +85,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     public AppsViewPresenter(final AppsView view) {
         this.view = view;
+
+        builder = new MyBuilder(this);
 
         // Initialize AppGroup TreeStore proxy and loader
         appGroupProxy = new AppGroupProxy();
@@ -461,4 +464,64 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
         eventBus.fireEvent(new AppLoadEvent(getSelectedApp().getId(), MODE.EDIT));
     }
 
+    @Override
+    public AppsViewToolbar getToolbar() {
+        return toolbar;
+    }
+
+    @Override
+    public Builder builder() {
+        return builder;
+    }
+
+    private class MyBuilder implements Builder {
+
+        private final AppsViewPresenter presenter;
+
+        MyBuilder(AppsViewPresenter presenter) {
+            this.presenter = presenter;
+        }
+
+        @Override
+        public void go(HasOneWidget container) {
+            presenter.go(container);
+        }
+
+        @Override
+        public Builder hideToolbarButtonCreate() {
+            presenter.getToolbar().setCreateButtonVisible(false);
+            return this;
+        }
+
+        @Override
+        public Builder hideToolbarButtonCopy() {
+            presenter.getToolbar().setCopyButtonVisible(false);
+            return this;
+        }
+
+        @Override
+        public Builder hideToolbarButtonEdit() {
+            presenter.getToolbar().setEditButtonVisible(false);
+            return this;
+        }
+
+        @Override
+        public Builder hideToolbarButtonDelete() {
+            presenter.getToolbar().setDeleteButtonVisible(false);
+            return this;
+        }
+
+        @Override
+        public Builder hideToolbarButtonSubmit() {
+            presenter.getToolbar().setSubmitButtonVisible(false);
+            return this;
+        }
+
+        @Override
+        public Builder hideToolbarButtonRequestTool() {
+            presenter.getToolbar().setRequestToolButtonVisible(false);
+            return this;
+        }
+
+    }
 }
