@@ -1,9 +1,9 @@
 package org.iplantc.core.uiapplications.client.models.autobeans;
 
-import org.iplantc.core.client.widgets.validator.BasicEmailValidator3;
 import org.iplantc.core.uiapplications.client.Constants;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uicommons.client.util.RegExp;
+import org.iplantc.core.uicommons.client.validators.BasicEmailValidator3;
 
 import com.extjs.gxt.ui.client.util.Format;
 import com.sencha.gxt.widget.core.client.form.validator.RegExValidator;

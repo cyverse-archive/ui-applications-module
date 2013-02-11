@@ -24,6 +24,9 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     private Presenter presenter;
 
     @UiField
+    TextButton create;
+
+    @UiField
     MenuItem createNewApp;
 
     @UiField
@@ -127,6 +130,36 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     @Override
     public void setAppInfoButtonEnabled(boolean enabled) {
         appInfo.setEnabled(enabled);
+    }
+
+    @Override
+    public void setCreateButtonVisible(boolean visible) {
+        create.setVisible(visible);
+    }
+
+    @Override
+    public void setCopyButtonVisible(boolean visible) {
+        copy.setVisible(visible);
+    }
+
+    @Override
+    public void setEditButtonVisible(boolean visible) {
+        edit.setVisible(visible);
+    }
+
+    @Override
+    public void setDeleteButtonVisible(boolean visible) {
+        delete.setVisible(visible);
+    }
+
+    @Override
+    public void setSubmitButtonVisible(boolean visible) {
+        submit.setVisible(visible);
+    }
+
+    @Override
+    public void setRequestToolButtonVisible(boolean visible) {
+        requestTool.setVisible(visible);
     }
 
 }

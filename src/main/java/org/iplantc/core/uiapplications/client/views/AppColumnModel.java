@@ -19,11 +19,12 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 public class AppColumnModel extends ColumnModel<App> {
 
 
-    public AppColumnModel() {
-        super(createColumnConfigList());
+    public AppColumnModel(AppsView view) {
+        super(createColumnConfigList(view));
+
     }
 
-    public static List<ColumnConfig<App, ?>> createColumnConfigList() {
+    public static List<ColumnConfig<App, ?>> createColumnConfigList(AppsView view) {
         AppProperties props = GWT.create(AppProperties.class);
         List<ColumnConfig<App, ?>> list = new ArrayList<ColumnConfig<App, ?>>();
 
@@ -47,7 +48,7 @@ public class AppColumnModel extends ColumnModel<App> {
         rating.setFixed(true);
 
         run.setCell(new AppRunCell());
-        name.setCell(new AppHyperlinkCell());
+        name.setCell(new AppHyperlinkCell(view));
         rating.setCell(new AppRatingCell());
 
         rating.setAlignment(HasHorizontalAlignment.ALIGN_CENTER);

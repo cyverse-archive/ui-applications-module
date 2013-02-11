@@ -1,8 +1,5 @@
 package org.iplantc.core.uiapplications.client.views.windows;
 
-import org.iplantc.core.client.widgets.BoundedTextArea;
-import org.iplantc.core.client.widgets.BoundedTextField;
-import org.iplantc.core.client.widgets.validator.BasicEmailValidator;
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.events.NewToolRequestSubmitEvent;
@@ -11,6 +8,11 @@ import org.iplantc.core.uiapplications.client.views.windows.validators.BasicUrlV
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.models.UserInfo;
+import org.iplantc.core.uicommons.client.validators.BasicEmailValidator;
+import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantAutoProgressMessageBox;
+import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
+import org.iplantc.core.uicommons.client.widgets.BoundedTextArea;
+import org.iplantc.core.uicommons.client.widgets.BoundedTextField;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -19,7 +21,6 @@ import com.extjs.gxt.ui.client.event.Events;
 import com.extjs.gxt.ui.client.event.FormEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.TabPanel;
 import com.extjs.gxt.ui.client.widget.button.Button;
@@ -104,7 +105,7 @@ public class ToolRequestFormPanel extends LayoutContainer {
     private TabItem toolInfo;
     private TabItem otherInfo;
 
-    private MessageBox wait;
+    private IplantAutoProgressMessageBox wait;
 
     private TabPanel tabs;
 
@@ -143,7 +144,7 @@ public class ToolRequestFormPanel extends LayoutContainer {
                 EventBus.getInstance().fireEvent(event);
 
                 if (wait != null) {
-                    wait.close();
+                    wait.hide();
                 }
 
                 processResults(be.getResultHtml());
@@ -156,7 +157,7 @@ public class ToolRequestFormPanel extends LayoutContainer {
                     String error = JsonUtil.getString(JsonUtil.getObject(resultHtml), "error"); //$NON-NLS-1$
                     ErrorHandler.post(I18N.ERROR.newToolRequestError(), new Exception(error));
                 } else {
-                    MessageBox.info(I18N.DISPLAY.success(), I18N.DISPLAY.requestConfirmMsg(), null);
+                    new IplantInfoBox(I18N.DISPLAY.success(), I18N.DISPLAY.requestConfirmMsg()).show();
                 }
 
             }
@@ -440,8 +441,7 @@ public class ToolRequestFormPanel extends LayoutContainer {
             otherInfo.remove(addnlUpldField);
         }
 
-        wait = MessageBox.wait(I18N.DISPLAY.progress(), I18N.DISPLAY.submitRequest(),
-                I18N.DISPLAY.submitting());
+        wait = new IplantAutoProgressMessageBox(I18N.DISPLAY.progress(), I18N.DISPLAY.submitRequest(), I18N.DISPLAY.submitting());
         form.submit();
     }
 

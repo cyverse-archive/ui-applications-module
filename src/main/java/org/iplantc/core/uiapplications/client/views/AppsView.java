@@ -5,6 +5,7 @@ import java.util.List;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
 
+import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.TreeStore;
@@ -25,6 +26,8 @@ public interface AppsView extends IsWidget {
         AppGroup getSelectedAppGroup();
 
         void onAppNameSelected(App app);
+
+        void go(HasOneWidget container, AppGroup selectedAppGroup, App selectedApp);
     }
 
     void setPresenter(final Presenter presenter);
@@ -76,4 +79,6 @@ public interface AppsView extends IsWidget {
     void updateAppGroupAppCount(AppGroup appGroup, int newCount);
 
     App findApp(String appId);
+
+    void onAppHyperlinkSelected(App app);
 }

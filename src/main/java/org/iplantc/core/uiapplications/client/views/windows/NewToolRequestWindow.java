@@ -6,13 +6,30 @@ import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.events.NewToolRequestSubmitEvent;
 import org.iplantc.core.uiapplications.client.events.handlers.NewToolRequestSubmitEventHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uicommons.client.views.dialogs.IPlantDialog;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.sencha.gxt.widget.core.client.ContentPanel;
+import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
+import com.sencha.gxt.widget.core.client.form.FieldSet;
 
+/**
+ * TODO JDS This class needs to be refactored into an {@link IPlantDialog}-derived class
+ * 
+ * There has also been discussion of redesigning this class to move away from the tabbed interface.
+ * Instead, we would use {@link FieldSet}s, {@link ContentPanel}s, or {@link AccordionLayoutContainer}s.
+ * 
+ * Additionally, given the work which is going into de-widgets regarding form/field validation, this
+ * class could stand to benefit from that work.
+ * 
+ * @author jstroot
+ * 
+ */
+@Deprecated
 public class NewToolRequestWindow extends Window {
 
     private final ToolRequestFormPanel requestForm;

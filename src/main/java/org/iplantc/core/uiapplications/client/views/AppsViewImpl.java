@@ -2,14 +2,10 @@ package org.iplantc.core.uiapplications.client.views;
 
 import java.util.List;
 
-import org.iplantc.core.uiapplications.client.events.AppSelectedEvent;
-import org.iplantc.core.uiapplications.client.events.handlers.AppSelectedEventHandler;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
-import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.images.Resources;
 
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -30,7 +26,6 @@ import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
 import com.sencha.gxt.widget.core.client.event.CellClickEvent;
 import com.sencha.gxt.widget.core.client.event.CellClickEvent.CellClickHandler;
-import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.GridView;
@@ -94,7 +89,6 @@ public class AppsViewImpl implements AppsView {
     private final Widget widget;
 
     public AppsViewImpl() {
-        initHandlers();
         this.widget = uiBinder.createAndBindUi(this);
         grid.addCellClickHandler(new CellClickHandler() {
 
@@ -151,37 +145,7 @@ public class AppsViewImpl implements AppsView {
 
     @UiFactory
     ColumnModel<App> createColumnModel() {
-        return new AppColumnModel();
-    }
-
-    private void initHandlers() {
-        EventBus.getInstance().addHandler(AppSelectedEvent.TYPE, new AppSelectedEventHandler() {
-
-            @Override
-            public void onSelection(AppSelectedEvent event) {
-                Cell cell = null;
-                // Determine if the event source is our cell
-                for (ColumnConfig<App, ?> col : grid.getColumnModel().getColumns()) {
-                    if (col.getCell() == event.getSource()) {
-                        cell = col.getCell();
-                        break;
-                    }
-                }
-                if (cell == null)
-                    return;
-
-                // if (event.getSource() == grid.getColumnModel().getCell(1)) {
-                    // Retrieve app
-                    App app = listStore.findModelWithKey(event.getAppId());
-                    if (app != null) {
-                        presenter.onAppNameSelected(app);
-                    } else {
-                        // TODO JDS Determine what error to throw here.
-                    }
-                // }
-            }
-        });
-
+        return new AppColumnModel(this);
     }
 
     /**
@@ -366,6 +330,11 @@ public class AppsViewImpl implements AppsView {
     @Override
     public App findApp(String appId) {
         return listStore.findModelWithKey(appId);
+    }
+
+    @Override
+    public void onAppHyperlinkSelected(App app) {
+        presenter.onAppNameSelected(app);
     }
 
 }

@@ -34,7 +34,8 @@
   
    <toolbar:ToolBar ui:field="toolBar">
       <toolbar:child layoutData="{boxDataNoFlex}">
-         <button:TextButton text="{strings.create}"
+         <button:TextButton ui:field="create"
+                            text="{strings.create}"
                             debugId="idCreateBtn"
                             icon="{icons.add}">
             <button:menu>

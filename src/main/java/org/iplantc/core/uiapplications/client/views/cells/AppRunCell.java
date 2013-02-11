@@ -2,11 +2,10 @@ package org.iplantc.core.uiapplications.client.views.cells;
 
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 
-import org.iplantc.core.uiapplications.client.Constants;
 import org.iplantc.core.uiapplications.client.I18N;
+import org.iplantc.core.uiapplications.client.events.RunAppEvent;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uicommons.client.events.EventBus;
-import org.iplantc.core.uicommons.client.events.UserEvent;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
@@ -94,8 +93,7 @@ public class AppRunCell extends AbstractCell<App> {
     }
 
     private void doOnClick(Element eventTarget, App value) {
-        UserEvent e = new UserEvent(Constants.CLIENT.windowTag(), value.getId());
-        EventBus.getInstance().fireEvent(e);
+        EventBus.getInstance().fireEvent(new RunAppEvent(value));
     }
 
 }

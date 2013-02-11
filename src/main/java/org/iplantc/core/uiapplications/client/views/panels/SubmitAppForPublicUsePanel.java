@@ -2,10 +2,6 @@ package org.iplantc.core.uiapplications.client.views.panels;
 
 import java.util.List;
 
-import org.iplantc.core.client.widgets.BoundedTextArea;
-import org.iplantc.core.client.widgets.BoundedTextField;
-import org.iplantc.core.client.widgets.utils.FormLabel;
-import org.iplantc.core.client.widgets.validator.BasicEmailValidator;
 import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.Services;
 import org.iplantc.core.uiapplications.client.models.AnalysisGroupTreeModel;
@@ -15,6 +11,10 @@ import org.iplantc.core.uiapplications.client.views.dialogs.CategorySelectionDia
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.UserInfo;
+import org.iplantc.core.uicommons.client.validators.BasicEmailValidator;
+import org.iplantc.core.uicommons.client.widgets.BoundedTextArea;
+import org.iplantc.core.uicommons.client.widgets.BoundedTextField;
+import org.iplantc.core.uicommons.client.widgets.FormLabel;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
