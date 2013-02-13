@@ -1,10 +1,22 @@
 package org.iplantc.core.uiapplications.client.events;
 
-import org.iplantc.core.uiapplications.client.events.handlers.CreateNewAppEventHandler;
+import org.iplantc.core.uiapplications.client.events.CreateNewAppEvent.CreateNewAppEventHandler;
 
+import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 public class CreateNewAppEvent extends GwtEvent<CreateNewAppEventHandler> {
+
+    public interface CreateNewAppEventHandler extends EventHandler {
+
+        /**
+         * Fired when a user wants to create a new app.
+         * 
+         * @param event
+         */
+        void createNewApp(CreateNewAppEvent event);
+
+    }
 
     public static final GwtEvent.Type<CreateNewAppEventHandler> TYPE = new GwtEvent.Type<CreateNewAppEventHandler>();
 
@@ -15,7 +27,7 @@ public class CreateNewAppEvent extends GwtEvent<CreateNewAppEventHandler> {
 
     @Override
     protected void dispatch(CreateNewAppEventHandler handler) {
-        handler.createNewApp();
+        handler.createNewApp(this);
     }
 
 }

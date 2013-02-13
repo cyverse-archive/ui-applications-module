@@ -14,4 +14,6 @@ public interface CommonAppErrorStrings extends CommonUIErrorStrings {
     String newToolRequestError();
 
     String appRemoveFailure();
+
+    String failToRetrieveApp();
 }
