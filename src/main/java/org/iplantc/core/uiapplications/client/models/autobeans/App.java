@@ -1,6 +1,7 @@
 package org.iplantc.core.uiapplications.client.models.autobeans;
 
 import java.util.Date;
+import java.util.List;
 
 import org.iplantc.core.uicommons.client.models.HasId;
 
@@ -83,4 +84,12 @@ public interface App extends HasId {
 
     @PropertyName("group_name")
     void setGroupName(String groupName);
+
+    List<AppDataObject> getInputs();
+
+    void setInputs(List<AppDataObject> inputs);
+
+    List<AppDataObject> getOutputs();
+
+    void setOutputs(List<AppDataObject> outputs);
 }
