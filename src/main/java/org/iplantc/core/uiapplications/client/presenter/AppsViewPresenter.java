@@ -243,7 +243,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void go(HasOneWidget container, final AppGroup selectedAppGroup, final App selectedApp) {
-        go(container);
+        container.setWidget(view);
+
         // Fetch AppGroups
         appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
             @Override
@@ -282,8 +283,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void go(final HasOneWidget container) {
-        container.setWidget(view);
-
+        go(container, null, null);
     }
 
     @Override
@@ -507,6 +507,11 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
         @Override
         public void go(HasOneWidget container) {
             presenter.go(container);
+        }
+
+        @Override
+        public void go(HasOneWidget container, AppGroup selectedAppGroup, App selectedApp) {
+            presenter.go(container, selectedAppGroup, selectedApp);
         }
 
         @Override

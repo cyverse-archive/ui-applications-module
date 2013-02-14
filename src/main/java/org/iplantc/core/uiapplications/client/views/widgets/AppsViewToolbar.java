@@ -1,5 +1,9 @@
 package org.iplantc.core.uiapplications.client.views.widgets;
 
+import org.iplantc.core.uiapplications.client.models.autobeans.App;
+import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
+
+import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 
 /**
@@ -22,6 +26,8 @@ public interface AppsViewToolbar extends IsWidget {
             Builder hideToolbarButtonSubmit();
 
             Builder hideToolbarButtonRequestTool();
+
+            void go(HasOneWidget container, final AppGroup selectedAppGroup, final App selectedApp);
         }
 
         public Builder builder();
