@@ -337,4 +337,9 @@ public class AppsViewImpl implements AppsView {
         presenter.onAppNameSelected(app);
     }
 
+    @Override
+    public Grid<App> getAppsGrid() {
+        return grid;
+    }
+
 }

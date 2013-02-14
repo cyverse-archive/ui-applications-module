@@ -13,6 +13,7 @@ import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
 import com.sencha.gxt.data.shared.loader.ListLoader;
 import com.sencha.gxt.data.shared.loader.TreeLoader;
+import com.sencha.gxt.widget.core.client.grid.Grid;
 
 public interface AppsView extends IsWidget {
 
@@ -81,4 +82,6 @@ public interface AppsView extends IsWidget {
     App findApp(String appId);
 
     void onAppHyperlinkSelected(App app);
+
+    Grid<App> getAppsGrid();
 }
