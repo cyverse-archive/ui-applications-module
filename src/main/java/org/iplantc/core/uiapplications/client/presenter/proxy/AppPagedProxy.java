@@ -17,7 +17,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.data.client.loader.RpcProxy;
-import com.sencha.gxt.data.shared.SortDir;
 import com.sencha.gxt.data.shared.SortInfo;
 import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
@@ -42,14 +41,9 @@ class AppPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<App>> {
         if ((sortInfoList != null) && !sortInfoList.isEmpty()) {
             sortInfo = sortInfoList.get(0);
         }
-        // TODO JDS - This type conversion won't be necessary if we can change the type of SortDir in
-        // TemplateServiceFacade.getPagedAnalysis(...)
-        com.extjs.gxt.ui.client.Style.SortDir sortDir = ((sortInfo != null) && sortInfo.getSortDir()
-                .equals(SortDir.ASC)) ? com.extjs.gxt.ui.client.Style.SortDir.ASC
-                : com.extjs.gxt.ui.client.Style.SortDir.DESC;
 
         String sortField = (sortInfo == null) ? "name" : sortInfo.getSortField();
-        service.getPagedApps(currentAg.getId(), limit, sortField, offset, sortDir,
+        service.getPagedApps(currentAg.getId(), limit, sortField, offset, sortInfo.getSortDir(),
                 new AsyncCallback<String>() {
 
                     @Override

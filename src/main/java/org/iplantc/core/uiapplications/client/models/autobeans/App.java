@@ -1,10 +1,13 @@
 package org.iplantc.core.uiapplications.client.models.autobeans;
 
 import java.util.Date;
+import java.util.List;
+
+import org.iplantc.core.uicommons.client.models.HasId;
 
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
-public interface App {
+public interface App extends HasId {
     
     @PropertyName("is_favorite")
     boolean isFavorite();
@@ -30,8 +33,6 @@ public interface App {
     
     @PropertyName("integrator_email")
     String getIntegratorEmail();
-    
-    String getId();
     
     boolean isDisabled();
 
@@ -83,4 +84,12 @@ public interface App {
 
     @PropertyName("group_name")
     void setGroupName(String groupName);
+
+    List<AppDataObject> getInputs();
+
+    void setInputs(List<AppDataObject> inputs);
+
+    List<AppDataObject> getOutputs();
+
+    void setOutputs(List<AppDataObject> outputs);
 }

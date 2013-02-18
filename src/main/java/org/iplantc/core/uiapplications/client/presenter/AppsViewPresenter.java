@@ -10,10 +10,9 @@ import org.iplantc.core.uiapplications.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapplications.client.events.AppFavoritedEventHander;
 import org.iplantc.core.uiapplications.client.events.AppGroupCountUpdateEvent;
 import org.iplantc.core.uiapplications.client.events.AppGroupCountUpdateEvent.AppGroupType;
-import org.iplantc.core.uiapplications.client.events.AppLoadEvent;
-import org.iplantc.core.uiapplications.client.events.AppLoadEvent.MODE;
 import org.iplantc.core.uiapplications.client.events.CreateNewAppEvent;
 import org.iplantc.core.uiapplications.client.events.CreateNewWorkflowEvent;
+import org.iplantc.core.uiapplications.client.events.EditAppEvent;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
@@ -31,7 +30,9 @@ import org.iplantc.core.uiapplications.client.views.widgets.events.AppSearch3Res
 import org.iplantc.core.uiapplications.client.views.windows.NewToolRequestWindow;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uicommons.client.models.CommonModelAutoBeanFactory;
 import org.iplantc.core.uicommons.client.models.DEProperties;
+import org.iplantc.core.uicommons.client.models.HasId;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.presenter.Presenter;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
@@ -44,6 +45,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.google.web.bindery.autobean.shared.Splittable;
+import com.google.web.bindery.autobean.shared.impl.StringQuoter;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.Window;
@@ -58,12 +61,10 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  * <p>
  * Events fired from this presenter:
  * <ul>
- * <li> {@link AppLoadEvent}</li>
  * <li> {@link AppDeleteEvent}</li>
  * <li> {@link AppGroupCountUpdateEvent}</li>
  * <li> {@link CreateNewAppEvent}</li>
  * <li> {@link CreateNewWorkflowEvent}</li>
- * <li> {@link AppLoadEvent}</li>
  * <ul>
  * 
  * @author jstroot
@@ -82,6 +83,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     private final AppsViewToolbar toolbar;
 
     private String desiredSelectedAppId;
+
+    private final CommonModelAutoBeanFactory factory = GWT.create(CommonModelAutoBeanFactory.class);
 
     public AppsViewPresenter(final AppsView view) {
         this.view = view;
@@ -240,7 +243,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void go(HasOneWidget container, final AppGroup selectedAppGroup, final App selectedApp) {
-        go(container);
+        container.setWidget(view);
+
         // Fetch AppGroups
         appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
             @Override
@@ -279,8 +283,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void go(final HasOneWidget container) {
-        container.setWidget(view);
-
+        go(container, null, null);
     }
 
     @Override
@@ -339,9 +342,12 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
         Services.USER_APP_SERVICE.copyApp(app.getId(), new AsyncCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                String copiedAppId = JsonUtil.getString(JsonUtil.getObject(result), "analysis_id"); //$NON-NLS-1$
+                Splittable splitResult = StringQuoter.createSplittable();
+                StringQuoter.split(result).get("analysis_id").assign(splitResult, "id");
 
-                if (!copiedAppId.isEmpty()) {
+                AutoBean<HasId> hasId = AutoBeanCodex.decode(factory, HasId.class, splitResult);
+
+                if (!hasId.as().getId().isEmpty()) {
                     AppGroup selectedAppGroup = getSelectedAppGroup();
                     if (selectedAppGroup != null) {
                         fetchApps(selectedAppGroup);
@@ -350,14 +356,31 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                     if (appGroup != null) {
                         view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() + 1);
                     }
-                    // Open TITO
-                    eventBus.fireEvent(new AppLoadEvent(copiedAppId, MODE.EDIT));
+                    eventBus.fireEvent(new EditAppEvent(hasId.as()));
+                    fetchTemplateAndFireEditAppEvent(hasId.as());
                 }
             }
+
 
             @Override
             public void onFailure(Throwable caught) {
                 ErrorHandler.post(caught);
+            }
+        });
+    }
+
+    private void fetchTemplateAndFireEditAppEvent(final HasId app) {
+        Services.USER_APP_SERVICE.getTemplate(app.getId(), new AsyncCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+                Splittable legacyAppTemplate = StringQuoter.split(result);
+                eventBus.fireEvent(new EditAppEvent(app, legacyAppTemplate));
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+                ErrorHandler.post(I18N.ERROR.failToRetrieveApp(), caught);
             }
         });
     }
@@ -460,8 +483,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void onEditClicked() {
-        // Open TITO
-        eventBus.fireEvent(new AppLoadEvent(getSelectedApp().getId(), MODE.EDIT));
+        fetchTemplateAndFireEditAppEvent(getSelectedApp());
     }
 
     @Override
@@ -485,6 +507,11 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
         @Override
         public void go(HasOneWidget container) {
             presenter.go(container);
+        }
+
+        @Override
+        public void go(HasOneWidget container, AppGroup selectedAppGroup, App selectedApp) {
+            presenter.go(container, selectedAppGroup, selectedApp);
         }
 
         @Override

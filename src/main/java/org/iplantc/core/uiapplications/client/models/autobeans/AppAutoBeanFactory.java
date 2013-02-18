@@ -11,6 +11,10 @@ public interface AppAutoBeanFactory extends AutoBeanFactory {
 
     AutoBean<PipelineEligibility> pipelineEligibility();
 
+    AutoBean<AppDataObject> appDataObject();
+
+    AutoBean<DataObject> dataObject();
+
     AutoBean<AppList> appList();
 
     AutoBean<AppGroup> appGroup();

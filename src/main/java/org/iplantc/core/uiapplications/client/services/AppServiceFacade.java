@@ -1,8 +1,8 @@
 package org.iplantc.core.uiapplications.client.services;
 
 
-import com.extjs.gxt.ui.client.Style.SortDir;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sencha.gxt.data.shared.SortDir;
 
 /**
  * An interface that provides access to remote services related to apps.
