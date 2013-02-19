@@ -302,9 +302,13 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     }
 
     private void showAppInfoWindow(App app) {
-        Window appInfoWin = new Window();
-        appInfoWin.setPixelSize(200, 200);
+        Dialog appInfoWin = new Dialog();
+        appInfoWin.setModal(true);
+        appInfoWin.setResizable(false);
+        appInfoWin.setHeadingText(app.getName());
+        appInfoWin.setPixelSize(450, 300);
         appInfoWin.add(new AppInfoView(app));
+        appInfoWin.getButtonBar().clear();
         appInfoWin.show();
     }
 
