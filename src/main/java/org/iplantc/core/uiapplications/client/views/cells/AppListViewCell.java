@@ -6,14 +6,19 @@ import org.iplantc.core.uiapplications.client.I18N;
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.views.widgets.events.AppSearch3ResultSelectedEvent;
 import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uicommons.client.models.CommonModelAutoBeanFactory;
+import org.iplantc.core.uicommons.client.models.HasId;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.ValueUpdater;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Event;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
 /**
  * TODO JDS This cell needs to be refactored to use safehtml templates.
@@ -22,6 +27,8 @@ import com.google.gwt.user.client.Event;
  * 
  */
 public class AppListViewCell extends AbstractCell<App> {
+
+    private final CommonModelAutoBeanFactory factory = GWT.create(CommonModelAutoBeanFactory.class);
 
     public AppListViewCell() {
         super(CLICK);
@@ -55,30 +62,6 @@ public class AppListViewCell extends AbstractCell<App> {
         sb.append(SafeHtmlUtils.fromTrustedString("</h4>"));
         sb.append(SafeHtmlUtils.fromTrustedString("</div>"));
     
-        //            template.append("<tpl for=\".\"><div class=\"search-item\">"); //$NON-NLS-1$
-        //
-        //            template.append("<h3>"); //$NON-NLS-1$
-        //
-        //            template.append("<tpl if=\"is_favorite\">"); //$NON-NLS-1$
-        //            template.append("<img src='./images/fav.png'></img> &nbsp;"); //$NON-NLS-1$
-        //            template.append("</tpl>"); //$NON-NLS-1$
-        //
-        //            template.append("{name}"); //$NON-NLS-1$
-        //
-        //            template.append("<span><b>"); //$NON-NLS-1$
-        // template.append(I18N.DISPLAY.avgRating());
-        //            template.append(":</b> {average} "); //$NON-NLS-1$
-        // template.append(I18N.DISPLAY.ratingOutOfTotal());
-        //            template.append("</span>"); //$NON-NLS-1$
-        //
-        //            template.append("</h3>"); //$NON-NLS-1$
-        //
-        //            template.append("<h4>"); //$NON-NLS-1$
-        //            template.append("<span>{group_name}</span>"); //$NON-NLS-1$
-        //            template.append("<br />{description}"); //$NON-NLS-1$
-        //            template.append("</h4>"); //$NON-NLS-1$
-        //
-        //            template.append("</div></tpl>"); //$NON-NLS-1$
     }
     @Override
     public void onBrowserEvent(Context context, Element parent, App value, NativeEvent event,
@@ -90,8 +73,8 @@ public class AppListViewCell extends AbstractCell<App> {
         Element eventTarget = Element.as(event.getEventTarget());
         if (parent.isOrHasChild(eventTarget)) {
             if (Event.as(event).getTypeInt() == Event.ONCLICK) {
-                EventBus.getInstance().fireEvent(
-                        new AppSearch3ResultSelectedEvent(value.getId(), value.getGroupId()));
+                AutoBean<HasId> hasId = AutoBeanCodex.decode(factory, HasId.class, "{\"id\": \"" + value.getGroupId() + "\"}");
+                EventBus.getInstance().fireEvent(new AppSearch3ResultSelectedEvent(value, hasId.as()));
             }
         }
     }

@@ -82,7 +82,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     private final AppGroupProxy appGroupProxy;
     private final AppsViewToolbar toolbar;
 
-    private String desiredSelectedAppId;
+    private HasId desiredSelectedAppId;
 
     private final CommonModelAutoBeanFactory factory = GWT.create(CommonModelAutoBeanFactory.class);
 
@@ -109,7 +109,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                     @Override
                     public void onSelect(AppSearch3ResultSelectedEvent event) {
                         setDesiredSelectedApp(event.getAppId());
-                        view.selectAppGroup(event.getAppGroupId());
+                        view.selectAppGroup(event.getAppGroupId().getId());
                     }
 
                 });
@@ -159,13 +159,13 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     /**
      * Sets a string which is a place holder for selection after a call to {@link #fetchApps(AppGroup)}
      * 
-     * @param appId
+     * @param selectedApp
      */
-    private void setDesiredSelectedApp(String appId) {
-        this.desiredSelectedAppId = appId;
+    private void setDesiredSelectedApp(HasId selectedApp) {
+        this.desiredSelectedAppId = selectedApp;
     }
 
-    private String getDesiredSelectedApp() {
+    private HasId getDesiredSelectedApp() {
         return desiredSelectedAppId;
     }
 
@@ -219,8 +219,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                 AutoBean<AppList> bean = AutoBeanCodex.decode(factory, AppList.class, result);
                 view.setApps(bean.as().getApps());
 
-                if ((getDesiredSelectedApp() != null) && (!getDesiredSelectedApp().isEmpty())) {
-                    view.selectApp(getDesiredSelectedApp());
+                if (getDesiredSelectedApp() != null) {
+                    view.selectApp(getDesiredSelectedApp().getId());
                 } else {
                     selectFirstApp();
                 }
@@ -242,7 +242,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     }
 
     @Override
-    public void go(HasOneWidget container, final AppGroup selectedAppGroup, final App selectedApp) {
+    public void go(HasOneWidget container, final HasId selectedAppGroup, final HasId selectedApp) {
         container.setWidget(view);
 
         // Fetch AppGroups
@@ -253,7 +253,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
                 // Select previous user selections
                 if ((selectedAppGroup != null) && (selectedApp != null)) {
                     view.selectAppGroup(selectedAppGroup.getId());
-                    view.selectApp(selectedApp.getId());
+                    AppsViewPresenter.this.setDesiredSelectedApp(selectedApp);
+                    // view.selectApp(selectedApp.getId());
                 } else {
                     view.selectFirstAppGroup();
                 }

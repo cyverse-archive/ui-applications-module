@@ -2,11 +2,13 @@ package org.iplantc.core.uiapplications.client.models.autobeans;
 
 import java.util.List;
 
+import org.iplantc.core.uicommons.client.models.HasDescription;
+import org.iplantc.core.uicommons.client.models.HasId;
+
+import com.google.gwt.user.client.ui.HasName;
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
-public interface AppGroup {
-
-    String getName();
+public interface AppGroup extends HasId, HasName, HasDescription {
 
     @PropertyName("template_count")
     int getAppCount();
@@ -18,12 +20,6 @@ public interface AppGroup {
 
     @PropertyName("workspace_id")
     String getWorkspaceId();
-
-    String getId();
-
-    String getDescription();
-
-    void setName(String name);
 
     @PropertyName("template_count")
     void setAppCount(int templateCount);
@@ -37,7 +33,5 @@ public interface AppGroup {
     void setWorkspaceId(String workspaceId);
 
     void setId(String id);
-
-    void setDescription(String description);
 
 }

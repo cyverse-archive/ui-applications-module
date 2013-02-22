@@ -1,5 +1,7 @@
 package org.iplantc.core.uiapplications.client.views.widgets.events;
 
+import org.iplantc.core.uicommons.client.models.HasId;
+
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
@@ -11,10 +13,10 @@ import com.google.gwt.event.shared.GwtEvent;
 public class AppSearch3ResultSelectedEvent extends GwtEvent<AppSearch3ResultSelectedEventHandler> {
 
     public static final GwtEvent.Type<AppSearch3ResultSelectedEventHandler> TYPE = new GwtEvent.Type<AppSearch3ResultSelectedEventHandler>();
-    private final String appId;
-    private final String appGroupId;
+    private final HasId appId;
+    private final HasId appGroupId;
 
-    public AppSearch3ResultSelectedEvent(String appId, String appGroupId) {
+    public AppSearch3ResultSelectedEvent(HasId appId, HasId appGroupId) {
         this.appId = appId;
         this.appGroupId = appGroupId;
     }
@@ -29,11 +31,11 @@ public class AppSearch3ResultSelectedEvent extends GwtEvent<AppSearch3ResultSele
         handler.onSelect(this);
     }
 
-    public String getAppId() {
+    public HasId getAppId() {
         return appId;
     }
 
-    public String getAppGroupId() {
+    public HasId getAppGroupId() {
         return appGroupId;
     }
 }

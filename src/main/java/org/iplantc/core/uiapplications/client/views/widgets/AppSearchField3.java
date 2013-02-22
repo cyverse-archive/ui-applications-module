@@ -11,6 +11,8 @@ import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppLoadConfig;
 import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppSearchAutoBeanFactory;
 import org.iplantc.core.uiapplications.client.views.widgets.proxy.AppSearchRpcProxy3;
 import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uicommons.client.models.CommonModelAutoBeanFactory;
+import org.iplantc.core.uicommons.client.models.HasId;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
@@ -19,6 +21,8 @@ import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.data.shared.ListStore;
@@ -34,6 +38,7 @@ import com.sencha.gxt.widget.core.client.form.ComboBox;
 public class AppSearchField3 implements IsWidget {
 
     private ComboBox<App> combo;
+    private final CommonModelAutoBeanFactory factory = GWT.create(CommonModelAutoBeanFactory.class);
 
     public AppSearchField3() {
         // Create liststore
@@ -83,9 +88,8 @@ public class AppSearchField3 implements IsWidget {
                 public void onBeforeSelection(BeforeSelectionEvent<App> event) {
                     event.cancel();
                     App selectedApp = event.getItem();
-                    EventBus.getInstance().fireEvent(
-                            new AppSearch3ResultSelectedEvent(selectedApp.getId(), selectedApp
-                                    .getGroupId()));
+                    AutoBean<HasId> hasId = AutoBeanCodex.decode(factory, HasId.class, "{\"id\": \"" + selectedApp.getGroupId() + "\"}");
+                    EventBus.getInstance().fireEvent(new AppSearch3ResultSelectedEvent(selectedApp, hasId.as()));
                 }
             });
             combo.addTriggerClickHandler(new TriggerClickHandler() {

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.iplantc.core.uiapplications.client.models.autobeans.App;
 import org.iplantc.core.uiapplications.client.models.autobeans.AppGroup;
+import org.iplantc.core.uicommons.client.models.HasId;
 
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -28,7 +29,7 @@ public interface AppsView extends IsWidget {
 
         void onAppNameSelected(App app);
 
-        void go(HasOneWidget container, AppGroup selectedAppGroup, App selectedApp);
+        void go(HasOneWidget container, HasId selectedAppGroup, HasId selectedApp);
     }
 
     void setPresenter(final Presenter presenter);
