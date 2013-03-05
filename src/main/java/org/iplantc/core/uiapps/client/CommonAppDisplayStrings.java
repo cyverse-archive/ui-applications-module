@@ -239,4 +239,29 @@ public interface CommonAppDisplayStrings extends CommonUIDisplayStrings {
      * @return
      */
     String submitForPublicUse();
+
+    String attribution();
+
+    String newToolReq();
+
+    String searchEmptyText();
+
+
+    String newToolRequestError();
+
+    String toolNameLabel();
+
+    String srcBin();
+
+    String toolAttributionLabel();
+
+    String toolAttributionEmptyText();
+
+    /**
+     * Location of the bin
+     * 
+     * @return
+     */
+    String path();
+
 }

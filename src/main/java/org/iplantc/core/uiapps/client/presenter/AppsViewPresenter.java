@@ -19,6 +19,7 @@ import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.models.autobeans.AppList;
 import org.iplantc.core.uiapps.client.presenter.proxy.AppGroupProxy;
 import org.iplantc.core.uiapps.client.views.AppsView;
+import org.iplantc.core.uiapps.client.views.dialogs.NewToolRequestDialog;
 import org.iplantc.core.uiapps.client.views.panels.SubmitAppForPublicUsePanel;
 import org.iplantc.core.uiapps.client.views.widgets.AppInfoView;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
@@ -27,7 +28,6 @@ import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultLoadE
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultLoadEventHandler;
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultSelectedEvent;
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultSelectedEventHandler;
-import org.iplantc.core.uiapps.client.views.windows.NewToolRequestWindow;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.models.CommonModelAutoBeanFactory;
@@ -315,7 +315,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void onRequestToolClicked() {
-        new NewToolRequestWindow().show();
+        new NewToolRequestDialog().show();
     }
 
     @Override
