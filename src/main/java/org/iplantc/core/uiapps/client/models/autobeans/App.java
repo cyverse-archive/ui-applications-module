@@ -3,17 +3,17 @@ package org.iplantc.core.uiapps.client.models.autobeans;
 import java.util.Date;
 import java.util.List;
 
+import org.iplantc.core.uicommons.client.models.HasDescription;
 import org.iplantc.core.uicommons.client.models.HasId;
 
+import com.google.gwt.user.client.ui.HasName;
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
-public interface App extends HasId {
+public interface App extends HasId, HasName, HasDescription {
     
     @PropertyName("is_favorite")
     boolean isFavorite();
 
-    String getName();
-    
     @PropertyName("wiki_url")
     String getWikiUrl();
     
@@ -36,8 +36,6 @@ public interface App extends HasId {
     
     boolean isDisabled();
 
-    String getDescription();
-    
     @PropertyName("group_id")
     String getGroupId();
 
@@ -46,8 +44,6 @@ public interface App extends HasId {
 
     @PropertyName("is_favorite")
     void setFavorite(boolean favorite);
-
-    void setName(String name);
 
     @PropertyName("wiki_url")
     void setWikiUrl(String wikiUrl);
@@ -70,8 +66,6 @@ public interface App extends HasId {
     void setId(String id);
 
     void setDisabled(boolean disabled);
-
-    void setDescription(String description);
 
     @PropertyName("pipeline_eligibility")
     void setPipelineEligibility(PipelineEligibility pipelineEligibility);
