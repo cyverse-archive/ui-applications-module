@@ -16,7 +16,7 @@ public class AppSelectedEvent extends GwtEvent<AppSelectedEventHandler> {
     /**
      * Defines the GWT Event Type.
      * 
-     * @see org.iplantc.core.uiapps.client.events.handlers.AppSearchResultSelectedEventHandler
+     * @see org.iplantc.core.uiapps.client.events.handlers.AppSelectedEventHandler
      */
     public static final GwtEvent.Type<AppSelectedEventHandler> TYPE = new GwtEvent.Type<AppSelectedEventHandler>();
 

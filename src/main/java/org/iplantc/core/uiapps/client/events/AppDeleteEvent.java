@@ -22,7 +22,7 @@ public class AppDeleteEvent extends GwtEvent<AppDeleteEventHandler> {
     /**
      * Defines the GWT Event Type.
      * 
-     * @see org.iplantc.core.uiapps.client.events.handlers.AppSearchResultSelectedEventHandler
+     * @see org.iplantc.core.uiapps.client.events.handlers.AppDeleteEventHandler
      */
     public static final GwtEvent.Type<AppDeleteEventHandler> TYPE = new GwtEvent.Type<AppDeleteEventHandler>();
 
