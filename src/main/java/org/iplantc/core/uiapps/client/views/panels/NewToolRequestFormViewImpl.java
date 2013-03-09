@@ -1,8 +1,6 @@
 package org.iplantc.core.uiapps.client.views.panels;
 
 import org.iplantc.core.uicommons.client.I18N;
-import org.iplantc.core.uicommons.client.models.UserInfo;
-import org.iplantc.core.uicommons.client.validators.BasicEmailValidator3;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
 
 import com.google.gwt.core.client.GWT;
@@ -50,6 +48,10 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     public final String NO = "No";
     public final String DONT_KNOW = "Don't know";
 
+    public final String ARCH32 = "32-bit Generic";
+    public final String ARCH64 = "64-bit Generic";
+    public final String OTHERS = "Others";
+
     private Presenter presenter;
 
     @UiField(provided = true)
@@ -57,9 +59,6 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
     @UiField
     VerticalLayoutContainer container;
-
-    @UiField
-    FieldSet contactSet;
 
     @UiField
     FieldSet toolSet;
@@ -72,6 +71,9 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
     @UiField
     Radio toolUpld;
+
+    @UiField(provided = true)
+    SimpleComboBox<String> archCbo;
 
     @UiField
     FileUploadField binUpld;
@@ -88,8 +90,6 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     @UiField
     TextField toolDoc;
 
-    @UiField
-    TextField email;
 
     @UiField
     TextButton submitBtn;
@@ -100,8 +100,7 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     @UiField
     FormPanel formPanel;
 
-    @UiField
-    TextField user;
+
 
     @UiTemplate("NewToolRequestFormView.ui.xml")
     interface NewToolRequestFormViewUiBinder extends UiBinder<Widget, NewToolRequestFormViewImpl> {
@@ -114,18 +113,26 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
         multiThreadCbo.add(DONT_KNOW);
         multiThreadCbo.setValue(DONT_KNOW);
 
+        archCbo = new SimpleComboBox<String>(new StringLabelProvider<String>());
+        archCbo.add(ARCH32);
+        archCbo.add(ARCH64);
+        archCbo.add(OTHERS);
+        archCbo.add(DONT_KNOW);
+        archCbo.setValue(ARCH64);
+
         widget = uiBinder.createAndBindUi(this);
         container.setScrollMode(ScrollMode.AUTOY);
         container.setAdjustForScroll(true);
-        user.setValue(UserInfo.getInstance().getUsername());
+
         initSrcModeSelection();
         initValidators();
     }
 
+
+
     private void initValidators() {
         binLink.addValidator(new UrlValidator());
         toolDoc.addValidator(new UrlValidator());
-        email.addValidator(new BasicEmailValidator3());
     }
 
     void initSrcModeSelection() {
