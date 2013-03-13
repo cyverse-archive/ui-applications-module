@@ -66,7 +66,7 @@
 							labelAlign="TOP">
 							<form:widget>
 								<form:FileUploadField debugId="idFileUpldTool" ui:field="binUpld"
-									visible="false" name="binUpload" allowBlank="true"></form:FileUploadField>
+									visible="false" name="src_upload_file" allowBlank="true"></form:FileUploadField>
 							</form:widget>
 						</form:FieldLabel>
 					</con:child>
@@ -127,7 +127,7 @@
 					<con:child layoutData="{layoutData}">
 						<form:FieldLabel text="Test Data" labelAlign="TOP">
 							<form:widget>
-								<form:FileUploadField name="idTestDataUplad" debugId="fileUpldTest"
+								<form:FileUploadField name="test_data_file" debugId="fileUpldTest"
 									ui:field="testDataUpld" allowBlank="false"></form:FileUploadField>
 							</form:widget>
 						</form:FieldLabel>
@@ -148,7 +148,7 @@
 					<con:child layoutData="{layoutData}">
 						<form:FieldLabel text="Other Data" labelAlign="TOP">
 							<form:widget>
-								<form:FileUploadField  debugId="idFileUpldOtherData" name="otherDataUplad"
+								<form:FileUploadField  debugId="idFileUpldOtherData" name="additional_data_file"
 									ui:field="otherDataUpld" allowBlank="true"></form:FileUploadField>
 							</form:widget>
 						</form:FieldLabel>
