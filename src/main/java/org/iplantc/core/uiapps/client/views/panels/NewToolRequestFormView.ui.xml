@@ -37,7 +37,7 @@
 							</form:widget>
 						</form:FieldLabel>
 					</con:child>
-					
+
 					<con:child layoutData="{layoutData}">
 						<form:FieldLabel text="{strings.attribution}"
 							labelAlign="TOP">
@@ -100,10 +100,10 @@
 						</form:FieldLabel>
 					</con:child>
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="Architechture"
+						<form:FieldLabel text="Architecture"
 							labelAlign="TOP">
 							<form:widget>
-								<form:SimpleComboBox debugId="idCboArch" name="architechture" ui:field="archCbo"
+								<form:SimpleComboBox debugId="idCboArch" name="architecture" ui:field="archCbo"
 									allowBlank="true" forceSelection="true" triggerAction="ALL" editable="false">
 								</form:SimpleComboBox>
 							</form:widget>
@@ -171,4 +171,4 @@
 		</con:VerticalLayoutContainer>
 
 	</form:FormPanel>
-</ui:UiBinder> 
+</ui:UiBinder>
