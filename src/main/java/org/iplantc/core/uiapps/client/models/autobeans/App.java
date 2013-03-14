@@ -79,6 +79,12 @@ public interface App extends HasId, HasName, HasDescription {
     @PropertyName("group_name")
     void setGroupName(String groupName);
 
+    @PropertyName("step_count")
+    int getStepCount();
+
+    @PropertyName("step_count")
+    void setStepCount(int step_count);
+
     List<AppDataObject> getInputs();
 
     void setInputs(List<AppDataObject> inputs);

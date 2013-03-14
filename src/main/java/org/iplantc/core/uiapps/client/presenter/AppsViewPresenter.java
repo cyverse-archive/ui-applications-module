@@ -13,6 +13,7 @@ import org.iplantc.core.uiapps.client.events.AppGroupCountUpdateEvent.AppGroupTy
 import org.iplantc.core.uiapps.client.events.CreateNewAppEvent;
 import org.iplantc.core.uiapps.client.events.CreateNewWorkflowEvent;
 import org.iplantc.core.uiapps.client.events.EditAppEvent;
+import org.iplantc.core.uiapps.client.events.EditWorkflowEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
@@ -390,6 +391,22 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
         });
     }
 
+    private void fetchTemplateAndFireEditWorkflowEvent(final App app) {
+        Services.USER_APP_SERVICE.getTemplate(app.getId(), new AsyncCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+                Splittable legacyAppTemplate = StringQuoter.split(result);
+                eventBus.fireEvent(new EditWorkflowEvent(app, legacyAppTemplate));
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+                ErrorHandler.post(I18N.ERROR.failToRetrieveApp(), caught);
+            }
+        });
+    }
+
     @Override
     public void onDeleteClicked() {
         final App app = getSelectedApp();
@@ -488,7 +505,13 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     @Override
     public void onEditClicked() {
-        fetchTemplateAndFireEditAppEvent(getSelectedApp());
+        App selectedApp = getSelectedApp();
+
+        if (selectedApp.getStepCount() > 1) {
+            fetchTemplateAndFireEditWorkflowEvent(selectedApp);
+        } else {
+            fetchTemplateAndFireEditAppEvent(selectedApp);
+        }
     }
 
     @Override
