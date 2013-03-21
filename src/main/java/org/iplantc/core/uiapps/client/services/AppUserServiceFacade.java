@@ -81,6 +81,14 @@ public interface AppUserServiceFacade extends AppServiceFacade {
     void publishWorkflow(String body, AsyncCallback<String> callback);
 
     /**
+     * Retrieves a workflow from the database for editing in the client.
+     * 
+     * @param workflowId unique identifier for the workflow.
+     * @param callback called when the RPC call is complete.
+     */
+    void editWorkflow(String workflowId, AsyncCallback<String> callback);
+
+    /**
      * Retrieves a template from the database.
      * 
      * @param templateId unique identifier for the template.

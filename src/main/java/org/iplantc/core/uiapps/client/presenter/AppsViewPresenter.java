@@ -392,7 +392,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     }
 
     private void fetchTemplateAndFireEditWorkflowEvent(final App app) {
-        Services.USER_APP_SERVICE.getTemplate(app.getId(), new AsyncCallback<String>() {
+        Services.USER_APP_SERVICE.editWorkflow(app.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
