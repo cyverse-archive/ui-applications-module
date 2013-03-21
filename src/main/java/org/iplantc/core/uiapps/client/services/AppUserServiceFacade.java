@@ -113,12 +113,6 @@ public interface AppUserServiceFacade extends AppServiceFacade {
      * @param id
      * @param asyncCallback
      */
-    void editApp(String id, AsyncCallback<String> asyncCallback);
-
-    /**
-     * @param id
-     * @param asyncCallback
-     */
     void copyApp(String id, AsyncCallback<String> asyncCallback);
 
     /**
