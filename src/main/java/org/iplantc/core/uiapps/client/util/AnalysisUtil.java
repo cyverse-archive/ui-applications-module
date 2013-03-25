@@ -11,8 +11,9 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
  * Utility methods related to Apps.
  * 
  * @author psarando
- * 
+ * @deprecated Class needs to be deleted or ported to GXT3
  */
+@Deprecated
 public class AnalysisUtil {
 
     /**

@@ -45,6 +45,11 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+/**
+ * @author jstroot
+ * @deprecated Class needs to be deleted or ported to GXT3
+ */
+@Deprecated
 public class SubmitAppForPublicUsePanel extends LayoutContainer {
     private static final String INTEGRATOR_NAME = "integName"; //$NON-NLS-1$
     private static final String EMAIL = "email"; //$NON-NLS-1$

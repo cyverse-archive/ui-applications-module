@@ -12,9 +12,11 @@ import com.google.gwt.json.client.JSONObject;
  * Provides a wrapper around a Analysis TreeStore.
  * 
  * @see com.extjs.gxt.ui.client.store.TreeStore
+ * @deprecated Class needs to be deleted or ported to GXT3
  */
+@Deprecated
 public class AnalysisToolGroupStoreWrapper {
-    private TreeStore<AnalysisGroupTreeModel> store;
+    private final TreeStore<AnalysisGroupTreeModel> store;
 
     /**
      * Creates a new AnalysisToolGroupStoreWrapper.

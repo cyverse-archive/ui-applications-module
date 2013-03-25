@@ -19,8 +19,9 @@ import com.google.gwt.user.client.Command;
  * be enabled via unmaskDialog().
  * 
  * @author hariolf
- * 
+ * @deprecated Class needs to be deleted or ported to GXT3
  */
+@Deprecated
 public class AppCommentDialog extends Dialog {
     private TextArea textArea;
     private Command onConfirm;

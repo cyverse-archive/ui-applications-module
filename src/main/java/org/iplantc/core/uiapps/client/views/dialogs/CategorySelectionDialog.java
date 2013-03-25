@@ -18,6 +18,10 @@ import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel.CheckCascade;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel.CheckNodes;
 
+/**
+ * @deprecated Class needs to be deleted or ported to GXT3
+ */
+@Deprecated
 public class CategorySelectionDialog extends Dialog {
 
     private TreePanel<AnalysisGroupTreeModel> tree;

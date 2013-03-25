@@ -6,6 +6,10 @@ import com.extjs.gxt.ui.client.data.BaseTreeModel;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 
+/**
+ * @deprecated Class needs to be deleted or ported to GXT3
+ */
+@Deprecated
 public class AnalysisGroupTreeModel extends BaseTreeModel {
  
     /**

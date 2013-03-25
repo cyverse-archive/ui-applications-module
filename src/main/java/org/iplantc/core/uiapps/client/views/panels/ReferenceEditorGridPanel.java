@@ -32,8 +32,9 @@ import com.google.gwt.json.client.JSONString;
  * method that builds a JSON array from the rows added to the grid.
  * 
  * @author psarando
- * 
+ * @deprecated Class needs to be deleted or ported to GXT3
  */
+@Deprecated
 public class ReferenceEditorGridPanel extends ContentPanel {
     private static final String REFERENCE_PROPERTY = "reference"; //$NON-NLS-1$
 
