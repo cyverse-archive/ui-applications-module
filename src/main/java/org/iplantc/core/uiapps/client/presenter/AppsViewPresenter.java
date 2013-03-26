@@ -396,8 +396,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
             @Override
             public void onSuccess(String result) {
-                Splittable legacyAppTemplate = StringQuoter.split(result);
-                eventBus.fireEvent(new EditWorkflowEvent(app, legacyAppTemplate));
+                Splittable serviceWorkflowJson = StringQuoter.split(result);
+                eventBus.fireEvent(new EditWorkflowEvent(app, serviceWorkflowJson));
             }
 
             @Override
