@@ -4,6 +4,8 @@ import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
+import org.iplantc.core.resources.client.AppFavoriteCellStyle;
+import org.iplantc.core.resources.client.IplantResources;
 import org.iplantc.core.uiapps.client.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEvent;
@@ -18,9 +20,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -29,37 +28,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class AppFavoriteCell extends AbstractCell<App> {
 
-    interface AppFavoriteCellStyle extends CssResource {
-        String appFavorite();
-        
-        String appFavoriteAdd();
-        
-        String appFavoriteDelete();
-        
-        String appFavoriteDisabled();
-        
-        String appUnavailable();
-    }
-
-    interface Resources extends ClientBundle {
-        @Source("AppFavoriteCell.css")
-        AppFavoriteCellStyle css();
-
-        @Source("images/award_star_gold_3.png")
-        ImageResource favIcon();
-
-        @Source("images/award_star_add.png")
-        ImageResource favIconAdd();
-
-        @Source("images/award_star_delete.png")
-        ImageResource favIconDelete();
-
-        @Source("images/award_star_silver_3.png")
-        ImageResource disabledFavIcon();
-
-        @Source("images/exclamation.png")
-        ImageResource appUnavailableIcon();
-    }
 
     /**
      * The HTML templates used to render the cell.
@@ -70,12 +38,12 @@ public class AppFavoriteCell extends AbstractCell<App> {
         SafeHtml cell(String imgName, String imgClassName, String imgToolTip);
     }
 
-    final Resources res = GWT.create(Resources.class);
     final Templates templates = GWT.create(Templates.class);
+    final AppFavoriteCellStyle css = IplantResources.RESOURCES.appFavoriteCss();
 
     public AppFavoriteCell() {
         super(CLICK, MOUSEOVER, MOUSEOUT);
-        res.css().ensureInjected();
+  	css.ensureInjected();
     }
 
     @Override
@@ -85,11 +53,11 @@ public class AppFavoriteCell extends AbstractCell<App> {
         }
 
         if (!value.isDisabled() && value.isFavorite()) {
-            sb.append(templates.cell("fav", res.css().appFavorite(), I18N.DISPLAY.remAppFromFav()));
+            sb.append(templates.cell("fav", css.appFavorite(), I18N.DISPLAY.remAppFromFav()));
         } else if (!value.isDisabled() && !value.isFavorite()) {
-            sb.append(templates.cell("fav", res.css().appFavoriteDisabled(), I18N.DISPLAY.addAppToFav()));
+            sb.append(templates.cell("fav", css.appFavoriteDisabled(), I18N.DISPLAY.addAppToFav()));
         } else{
-            sb.append(templates.cell("disabled", res.css().appFavoriteDisabled(), I18N.DISPLAY.appUnavailable()));
+            sb.append(templates.cell("disabled", css.appFavoriteDisabled(), I18N.DISPLAY.appUnavailable()));
         }
     }
 
@@ -123,11 +91,11 @@ public class AppFavoriteCell extends AbstractCell<App> {
     private void doOnMouseOut(Element eventTarget, App value) {
 
         if (value.isFavorite()) {
-            eventTarget.setClassName(res.css().appFavorite());
+            eventTarget.setClassName(css.appFavorite());
             eventTarget.setAttribute("qtip", I18N.DISPLAY.remAppFromFav());
             eventTarget.setTitle(I18N.DISPLAY.remAppFromFav());
         } else {
-            eventTarget.setClassName(res.css().appFavoriteDisabled());
+            eventTarget.setClassName(css.appFavoriteDisabled());
             eventTarget.setAttribute("qtip", I18N.DISPLAY.addAppToFav());
             eventTarget.setTitle(I18N.DISPLAY.addAppToFav());
         }
@@ -136,9 +104,9 @@ public class AppFavoriteCell extends AbstractCell<App> {
     private void doOnMouseOver(Element eventTarget, App value) {
 
         if (value.isFavorite()) {
-            eventTarget.setClassName(res.css().appFavoriteDelete());
+            eventTarget.setClassName(css.appFavoriteDelete());
         } else {
-            eventTarget.setClassName(res.css().appFavoriteAdd());
+            eventTarget.setClassName(css.appFavoriteAdd());
         }
     }
 

@@ -2,6 +2,7 @@ package org.iplantc.core.uiapps.client.views.cells;
 
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 
+import org.iplantc.core.resources.client.IplantResources;
 import org.iplantc.core.uiapps.client.I18N;
 import org.iplantc.core.uiapps.client.events.RunAppEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
@@ -15,7 +16,6 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -32,9 +32,6 @@ public class AppRunCell extends AbstractCell<App> {
     interface Resources extends ClientBundle {
         @Source("AppRunCell.css")
         MyCss css();
-
-        @Source("images/run.png")
-        ImageResource run();
     }
 
     interface Templates extends SafeHtmlTemplates {
@@ -55,7 +52,7 @@ public class AppRunCell extends AbstractCell<App> {
 
     @Override
     public void render(Cell.Context context, App value, SafeHtmlBuilder sb) {
-        sb.append(templates.cell(resources.css().appRun(), resources.run().getSafeUri(),
+        sb.append(templates.cell(resources.css().appRun(), IplantResources.RESOURCES.run().getSafeUri(),
                 I18N.DISPLAY.run()));
     }
 

@@ -8,7 +8,7 @@
              xmlns:MyWidgets="urn:import:org.iplantc.core.uiapps.client.views.widgets">
 
    <ui:with field="icons"
-            type="org.iplantc.core.uiapps.client.images.Icons"/>
+            type="org.iplantc.core.resources.client.IplantResources"/>
    <ui:with field="strings"
             type="org.iplantc.core.uiapps.client.CommonAppDisplayStrings"/>
    <ui:with field="margins0"
@@ -62,7 +62,7 @@
          <button:TextButton ui:field="requestTool"
                             debugId="idBtnNewToolBtn"
                             text="{strings.requestTool}"
-                            icon="{icons.requestTool}" />
+                            icon="{icons.add}" />
       </toolbar:child>
       <toolbar:child layoutData="{boxDataNoFlex}">
          <button:TextButton ui:field="copy"

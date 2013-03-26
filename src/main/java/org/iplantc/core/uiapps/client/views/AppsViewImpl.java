@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
-import org.iplantc.core.uicommons.client.images.Resources;
+import org.iplantc.core.resources.client.IplantResources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -153,9 +153,9 @@ public class AppsViewImpl implements AppsView {
      */
     private void setTreeIcons() {
         com.sencha.gxt.widget.core.client.tree.TreeStyle style = tree.getStyle();
-        style.setNodeCloseIcon(Resources.ICONS.category());
-        style.setNodeOpenIcon(Resources.ICONS.category_open());
-        style.setLeafIcon(Resources.ICONS.subCategory());
+        style.setNodeCloseIcon(IplantResources.RESOURCES.category());
+        style.setNodeOpenIcon(IplantResources.RESOURCES.category_open());
+        style.setLeafIcon(IplantResources.RESOURCES.subCategory());
     }
 
     @UiFactory

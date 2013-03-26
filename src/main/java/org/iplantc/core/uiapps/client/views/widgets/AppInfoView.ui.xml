@@ -17,7 +17,7 @@
 	</ui:style>
 
 	<ui:with field="icons"
-		type="org.iplantc.core.uiapps.client.images.Icons" />
+		type="org.iplantc.core.resources.client.IplantResources" />
 
 	<ui:with type="com.sencha.gxt.core.client.util.Margins" field="outerMargins">
 		<ui:attributes top="1" right="1" bottom="1" left="1" />
