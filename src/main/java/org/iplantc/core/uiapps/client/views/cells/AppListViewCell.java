@@ -2,7 +2,7 @@ package org.iplantc.core.uiapps.client.views.cells;
 
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultSelectedEvent;
 import org.iplantc.core.uicommons.client.events.EventBus;
@@ -22,9 +22,9 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
 /**
  * TODO JDS This cell needs to be refactored to use safehtml templates.
- * 
+ *
  * @author jstroot
- * 
+ *
  */
 public class AppListViewCell extends AbstractCell<App> {
 
@@ -47,7 +47,7 @@ public class AppListViewCell extends AbstractCell<App> {
         }
         sb.append(SafeHtmlUtils.fromString(value.getName()));
         sb.append(SafeHtmlUtils.fromTrustedString("<span><b>"));
-        sb.append(SafeHtmlUtils.fromTrustedString(I18N.DISPLAY.avgRating()));
+        sb.append(SafeHtmlUtils.fromTrustedString(I18N.DISPLAY.avgCommunityRating()));
         sb.append(SafeHtmlUtils.fromTrustedString("</b> " + value.getRating().getAverageRating()
                 + " "));
         sb.append(SafeHtmlUtils.fromTrustedString(I18N.DISPLAY.ratingOutOfTotal()));
@@ -61,7 +61,7 @@ public class AppListViewCell extends AbstractCell<App> {
         sb.append(SafeHtmlUtils.fromString(value.getDescription()));
         sb.append(SafeHtmlUtils.fromTrustedString("</h4>"));
         sb.append(SafeHtmlUtils.fromTrustedString("</div>"));
-    
+
     }
     @Override
     public void onBrowserEvent(Context context, Element parent, App value, NativeEvent event,

@@ -2,7 +2,7 @@ package org.iplantc.core.uiapps.client.presenter.proxy;
 
 import java.util.List;
 
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
@@ -18,7 +18,7 @@ import com.sencha.gxt.data.client.loader.RpcProxy;
 
 /**
  * @author jstroot
- * 
+ *
  */
 public class AppGroupProxy extends RpcProxy<AppGroup, List<AppGroup>> {
 

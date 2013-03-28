@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
-import org.iplantc.core.resources.client.AppResources;
 import org.iplantc.core.resources.client.IplantResources;
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppFeedback;
@@ -67,8 +66,8 @@ public class AppRatingCell extends AbstractCell<App> {
     public static enum RATING_CONSTANT {
 
         HATE_IT(I18N.DISPLAY.hateIt()), DID_NOT_LIKE_IT(I18N.DISPLAY.didNotLike()), LIKED_IT(
-                I18N.DISPLAY.likedIt()), REALLY_LIKED_IT(I18N.DISPLAY.reallyLikedIt()), LOVED_IT(
-                I18N.DISPLAY.lovedIt());
+        		I18N.DISPLAY.likedIt()), REALLY_LIKED_IT(I18N.DISPLAY.reallyLikedIt()), LOVED_IT(
+        				I18N.DISPLAY.lovedIt());
 
         private String displayText;
 
@@ -78,7 +77,7 @@ public class AppRatingCell extends AbstractCell<App> {
 
         /**
          * Returns a string that identifies the RATING_CONSTANT.
-         * 
+         *
          * @return
          */
         public String getTypeString() {
@@ -87,7 +86,7 @@ public class AppRatingCell extends AbstractCell<App> {
 
         /**
          * Null-safe and case insensitive variant of valueOf(String)
-         * 
+         *
          * @param typeString name of an EXECUTION_STATUS constant
          * @return
          */

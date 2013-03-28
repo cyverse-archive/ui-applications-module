@@ -6,7 +6,7 @@ import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
 import org.iplantc.core.resources.client.AppFavoriteCellStyle;
 import org.iplantc.core.resources.client.IplantResources;
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;

@@ -2,7 +2,7 @@ package org.iplantc.core.uiapps.client.views.panels;
 
 import java.util.List;
 
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.AnalysisGroupTreeModel;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
@@ -75,7 +75,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
 
     /**
      * Creates a new instance of PublishToWorldPanel
-     * 
+     *
      * @param app the app to make public
      * @param closeCallback a command to execute when one of the buttons is clicked. onSuccess is called
      *            when the publish form is successfully submitted, and onFailure is called when the
@@ -201,7 +201,7 @@ public class SubmitAppForPublicUsePanel extends LayoutContainer {
 
     /**
      * Spacer for non-Field elements
-     * 
+     *
      * @return
      */
     private Component createSpacer() {

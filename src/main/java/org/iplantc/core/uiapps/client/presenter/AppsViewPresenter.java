@@ -3,7 +3,7 @@ package org.iplantc.core.uiapps.client.presenter;
 import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.events.AppDeleteEvent;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEvent;
@@ -57,7 +57,7 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 
 /**
  * The presenter for the AppsView.
- * 
+ *
  * TODO JDS Document responsibility and intent of presenter.
  * <p>
  * Events fired from this presenter:
@@ -67,9 +67,9 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  * <li> {@link CreateNewAppEvent}</li>
  * <li> {@link CreateNewWorkflowEvent}</li>
  * <ul>
- * 
+ *
  * @author jstroot
- * 
+ *
  */
 public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsViewToolbar.Presenter {
 
@@ -159,7 +159,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     /**
      * Sets a string which is a place holder for selection after a call to {@link #fetchApps(AppGroup)}
-     * 
+     *
      * @param selectedApp
      */
     private void setDesiredSelectedApp(HasId selectedApp) {
@@ -207,7 +207,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     /**
      * Retrieves the apps for the given group by updating and executing the list loader
-     * 
+     *
      * @param ag
      */
     protected void fetchApps(final AppGroup ag) {

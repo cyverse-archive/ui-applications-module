@@ -1,7 +1,7 @@
 package org.iplantc.core.uiapps.client.util;
 
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Constants;
-import org.iplantc.core.uiapps.client.I18N;
 import org.iplantc.core.uicommons.client.util.RegExp;
 
 import com.extjs.gxt.ui.client.util.Format;
@@ -9,7 +9,7 @@ import com.extjs.gxt.ui.client.widget.form.TextField;
 
 /**
  * Utility methods related to Apps.
- * 
+ *
  * @author psarando
  * @deprecated Class needs to be deleted or ported to GXT3
  */
@@ -18,7 +18,7 @@ public class AnalysisUtil {
 
     /**
      * Sets a regex pattern and RegexText validation message for valid App Names in the given field.
-     * 
+     *
      * @param field A TextField for App Name input.
      */
     public static void setAppNameRegexValidation(TextField<String> field) {

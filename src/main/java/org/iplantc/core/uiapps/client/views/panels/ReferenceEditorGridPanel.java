@@ -3,7 +3,7 @@ package org.iplantc.core.uiapps.client.views.panels;
 import java.util.Arrays;
 import java.util.List;
 
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uicommons.client.widgets.BoundedTextArea;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
@@ -30,7 +30,7 @@ import com.google.gwt.json.client.JSONString;
 /**
  * A Panel with an EditorGrid for adding and removing bounded, multi-line text fields, and a toJson
  * method that builds a JSON array from the rows added to the grid.
- * 
+ *
  * @author psarando
  * @deprecated Class needs to be deleted or ported to GXT3
  */
@@ -67,7 +67,7 @@ public class ReferenceEditorGridPanel extends ContentPanel {
 
     /**
      * Builds a JSON array containing the strings added to the editor grid.
-     * 
+     *
      * @return A JSONArray containing the text fields as JSONStrings added by the user.
      */
     public JSONArray toJson() {
@@ -84,7 +84,7 @@ public class ReferenceEditorGridPanel extends ContentPanel {
     /**
      * Determines if the references in this grid are all valid. Since references are not required, then
      * an empty grid is also considered valid.
-     * 
+     *
      * @return False if any reference added to the grid is invalid, true otherwise.
      */
     public boolean isValid() {

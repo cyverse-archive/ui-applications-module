@@ -2,9 +2,9 @@ package org.iplantc.core.uiapps.client.views;
 
 import java.util.List;
 
+import org.iplantc.core.resources.client.IplantResources;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
-import org.iplantc.core.resources.client.IplantResources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -36,9 +36,9 @@ import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance;
 
 /**
- * 
+ *
  * @author jstroot
- * 
+ *
  */
 public class AppsViewImpl implements AppsView {
     /**

@@ -4,7 +4,7 @@ import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.views.AppsView;
 
@@ -26,16 +26,16 @@ import com.google.gwt.user.client.Event;
 /**
  * This is a custom cell which combines the functionality of the {@link AppFavoriteCell} with a clickable
  * hyper-link of an app name.
- * 
+ *
  * @author jstroot
- * 
+ *
  */
 public class AppHyperlinkCell extends AbstractCell<App> {
 
 
     interface MyCss extends CssResource {
         String appName();
-        
+
         String appDisabled();
     }
 
@@ -75,10 +75,10 @@ public class AppHyperlinkCell extends AbstractCell<App> {
         SafeHtml safeHtmlName = SafeHtmlUtils.fromString(value.getName());
         if (!value.isDisabled()) {
             sb.append(templates.cell(resources.css().appName(), safeHtmlName,
-                    I18N.DISPLAY.clickAppInfo(), ELEMENT_NAME));
+            		I18N.DISPLAY.clickAppInfo(), ELEMENT_NAME));
         } else {
             sb.append(templates.cell(resources.css().appDisabled(), safeHtmlName,
-                    I18N.DISPLAY.appUnavailable(), ELEMENT_NAME));
+            		I18N.DISPLAY.appUnavailable(), ELEMENT_NAME));
         }
 
     }

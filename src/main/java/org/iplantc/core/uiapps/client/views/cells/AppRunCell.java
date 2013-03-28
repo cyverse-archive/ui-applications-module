@@ -3,7 +3,7 @@ package org.iplantc.core.uiapps.client.views.cells;
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
 
 import org.iplantc.core.resources.client.IplantResources;
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.events.RunAppEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uicommons.client.events.EventBus;

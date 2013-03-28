@@ -6,7 +6,7 @@
 	xmlns:gwt="urn:import:com.google.gwt.widget.client" xmlns:t="urn:import:com.google.gwt.i18n.server.testing">
 
 	<ui:with field="strings"
-		type="org.iplantc.core.uiapps.client.CommonAppDisplayStrings" />
+		type="org.iplantc.core.resources.client.messages.IplantDisplayStrings" />
 
 	<ui:with field="layoutData"
 		type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">

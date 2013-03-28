@@ -1,7 +1,7 @@
 package org.iplantc.core.uiapps.client.models.autobeans;
 
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Constants;
-import org.iplantc.core.uiapps.client.I18N;
 import org.iplantc.core.uicommons.client.util.RegExp;
 import org.iplantc.core.uicommons.client.validators.BasicEmailValidator3;
 

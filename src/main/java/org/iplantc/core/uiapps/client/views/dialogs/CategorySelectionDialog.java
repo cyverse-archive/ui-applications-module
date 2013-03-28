@@ -3,7 +3,7 @@ package org.iplantc.core.uiapps.client.views.dialogs;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.models.AnalysisGroupTreeModel;
 
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -97,7 +97,7 @@ public class CategorySelectionDialog extends Dialog {
 
     /**
      * Resizes this panel's inner tree panel.
-     * 
+     *
      * @param width
      * @param height
      */

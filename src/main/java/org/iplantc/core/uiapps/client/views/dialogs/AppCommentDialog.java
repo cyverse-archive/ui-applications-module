@@ -1,7 +1,7 @@
 package org.iplantc.core.uiapps.client.views.dialogs;
 
 
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.Events;
@@ -17,7 +17,7 @@ import com.google.gwt.user.client.Command;
 /**
  * A simple dialog that lets the user enter a comment on an app. The dialog is initially disabled and can
  * be enabled via unmaskDialog().
- * 
+ *
  * @author hariolf
  * @deprecated Class needs to be deleted or ported to GXT3
  */
@@ -28,7 +28,7 @@ public class AppCommentDialog extends Dialog {
 
     /**
      * Creates a new AppCommentDialog with no on-confirm command set.
-     * 
+     *
      * @param appName name of the app
      * @param commentId the Confluence ID when an existing comment, or null for a new comment
      * @param comment the comment pointed to by commentId, or null if no comment exists yet
@@ -65,7 +65,7 @@ public class AppCommentDialog extends Dialog {
 
     /**
      * Sets the comment text shown in the text area.
-     * 
+     *
      * @param text a comment
      */
     public void setText(String text) {
@@ -76,7 +76,7 @@ public class AppCommentDialog extends Dialog {
      * Disables the dialog.
      */
     public void maskDialog() {
-        textArea.mask(org.iplantc.core.uiapps.client.I18N.DISPLAY.loadingMask());
+        textArea.mask(I18N.DISPLAY.loadingMask());
         getButtonById(Dialog.OK).disable();
     }
 
@@ -99,7 +99,7 @@ public class AppCommentDialog extends Dialog {
 
     /**
      * Sets a command to run when the OK button is clicked.
-     * 
+     *
      * @param onConfirm
      */
     public void setCommand(Command onConfirm) {
@@ -109,7 +109,7 @@ public class AppCommentDialog extends Dialog {
     /**
      * Returns the comment entered by the user if the dialog was closed with the OK button. If the Cancel
      * button was clicked, the return value is undefined.
-     * 
+     *
      * @return
      */
     public String getComment() {

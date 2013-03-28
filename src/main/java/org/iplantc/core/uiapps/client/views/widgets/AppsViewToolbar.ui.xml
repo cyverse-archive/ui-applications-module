@@ -10,7 +10,7 @@
    <ui:with field="icons"
             type="org.iplantc.core.resources.client.IplantResources"/>
    <ui:with field="strings"
-            type="org.iplantc.core.uiapps.client.CommonAppDisplayStrings"/>
+            type="org.iplantc.core.resources.client.messages.IplantDisplayStrings"/>
    <ui:with field="margins0"
             type="com.sencha.gxt.core.client.util.Margins">
       <ui:attributes top="0"
@@ -27,11 +27,11 @@
             type="com.sencha.gxt.widget.core.client.container.BoxLayoutContainer.BoxLayoutData">
       <ui:attributes margins="{margins0}" />
    </ui:with>
-   
+
    <ui:with type="com.sencha.gxt.widget.core.client.tips.ToolTipConfig" field="submitToolTip">
     <ui:attributes titleText="{strings.submitForPublicUse}" trackMouse="true" />
   </ui:with>
-  
+
    <toolbar:ToolBar ui:field="toolBar">
       <toolbar:child layoutData="{boxDataNoFlex}">
          <button:TextButton ui:field="create"
@@ -86,11 +86,11 @@
          <button:TextButton ui:field="submit"
                             debugId="idMakePublic"
                             text="{strings.submit}"
-                            icon="{icons.submitForPublic}" 
+                            icon="{icons.submitForPublic}"
                             toolTipConfig="{submitToolTip}"/>
       </toolbar:child>
       <toolbar:child layoutData="{boxData}">
          <MyWidgets:AppSearchField3 ui:field="appSearch" />
       </toolbar:child>
    </toolbar:ToolBar>
-</ui:UiBinder> 
+</ui:UiBinder>

@@ -1,6 +1,6 @@
 package org.iplantc.core.uiapps.client.views.panels;
 
-import org.iplantc.core.uicommons.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
 
 import com.google.gwt.core.client.GWT;
@@ -31,11 +31,11 @@ import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 /**
- * 
+ *
  * A form to submit request to install new tools in condor
- * 
+ *
  * @author sriram
- * 
+ *
  */
 public class NewToolRequestFormViewImpl extends Composite implements NewToolRequestFormView {
 
@@ -171,7 +171,7 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
             if (!binUpld.isVisible()) {
                 binUpld.removeFromParent();
             }
-            
+
             if (testDataUpld.getValue() == null || testDataUpld.getValue().isEmpty()) {
                 testDataUpld.removeFromParent();
             }

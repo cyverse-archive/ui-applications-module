@@ -1,9 +1,9 @@
 /**
- * 
+ *
  */
 package org.iplantc.core.uiapps.client.views.dialogs;
 
-import org.iplantc.core.uiapps.client.I18N;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.presenter.NewToolRequestFormPresenterImpl;
 import org.iplantc.core.uiapps.client.views.panels.NewToolRequestFormView;
 import org.iplantc.core.uiapps.client.views.panels.NewToolRequestFormView.Presenter;

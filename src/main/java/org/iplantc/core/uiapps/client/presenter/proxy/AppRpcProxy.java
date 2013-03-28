@@ -1,13 +1,11 @@
 package org.iplantc.core.uiapps.client.presenter.proxy;
 
-import org.iplantc.core.uiapps.client.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.models.autobeans.AppList;
 import org.iplantc.core.uiapps.client.services.AppUserServiceFacade;
-import org.iplantc.core.uicommons.client.ErrorHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -44,7 +42,6 @@ public class AppRpcProxy extends RpcProxy<ListLoadConfig, ListLoadResult<App>> {
 
             @Override
             public void onFailure(Throwable caught) {
-                ErrorHandler.post(I18N.ERROR.retrieveFolderInfoFailed(), caught);
                 callback.onFailure(caught);
             }
         });
