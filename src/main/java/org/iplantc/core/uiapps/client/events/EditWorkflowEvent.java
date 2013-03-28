@@ -21,15 +21,15 @@ public class EditWorkflowEvent extends GwtEvent<EditWorkflowEventHandler> {
 
     public static final GwtEvent.Type<EditWorkflowEventHandler> TYPE = new GwtEvent.Type<EditWorkflowEventHandler>();
     private final HasId workflowToEdit;
-    private Splittable legacyAppTemplate;
+    private Splittable serviceWorkflowJson;
 
     public EditWorkflowEvent(HasId workflowToEdit) {
         this.workflowToEdit = workflowToEdit;
     }
 
-    public EditWorkflowEvent(HasId workflowToEdit, Splittable legacyAppTemplate) {
+    public EditWorkflowEvent(HasId workflowToEdit, Splittable serviceWorkflowJson) {
         this(workflowToEdit);
-        this.legacyAppTemplate = legacyAppTemplate;
+        this.serviceWorkflowJson = serviceWorkflowJson;
     }
 
     @Override
@@ -50,9 +50,9 @@ public class EditWorkflowEvent extends GwtEvent<EditWorkflowEventHandler> {
     }
 
     /**
-     * @return the legacyAppTemplate
+     * @return the serviceWorkflowJson
      */
-    public Splittable getLegacyAppTemplate() {
-        return legacyAppTemplate;
+    public Splittable getServiceWorkflowJson() {
+        return serviceWorkflowJson;
     }
 }
