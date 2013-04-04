@@ -5,8 +5,8 @@ package org.iplantc.core.uiapps.client.presenter;
 
 
 
-import org.iplantc.core.uiapps.client.views.panels.NewToolRequestFormView;
-import org.iplantc.core.uiapps.client.views.panels.NewToolRequestFormView.Presenter;
+import org.iplantc.core.uiapps.client.views.NewToolRequestFormView;
+import org.iplantc.core.uiapps.client.views.NewToolRequestFormView.Presenter;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.HasOneWidget;

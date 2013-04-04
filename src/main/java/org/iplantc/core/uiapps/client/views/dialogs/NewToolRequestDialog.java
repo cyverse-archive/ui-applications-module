@@ -5,9 +5,9 @@ package org.iplantc.core.uiapps.client.views.dialogs;
 
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.presenter.NewToolRequestFormPresenterImpl;
-import org.iplantc.core.uiapps.client.views.panels.NewToolRequestFormView;
-import org.iplantc.core.uiapps.client.views.panels.NewToolRequestFormView.Presenter;
-import org.iplantc.core.uiapps.client.views.panels.NewToolRequestFormViewImpl;
+import org.iplantc.core.uiapps.client.views.NewToolRequestFormView;
+import org.iplantc.core.uiapps.client.views.NewToolRequestFormViewImpl;
+import org.iplantc.core.uiapps.client.views.NewToolRequestFormView.Presenter;
 
 import com.google.gwt.user.client.Command;
 import com.sencha.gxt.widget.core.client.Dialog;

@@ -21,6 +21,7 @@ import org.iplantc.core.uiapps.client.models.autobeans.AppList;
 import org.iplantc.core.uiapps.client.presenter.proxy.AppGroupProxy;
 import org.iplantc.core.uiapps.client.views.AppsView;
 import org.iplantc.core.uiapps.client.views.dialogs.NewToolRequestDialog;
+import org.iplantc.core.uiapps.client.views.dialogs.SubmitAppForPublicDialog;
 import org.iplantc.core.uiapps.client.views.panels.SubmitAppForPublicUsePanel;
 import org.iplantc.core.uiapps.client.views.widgets.AppInfoView;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
@@ -452,39 +453,41 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
     @Override
     public void submitClicked() {
         App selectedApp = getSelectedApp();
-        final Window makePublicWin = new Window();
-        makePublicWin.setModal(true);
+        // final Window makePublicWin = new Window();
+        // makePublicWin.setModal(true);
+        //
+        // SubmitAppForPublicUsePanel requestForm = new SubmitAppForPublicUsePanel(selectedApp,
+        // new AsyncCallback<String>() {
+        // @Override
+        // public void onSuccess(String url) {
+        // makePublicWin.hide();
+        //
+        // new IplantInfoBox(I18N.DISPLAY.makePublicSuccessTitle(),
+        // I18N.DISPLAY.makePublicSuccessMessage(url)).show();
+        //
+        // // Create and fire event
+        // AppGroupCountUpdateEvent event = new AppGroupCountUpdateEvent(false,
+        // AppGroupType.BETA);
+        // eventBus.fireEvent(event);
+        // }
+        //
+        // @Override
+        // public void onFailure(Throwable caught) {
+        // makePublicWin.hide();
+        // if (caught != null) {
+        // ErrorHandler.post(I18N.DISPLAY.makePublicFail(), caught);
+        // }
+        // }
+        // });
+        //
+        // makePublicWin.setHeadingText(selectedApp.getName()
+        //                + " " + I18N.DISPLAY.publicSubmissionForm()); //$NON-NLS-1$
+        // makePublicWin.setPixelSize(615, 480);
+        // makePublicWin.setResizable(false);
+        // makePublicWin.add(requestForm);
 
-        SubmitAppForPublicUsePanel requestForm = new SubmitAppForPublicUsePanel(selectedApp,
-                new AsyncCallback<String>() {
-                    @Override
-                    public void onSuccess(String url) {
-                        makePublicWin.hide();
-
-                        new IplantInfoBox(I18N.DISPLAY.makePublicSuccessTitle(), I18N.DISPLAY.makePublicSuccessMessage(url)).show();
-
-                        // Create and fire event
-                        AppGroupCountUpdateEvent event = new AppGroupCountUpdateEvent(false,
-                                AppGroupType.BETA);
-                        eventBus.fireEvent(event);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        makePublicWin.hide();
-                        if (caught != null) {
-                            ErrorHandler.post(I18N.DISPLAY.makePublicFail(), caught);
-                        }
-                    }
-                });
-
-        makePublicWin.setHeadingText(selectedApp.getName()
-                + " " + I18N.DISPLAY.publicSubmissionForm()); //$NON-NLS-1$
-        makePublicWin.setPixelSize(615, 480);
-        makePublicWin.setResizable(false);
-        makePublicWin.add(requestForm);
-
-        makePublicWin.show();
+        SubmitAppForPublicDialog dialog = new SubmitAppForPublicDialog(selectedApp);
+        dialog.show();
 
     }
 

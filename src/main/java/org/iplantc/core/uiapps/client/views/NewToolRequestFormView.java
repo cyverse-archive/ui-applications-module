@@ -1,4 +1,4 @@
-package org.iplantc.core.uiapps.client.views.panels;
+package org.iplantc.core.uiapps.client.views;
 
 import com.google.gwt.user.client.ui.IsWidget;
 
