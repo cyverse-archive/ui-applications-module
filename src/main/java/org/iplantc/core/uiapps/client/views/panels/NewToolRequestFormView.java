@@ -12,4 +12,8 @@ public interface NewToolRequestFormView extends IsWidget {
 
     void setPresenter(Presenter p);
 
+    void onSubmitBtnClick();
+
+    void onCancelBtnClick();
+
 }

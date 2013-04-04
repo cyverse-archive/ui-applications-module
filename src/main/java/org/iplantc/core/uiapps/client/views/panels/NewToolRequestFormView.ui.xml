@@ -164,10 +164,6 @@
 					</con:child>
 				</con:VerticalLayoutContainer>
 			</form:FieldSet>
-			<c:ButtonBar height="30" pack="CENTER">
-				<c:TextButton debugId="idBtnSubmit" ui:field="submitBtn" text="Submit"></c:TextButton>
-				<c:TextButton debugId="idBtnCancel" ui:field="cancelBtn" text="Cancel"></c:TextButton>
-			</c:ButtonBar>
 		</con:VerticalLayoutContainer>
 
 	</form:FormPanel>

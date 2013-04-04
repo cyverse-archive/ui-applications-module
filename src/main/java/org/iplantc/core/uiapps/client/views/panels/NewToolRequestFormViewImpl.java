@@ -8,7 +8,6 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
@@ -18,9 +17,7 @@ import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
-import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent.SubmitCompleteHandler;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
@@ -90,13 +87,6 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     @UiField
     TextField toolDoc;
 
-
-    @UiField
-    TextButton submitBtn;
-
-    @UiField
-    TextButton cancelBtn;
-
     @UiField
     FormPanel formPanel;
 
@@ -160,8 +150,8 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
         });
     }
 
-    @UiHandler({"submitBtn"})
-    public void onSubmitBtnClick(SelectEvent event) {
+    @Override
+    public void onSubmitBtnClick() {
         final AutoProgressMessageBox box = new AutoProgressMessageBox("Progress",
                 "Submitting your request, please wait...");
         box.setProgressText("Submitting...");
@@ -195,8 +185,8 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
         });
     }
 
-    @UiHandler({"cancelBtn"})
-    public void onCancelBtnClick(SelectEvent event) {
+    @Override
+    public void onCancelBtnClick() {
         presenter.onRequestError();
     }
 
