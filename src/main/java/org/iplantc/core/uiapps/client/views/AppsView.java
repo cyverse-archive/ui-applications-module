@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
+import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
 import org.iplantc.core.uicommons.client.models.HasId;
 
 import com.google.gwt.user.client.ui.HasOneWidget;
@@ -18,7 +19,8 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 
 public interface AppsView extends IsWidget {
 
-    public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter {
+    public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter,
+            AppsViewToolbar.Presenter {
         void onAppSelected(final App app);
 
         void onAppGroupSelected(final AppGroup ag);
@@ -30,6 +32,8 @@ public interface AppsView extends IsWidget {
         void onAppNameSelected(App app);
 
         void go(HasOneWidget container, HasId selectedAppGroup, HasId selectedApp);
+
+        Grid<App> getAppsGrid();
     }
 
     void setPresenter(final Presenter presenter);

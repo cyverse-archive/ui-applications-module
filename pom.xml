@@ -31,14 +31,14 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
 			<version>${gwt.version}</version>
-            <scope>provided</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
 		</dependency>
-		
+
 		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -52,19 +52,24 @@
 			<version>2.5.1</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.google.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>2.0.0</version>
+			<classifier />
+		</dependency>
 		<!-- GXT Dependencies -->
 		<dependency>
-            <groupId>com.sencha.gxt</groupId>
-            <artifactId>gxt</artifactId>
-            <version>${gxt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.extjs</groupId>
-            <artifactId>gxt</artifactId>
-            <version>2.2.5</version>
-        </dependency>
-		
+			<groupId>com.sencha.gxt</groupId>
+			<artifactId>gxt</artifactId>
+			<version>${gxt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.extjs</groupId>
+			<artifactId>gxt</artifactId>
+			<version>2.2.5</version>
+		</dependency>
+
 		<!-- iPlant Dependencies -->
 		<dependency>
 			<groupId>org.iplantc.core</groupId>
@@ -141,7 +146,8 @@
 		<repository>
 			<id>iplantCollaborative</id>
 			<name>The iPlant Collaborative local repository</name>
-			<url>http://projects.iplantcollaborative.org/archiva/repository/internal/</url>
+			<url>http://projects.iplantcollaborative.org/archiva/repository/internal/
+			</url>
 		</repository>
 	</repositories>
 </project>

@@ -9,7 +9,6 @@ import org.iplantc.core.uiapps.client.events.AppDeleteEvent;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEventHander;
 import org.iplantc.core.uiapps.client.events.AppGroupCountUpdateEvent;
-import org.iplantc.core.uiapps.client.events.AppGroupCountUpdateEvent.AppGroupType;
 import org.iplantc.core.uiapps.client.events.CreateNewAppEvent;
 import org.iplantc.core.uiapps.client.events.CreateNewWorkflowEvent;
 import org.iplantc.core.uiapps.client.events.EditAppEvent;
@@ -22,10 +21,8 @@ import org.iplantc.core.uiapps.client.presenter.proxy.AppGroupProxy;
 import org.iplantc.core.uiapps.client.views.AppsView;
 import org.iplantc.core.uiapps.client.views.dialogs.NewToolRequestDialog;
 import org.iplantc.core.uiapps.client.views.dialogs.SubmitAppForPublicDialog;
-import org.iplantc.core.uiapps.client.views.panels.SubmitAppForPublicUsePanel;
 import org.iplantc.core.uiapps.client.views.widgets.AppInfoView;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
-import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbarImpl;
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultLoadEvent;
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultLoadEventHandler;
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultSelectedEvent;
@@ -37,7 +34,6 @@ import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.HasId;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.presenter.Presenter;
-import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
@@ -45,16 +41,17 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasOneWidget;
+import com.google.inject.Inject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.Splittable;
 import com.google.web.bindery.autobean.shared.impl.StringQuoter;
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
-import com.sencha.gxt.widget.core.client.Window;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
+import com.sencha.gxt.widget.core.client.grid.Grid;
 
 /**
  * The presenter for the AppsView.
@@ -72,7 +69,7 @@ import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
  * @author jstroot
  *
  */
-public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsViewToolbar.Presenter {
+public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
     private final EventBus eventBus = EventBus.getInstance();
     private static String WORKSPACE;
@@ -88,15 +85,17 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
 
     private final CommonModelAutoBeanFactory factory = GWT.create(CommonModelAutoBeanFactory.class);
 
-    public AppsViewPresenter(final AppsView view) {
+    @Inject
+    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy,
+            final AppsViewToolbar toolbar) {
         this.view = view;
 
         builder = new MyBuilder(this);
 
         // Initialize AppGroup TreeStore proxy and loader
-        appGroupProxy = new AppGroupProxy();
-        toolbar = new AppsViewToolbarImpl();
-        this.view.setNorthWidget(toolbar);
+        this.appGroupProxy = proxy;
+        this.toolbar = toolbar;
+        this.view.setNorthWidget(this.toolbar);
 
         this.view.setPresenter(this);
         this.toolbar.setPresenter(this);
@@ -581,5 +580,10 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter, AppsVie
             return this;
         }
 
+    }
+
+    @Override
+    public Grid<App> getAppsGrid() {
+        return view.getAppsGrid();
     }
 }

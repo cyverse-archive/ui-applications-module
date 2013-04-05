@@ -77,8 +77,6 @@
                                  headingText="{strings.category}"
                                  bodyBorder="false">
                   <tree:Tree ui:field="tree"
-                             valueProvider="{valueProvider}"
-                             store="{treeStore}"
                              autoExpand="true"/>
                </gxt:ContentPanel>
             </container:west>

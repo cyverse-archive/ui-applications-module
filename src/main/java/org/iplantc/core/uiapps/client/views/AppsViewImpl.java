@@ -13,7 +13,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.core.client.ValueProvider;
+import com.google.inject.Inject;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.TreeStore;
@@ -53,10 +53,10 @@ public class AppsViewImpl implements AppsView {
 
     private Presenter presenter;
 
-    @UiField
+    @UiField(provided = true)
     Tree<AppGroup, String> tree;
 
-    @UiField
+    @UiField(provided = true)
     TreeStore<AppGroup> treeStore;
 
     @UiField
@@ -88,7 +88,10 @@ public class AppsViewImpl implements AppsView {
 
     private final Widget widget;
 
-    public AppsViewImpl() {
+    @Inject
+    public AppsViewImpl(final Tree<AppGroup, String> tree, final TreeStore<AppGroup> treeStore) {
+        this.tree = tree;
+        this.treeStore = treeStore;
         this.widget = uiBinder.createAndBindUi(this);
         grid.addCellClickHandler(new CellClickHandler() {
 
@@ -121,16 +124,6 @@ public class AppsViewImpl implements AppsView {
         new QuickTip(grid).getToolTipConfig().setTrackMouse(true);
     }
 
-    @UiFactory
-    TreeStore<AppGroup> createTreeStore() {
-        return new TreeStore<AppGroup>(new ModelKeyProvider<AppGroup>() {
-            @Override
-            public String getKey(AppGroup item) {
-                return item.getId();
-            }
-
-        });
-    }
 
     @UiFactory
     ListStore<App> createListStore() {
@@ -158,25 +151,6 @@ public class AppsViewImpl implements AppsView {
         style.setLeafIcon(IplantResources.RESOURCES.subCategory());
     }
 
-    @UiFactory
-    public ValueProvider<AppGroup, String> createValueProvider() {
-        return new ValueProvider<AppGroup, String>() {
-
-            @Override
-            public String getValue(AppGroup object) {
-                return object.getName() + " (" + object.getAppCount() + ")";
-            }
-
-            @Override
-            public void setValue(AppGroup object, String value) {
-            }
-
-            @Override
-            public String getPath() {
-                return "name";
-            }
-        };
-    }
 
     @Override
     public Widget asWidget() {
