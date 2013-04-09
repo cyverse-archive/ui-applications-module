@@ -1,5 +1,6 @@
 package org.iplantc.core.uiapps.client.views;
 
+import org.iplantc.core.resources.client.IplantResources;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 
@@ -9,10 +10,13 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.ValueProvider;
+import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
+import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.tree.Tree;
+import com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance;
 
 /**
  * 
@@ -47,9 +51,15 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
     interface SubmitAppForPublicUseViewUiBinder extends UiBinder<Widget, SubmitAppForPublicUseViewImpl> {
     }
 
-    public SubmitAppForPublicUseViewImpl(App selectedApp, TreeStore<AppGroup> store) {
-        this.treeStore = store;
-        this.tree = new Tree<AppGroup, String>(this.treeStore, new ValueProvider<AppGroup, String>() {
+    public SubmitAppForPublicUseViewImpl(App selectedApp) {
+        treeStore = new TreeStore<AppGroup>(new ModelKeyProvider<AppGroup>() {
+
+            @Override
+            public String getKey(AppGroup item) {
+                return item.getId();
+            }
+        });
+        tree = new Tree<AppGroup, String>(treeStore, new ValueProvider<AppGroup, String>() {
 
             @Override
             public String getValue(AppGroup object) {
@@ -66,8 +76,22 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
                 return null;
             }
         });
+
+        setTreeIcons();
+        tree.setCheckable(true);
         widget = uiBinder.createAndBindUi(this);
+        container.setScrollMode(ScrollMode.AUTOY);
         appName.setValue(selectedApp.getName());
+    }
+
+    /**
+     * FIXME JDS This needs to be implemented in an {@link TreeAppearance}
+     */
+    private void setTreeIcons() {
+        com.sencha.gxt.widget.core.client.tree.TreeStyle style = tree.getStyle();
+        style.setNodeCloseIcon(IplantResources.RESOURCES.category());
+        style.setNodeOpenIcon(IplantResources.RESOURCES.category_open());
+        style.setLeafIcon(IplantResources.RESOURCES.subCategory());
     }
 
     @Override
@@ -91,6 +115,16 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
     public void onCancelBtnClick() {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public TreeStore<AppGroup> getTreeStore() {
+        return treeStore;
+    }
+
+    @Override
+    public void expandAppGroups() {
+        tree.expandAll();
     }
 
 }

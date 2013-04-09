@@ -89,4 +89,6 @@ public interface AppsView extends IsWidget {
     void onAppHyperlinkSelected(App app);
 
     Grid<App> getAppsGrid();
+
+    void expandAppGroups();
 }

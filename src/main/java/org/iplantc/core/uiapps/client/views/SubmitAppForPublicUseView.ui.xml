@@ -1,10 +1,13 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:con="urn:import:com.sencha.gxt.widget.core.client.container"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:cp="urn:import:com.sencha.gxt.widget.core.client"
+	xmlns:con="urn:import:com.sencha.gxt.widget.core.client.container"
 	xmlns:c="urn:import:com.sencha.gxt.widget.core.client.button"
 	xmlns:form="urn:import:com.sencha.gxt.widget.core.client.form"
 	xmlns:tree="urn:import:com.sencha.gxt.widget.core.client.tree"
-	xmlns:gwt="urn:import:com.google.gwt.widget.client" xmlns:t="urn:import:com.google.gwt.i18n.server.testing">
+	xmlns:gwt="urn:import:com.google.gwt.widget.client" 
+	xmlns:t="urn:import:com.google.gwt.i18n.server.testing">
 
 	<ui:with field="strings"
 		type="org.iplantc.core.resources.client.messages.IplantDisplayStrings" />
@@ -31,15 +34,17 @@
 		<con:child layoutData="{layoutData}">
 			<form:FieldLabel text="Description" labelAlign="TOP" toolTip="Click app description to edit">
 				<form:widget>
-					<form:TextField debugId="idTxtAppDesc" name="desc"
+					<form:TextArea debugId="idTxtAppDesc" name="desc" height="125"
 						ui:field="appDesc" allowBlank="false" toolTip="Click app description to edit">
-					</form:TextField>
+					</form:TextArea>
 				</form:widget>
 			</form:FieldLabel>
 		</con:child>
 		<con:child layoutData="{layoutData}">
+		<cp:ContentPanel headingText="Select Catagory" height="250">
 			  <tree:Tree ui:field="tree"
                              autoExpand="true"/>
+        </cp:ContentPanel>   
 		</con:child>
 
 	</con:VerticalLayoutContainer>

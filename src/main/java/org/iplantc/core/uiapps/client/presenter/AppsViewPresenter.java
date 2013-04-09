@@ -256,6 +256,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
             @Override
             public void onSuccess(List<AppGroup> result) {
                 addAppGroup(null, result);
+                view.expandAppGroups();
                 // Select previous user selections
                 if ((selectedAppGroup != null) && (selectedApp != null)) {
                     view.selectAppGroup(selectedAppGroup.getId());
@@ -273,7 +274,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
                 if (parent == null) {
                     view.getTreeStore().add(children);
                 } else {
-                    view.getTreeStore().replaceChildren(parent, children);
+                    view.getTreeStore().add(parent, children);
                 }
 
                 for (AppGroup ag : children) {
@@ -490,7 +491,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         // makePublicWin.setResizable(false);
         // makePublicWin.add(requestForm);
 
-        SubmitAppForPublicDialog dialog = new SubmitAppForPublicDialog(selectedApp, view.getTreeStore());
+        SubmitAppForPublicDialog dialog = new SubmitAppForPublicDialog(selectedApp);
         dialog.show();
 
     }

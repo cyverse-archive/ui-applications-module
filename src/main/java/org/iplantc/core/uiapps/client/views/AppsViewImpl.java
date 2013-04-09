@@ -316,4 +316,9 @@ public class AppsViewImpl implements AppsView {
         return grid;
     }
 
+    @Override
+    public void expandAppGroups() {
+        tree.expandAll();
+    }
+
 }
