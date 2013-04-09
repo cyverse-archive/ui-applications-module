@@ -1,8 +1,12 @@
 package org.iplantc.core.uiapps.client.presenter;
 
+import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView;
 
 import com.google.gwt.user.client.ui.HasOneWidget;
+import com.google.inject.Inject;
+import com.sencha.gxt.data.shared.TreeStore;
+import com.sencha.gxt.widget.core.client.tree.Tree;
 
 
 public class SubmitAppForPublicPresenter implements
@@ -10,6 +14,7 @@ public class SubmitAppForPublicPresenter implements
 
     private SubmitAppForPublicUseView view;
 
+    @Inject
     public SubmitAppForPublicPresenter(SubmitAppForPublicUseView view) {
         this.view = view;
     }

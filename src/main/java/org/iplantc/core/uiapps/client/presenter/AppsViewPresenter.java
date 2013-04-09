@@ -79,7 +79,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     protected Builder builder;
 
     private final AppGroupProxy appGroupProxy;
-    private final AppsViewToolbar toolbar;
+    private AppsViewToolbar toolbar;
 
     private HasId desiredSelectedAppId;
 
@@ -87,18 +87,21 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
     @Inject
     public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy,
-            final AppsViewToolbar toolbar) {
+ AppsViewToolbar toolbar) {
         this.view = view;
 
         builder = new MyBuilder(this);
 
         // Initialize AppGroup TreeStore proxy and loader
         this.appGroupProxy = proxy;
-        this.toolbar = toolbar;
-        this.view.setNorthWidget(this.toolbar);
+
+        if (toolbar != null) {
+            this.toolbar = toolbar;
+            this.view.setNorthWidget(this.toolbar);
+            this.toolbar.setPresenter(this);
+        }
 
         this.view.setPresenter(this);
-        this.toolbar.setPresenter(this);
 
         initHandlers();
         initConstants();
@@ -172,6 +175,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
     @Override
     public void onAppGroupSelected(final AppGroup ag) {
+        if (toolbar != null) {
         toolbar.setEditButtonEnabled(false);
         toolbar.setDeleteButtonEnabled(false);
         toolbar.setSubmitButtonEnabled(false);
@@ -180,11 +184,12 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
         view.setCenterPanelHeading(ag.getName());
         fetchApps(ag);
+        }
     }
 
     @Override
     public void onAppSelected(final App app) {
-        if (app == null) {
+        if (app == null && toolbar != null) {
             toolbar.setEditButtonEnabled(false);
             toolbar.setDeleteButtonEnabled(false);
             toolbar.setSubmitButtonEnabled(false);
@@ -485,7 +490,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         // makePublicWin.setResizable(false);
         // makePublicWin.add(requestForm);
 
-        SubmitAppForPublicDialog dialog = new SubmitAppForPublicDialog(selectedApp);
+        SubmitAppForPublicDialog dialog = new SubmitAppForPublicDialog(selectedApp, view.getTreeStore());
         dialog.show();
 
     }

@@ -10,6 +10,8 @@ import com.google.gwt.inject.client.Ginjector;
 public interface AppsInjector extends Ginjector {
 
     public static final AppsInjector INSTANCE = GWT.create(AppsInjector.class);
+
     public AppsView.Presenter getAppsViewPresenter();
+
 
 }

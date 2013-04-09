@@ -1,13 +1,18 @@
 package org.iplantc.core.uiapps.client.views;
 
 import org.iplantc.core.uiapps.client.models.autobeans.App;
+import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.core.client.ValueProvider;
+import com.sencha.gxt.data.shared.TreeStore;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.tree.Tree;
 
 /**
  * 
@@ -29,12 +34,40 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
     @UiField
     TextField appDesc;
 
+    @UiField
+    VerticalLayoutContainer container;
+
+    @UiField(provided = true)
+    TreeStore<AppGroup> treeStore;
+
+    @UiField(provided = true)
+    Tree<AppGroup, String> tree;
+
     @UiTemplate("SubmitAppForPublicUseView.ui.xml")
     interface SubmitAppForPublicUseViewUiBinder extends UiBinder<Widget, SubmitAppForPublicUseViewImpl> {
     }
 
-    public SubmitAppForPublicUseViewImpl(App selectedApp) {
+    public SubmitAppForPublicUseViewImpl(App selectedApp, TreeStore<AppGroup> store) {
+        this.treeStore = store;
+        this.tree = new Tree<AppGroup, String>(this.treeStore, new ValueProvider<AppGroup, String>() {
+
+            @Override
+            public String getValue(AppGroup object) {
+                return object.getName() + " (" + object.getAppCount() + ")";
+            }
+
+            @Override
+            public void setValue(AppGroup object, String value) {
+                // do nothing intentionally
+            }
+
+            @Override
+            public String getPath() {
+                return null;
+            }
+        });
         widget = uiBinder.createAndBindUi(this);
+        appName.setValue(selectedApp.getName());
     }
 
     @Override
