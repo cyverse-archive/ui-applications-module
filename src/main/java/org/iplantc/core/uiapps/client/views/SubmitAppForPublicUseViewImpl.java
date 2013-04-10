@@ -14,6 +14,7 @@ import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance;
@@ -36,7 +37,7 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
     TextField appName;
 
     @UiField
-    TextField appDesc;
+    TextArea appDesc;
 
     @UiField
     VerticalLayoutContainer container;
