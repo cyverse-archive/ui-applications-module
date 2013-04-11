@@ -119,6 +119,7 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 
             }
         });
+        grid.setSelectionModel(csm);
         editing = createGridEditing();
         ColumnConfig<AppRefLink, String> cc = grid.getColumnModel().getColumn(0);
         editing.addEditor(cc, buildRefLinkEditor());
