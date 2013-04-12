@@ -89,6 +89,14 @@ public interface AppUserServiceFacade extends AppServiceFacade {
     void editWorkflow(String workflowId, AsyncCallback<String> callback);
 
     /**
+     * Retrieves a new copy of a workflow from the database for editing in the client.
+     * 
+     * @param workflowId
+     * @param callback
+     */
+    void copyWorkflow(String workflowId, AsyncCallback<String> callback);
+
+    /**
      * Retrieves a template from the database.
      * 
      * @param templateId unique identifier for the template.

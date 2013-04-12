@@ -284,6 +284,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
             @Override
             public void onFailure(Throwable caught) {
+                // TODO Add error message for the user.
                 ErrorHandler.post(caught);
             }
         });
@@ -328,26 +329,47 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     @Override
     public void onCopyClicked() {
         final App selectedApp = getSelectedApp();
-        Services.USER_APP_SERVICE.appExportable(selectedApp.getId(),
-                new AsyncCallback<String>() {
+        Services.USER_APP_SERVICE.appExportable(selectedApp.getId(), new AsyncCallback<String>() {
 
-                    @Override
-                    public void onSuccess(String result) {
-                        JSONObject exportable = JsonUtil.getObject(result);
+            @Override
+            public void onSuccess(String result) {
+                JSONObject exportable = JsonUtil.getObject(result);
 
-                        if (JsonUtil.getBoolean(exportable, "can-export", false)) { //$NON-NLS-1$
-                            copyApp(selectedApp);
-                        } else {
-                            ErrorHandler.post(JsonUtil.getString(exportable, "cause")); //$NON-NLS-1$
-                        }
+                if (JsonUtil.getBoolean(exportable, "can-export", false)) { //$NON-NLS-1$
+                    if (selectedApp.getStepCount() > 1) {
+                        copyWorkflow(selectedApp);
+                    } else {
+                        copyApp(selectedApp);
                     }
+                } else {
+                    ErrorHandler.post(JsonUtil.getString(exportable, "cause")); //$NON-NLS-1$
+                }
+            }
 
-                    @Override
-                    public void onFailure(Throwable caught) {
-                        ErrorHandler.post(caught);
-                    }
-                });
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Add error message for the user.
+                ErrorHandler.post(caught);
+            }
+        });
 
+    }
+
+    private void copyWorkflow(final App app) {
+        Services.USER_APP_SERVICE.copyWorkflow(app.getId(), new AsyncCallback<String>() {
+
+            @Override
+            public void onSuccess(String result) {
+                Splittable serviceWorkflowJson = StringQuoter.split(result);
+                eventBus.fireEvent(new EditWorkflowEvent(app, serviceWorkflowJson));
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+                // TODO Add error message for the user.
+                ErrorHandler.post(caught);
+            }
+        });
     }
 
     private void copyApp(final App app) {
@@ -376,6 +398,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
             @Override
             public void onFailure(Throwable caught) {
+                // TODO Add error message for the user.
                 ErrorHandler.post(caught);
             }
         });
@@ -397,7 +420,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         });
     }
 
-    private void fetchTemplateAndFireEditWorkflowEvent(final App app) {
+    private void fetchWorkflowAndFireEditEvent(final App app) {
         Services.USER_APP_SERVICE.editWorkflow(app.getId(), new AsyncCallback<String>() {
 
             @Override
@@ -516,7 +539,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         App selectedApp = getSelectedApp();
 
         if (selectedApp.getStepCount() > 1) {
-            fetchTemplateAndFireEditWorkflowEvent(selectedApp);
+            fetchWorkflowAndFireEditEvent(selectedApp);
         } else {
             fetchTemplateAndFireEditAppEvent(selectedApp);
         }
