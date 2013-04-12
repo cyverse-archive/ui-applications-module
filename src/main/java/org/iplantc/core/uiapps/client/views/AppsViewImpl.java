@@ -168,11 +168,6 @@ public class AppsViewImpl implements AppsView {
     }
 
     @Override
-    public TreeStore<AppGroup> getTreeStore() {
-        return treeStore;
-    }
-
-    @Override
     public void setTreeLoader(final TreeLoader<AppGroup> treeLoader) {
         this.tree.setLoader(treeLoader);
     }
@@ -268,6 +263,35 @@ public class AppsViewImpl implements AppsView {
     }
 
     @Override
+    public void addAppGroup(AppGroup parent, AppGroup child) {
+        if (child == null) {
+            return;
+        }
+
+        if (parent == null) {
+            treeStore.add(child);
+        } else {
+            treeStore.add(parent, child);
+        }
+    }
+
+    @Override
+    public void addAppGroups(AppGroup parent, List<AppGroup> children) {
+        if ((children == null) || children.isEmpty()) {
+            return;
+        }
+        if (parent == null) {
+            treeStore.add(children);
+        } else {
+            treeStore.add(parent, children);
+        }
+
+        for (AppGroup ag : children) {
+            addAppGroups(ag, ag.getGroups());
+        }
+    }
+
+    @Override
     public void removeApp(App app) {
         grid.getSelectionModel().deselectAll();
         presenter.onAppSelected(null);
@@ -287,6 +311,17 @@ public class AppsViewImpl implements AppsView {
     @Override
     public AppGroup findAppGroup(String id) {
         return treeStore.findModelWithKey(id);
+    }
+
+    @Override
+    public AppGroup findAppGroupByName(String name) {
+        for (AppGroup appGroup : treeStore.getAll()) {
+            if (appGroup.getName().equalsIgnoreCase(name)) {
+                return appGroup;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -320,5 +355,4 @@ public class AppsViewImpl implements AppsView {
     public void expandAppGroups() {
         tree.expandAll();
     }
-
 }

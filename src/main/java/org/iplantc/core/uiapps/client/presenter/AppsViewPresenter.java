@@ -86,8 +86,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     private final CommonModelAutoBeanFactory factory = GWT.create(CommonModelAutoBeanFactory.class);
 
     @Inject
-    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy,
- AppsViewToolbar toolbar) {
+    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar) {
         this.view = view;
 
         builder = new MyBuilder(this);
@@ -128,15 +127,11 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
             @Override
             public void onAppFavorited(AppFavoritedEvent event) {
-                AppGroup favAppGrp = null;
-                for (AppGroup appGroup : view.getTreeStore().getAll()) {
-                    if (appGroup.getName().equalsIgnoreCase(FAVORITES)) {
-                        favAppGrp = appGroup;
-                        int tmp = event.isFavorite() ? 1 : -1;
+                AppGroup favAppGrp = view.findAppGroupByName(FAVORITES);
+                if (favAppGrp != null) {
+                    int tmp = event.isFavorite() ? 1 : -1;
 
-                        view.updateAppGroupAppCount(favAppGrp, favAppGrp.getAppCount() + tmp);
-                        break;
-                    }
+                    view.updateAppGroupAppCount(favAppGrp, favAppGrp.getAppCount() + tmp);
                 }
                 // If the current app group is Workspace or Favorites, remove the app from the list.
                 if (getSelectedAppGroup().getName().equalsIgnoreCase(WORKSPACE)
@@ -255,7 +250,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
             @Override
             public void onSuccess(List<AppGroup> result) {
-                addAppGroup(null, result);
+                view.addAppGroups(null, result);
                 view.expandAppGroups();
                 // Select previous user selections
                 if ((selectedAppGroup != null) && (selectedApp != null)) {
@@ -264,21 +259,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
                     // view.selectApp(selectedApp.getId());
                 } else {
                     view.selectFirstAppGroup();
-                }
-            }
-
-            private void addAppGroup(AppGroup parent, List<AppGroup> children) {
-                if ((children == null) || children.isEmpty()) {
-                    return;
-                }
-                if (parent == null) {
-                    view.getTreeStore().add(children);
-                } else {
-                    view.getTreeStore().add(parent, children);
-                }
-
-                for (AppGroup ag : children) {
-                    addAppGroup(ag, ag.getGroups());
                 }
             }
 

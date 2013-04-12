@@ -10,7 +10,6 @@ import org.iplantc.core.uicommons.client.models.HasId;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
 import com.sencha.gxt.data.shared.loader.ListLoader;
@@ -39,8 +38,6 @@ public interface AppsView extends IsWidget {
     void setPresenter(final Presenter presenter);
 
     ListStore<App> getListStore();
-
-    TreeStore<AppGroup> getTreeStore();
 
     void setListLoader(final ListLoader<ListLoadConfig, ListLoadResult<App>> listLoader);
 
@@ -74,6 +71,10 @@ public interface AppsView extends IsWidget {
 
     void selectFirstAppGroup();
 
+    void addAppGroup(AppGroup parent, AppGroup child);
+
+    void addAppGroups(AppGroup parent, List<AppGroup> children);
+
     void removeApp(App app);
 
     void deSelectAllAppGroups();
@@ -81,6 +82,8 @@ public interface AppsView extends IsWidget {
     void updateAppGroup(AppGroup appGroup);
 
     AppGroup findAppGroup(String id);
+
+    AppGroup findAppGroupByName(String name);
 
     void updateAppGroupAppCount(AppGroup appGroup, int newCount);
 
