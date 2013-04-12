@@ -100,7 +100,7 @@
 						</form:FieldLabel>
 					</con:child>
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="Architecture"
+						<form:FieldLabel text="{strings.architecture}"
 							labelAlign="TOP">
 							<form:widget>
 								<form:SimpleComboBox debugId="idCboArch" name="architecture" ui:field="archCbo"
@@ -121,11 +121,11 @@
 					</con:child>
 				</con:VerticalLayoutContainer>
 			</form:FieldSet>
-			<form:FieldSet ui:field="otherSet" headingText="Other Information"
+			<form:FieldSet ui:field="otherSet" headingText="{strings.otherTab}"
 				collapsible="true">
 				<con:VerticalLayoutContainer>
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="Test Data" labelAlign="TOP">
+						<form:FieldLabel text="{strings.upldTestData}" labelAlign="TOP">
 							<form:widget>
 								<form:FileUploadField name="test_data_file" debugId="fileUpldTest"
 									ui:field="testDataUpld" allowBlank="false"></form:FileUploadField>
@@ -146,7 +146,7 @@
 
 
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="Other Data" labelAlign="TOP">
+						<form:FieldLabel text="{strings.otherData}" labelAlign="TOP">
 							<form:widget>
 								<form:FileUploadField  debugId="idFileUpldOtherData" name="additional_data_file"
 									ui:field="otherDataUpld" allowBlank="true"></form:FileUploadField>
@@ -155,7 +155,7 @@
 					</con:child>
 
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="Other Info" labelAlign="TOP">
+						<form:FieldLabel text="{strings.otherInfo}" labelAlign="TOP">
 							<form:widget>
 								<form:TextArea debugId="idTxtAddnlInfo" name="additional_info" ui:field="otherInfo" allowBlank="true" height="150">
 								</form:TextArea>
