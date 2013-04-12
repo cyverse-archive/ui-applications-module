@@ -284,6 +284,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
             @Override
             public void onFailure(Throwable caught) {
+                // TODO Add error message for the user.
                 ErrorHandler.post(caught);
             }
         });
@@ -397,6 +398,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
             @Override
             public void onFailure(Throwable caught) {
+                // TODO Add error message for the user.
                 ErrorHandler.post(caught);
             }
         });
