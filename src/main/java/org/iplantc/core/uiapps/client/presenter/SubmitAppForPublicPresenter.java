@@ -17,6 +17,7 @@ import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
 public class SubmitAppForPublicPresenter implements
         org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView.Presenter {
@@ -75,7 +76,9 @@ public class SubmitAppForPublicPresenter implements
         if (view.validate()) {
             createDocumentationPage(view.toJson());
         } else {
-            ErrorHandler.post("Please complete all fields!");
+            AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.warning(),
+                    I18N.DISPLAY.publicSubmitTip());
+            amb.show();
         }
     }
 

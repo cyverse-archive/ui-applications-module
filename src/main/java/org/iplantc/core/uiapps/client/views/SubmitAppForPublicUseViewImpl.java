@@ -33,6 +33,8 @@ import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.CompleteEditEvent;
+import com.sencha.gxt.widget.core.client.event.CompleteEditEvent.CompleteEditHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.TextArea;
@@ -44,6 +46,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.Grid.GridCell;
 import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
+import com.sencha.gxt.widget.core.client.selection.CellSelection;
 import com.sencha.gxt.widget.core.client.selection.CellSelectionChangedEvent;
 import com.sencha.gxt.widget.core.client.selection.CellSelectionChangedEvent.CellSelectionChangedHandler;
 import com.sencha.gxt.widget.core.client.tree.Tree;
@@ -117,19 +120,32 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
     public SubmitAppForPublicUseViewImpl(App selectedApp) {
         initCategoryTree();
         this.selectedApp = selectedApp;
-        setTreeIcons();
-        tree.setCheckable(true);
-        tree.setCheckStyle(CheckCascade.CHILDREN);
-        tree.setCheckNodes(CheckNodes.LEAF);
         widget = uiBinder.createAndBindUi(this);
+        initGrid();
+        container.setScrollMode(ScrollMode.AUTOY);
+        initFieldLabels();
+        appName.setValue(selectedApp.getName());
+        appDesc.setValue(selectedApp.getDescription());
+    }
+
+    private void initGrid() {
         CellSelectionModel<AppRefLink> csm = buildRefCellSelecitonModel();
         grid.setSelectionModel(csm);
         editing = createGridEditing();
         ColumnConfig<AppRefLink, String> cc = grid.getColumnModel().getColumn(0);
-        editing.addEditor(cc, buildRefLinkEditor());
-        container.setScrollMode(ScrollMode.AUTOY);
-        initFieldLabels();
-        appName.setValue(selectedApp.getName());
+        final TextField editor = buildRefLinkEditor();
+        editing.addEditor(cc, editor);
+        editing.addCompleteEditHandler(new CompleteEditHandler<AppRefLink>() {
+
+            @Override
+            public void onCompleteEdit(CompleteEditEvent<AppRefLink> event) {
+                    String refLink = editor.getCurrentValue();
+                    AppRefLink ref = listStore.get(0);
+                    ref.setRefLink(refLink);
+                    listStore.update(ref);
+            }
+        });
+        grid.getView().setAutoExpandColumn(cc);
     }
 
     private String buildRequiredFieldLabel(String label) {
@@ -143,7 +159,7 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
     private void initFieldLabels() {
         appfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicName()));
         descfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicDescription()));
-        refPanel.setHeadingHtml(buildRequiredFieldLabel(I18N.DISPLAY.publicAttach()));
+        refPanel.setHeadingHtml(I18N.DISPLAY.publicAttach());
         catPanel.setHeadingHtml(buildRequiredFieldLabel(I18N.DISPLAY.publicCategories()));
     }
 
@@ -152,8 +168,13 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
         csm.addCellSelectionChangedHandler(new CellSelectionChangedHandler<AppRefLink>() {
             @Override
             public void onCellSelectionChanged(CellSelectionChangedEvent<AppRefLink> event) {
-                if (event.getSelection().size() > 0) {
-                    delBtn.enable();
+                List<CellSelection<AppRefLink>> list = event.getSelection();
+                if (list.size() > 0) {
+                    if (list.get(0).getModel() == null) {
+                        delBtn.disable();
+                    } else {
+                        delBtn.enable();
+                    }
                 } else {
                     delBtn.disable();
                 }
@@ -188,6 +209,11 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
                 return null;
             }
         });
+
+        setTreeIcons();
+        tree.setCheckable(true);
+        tree.setCheckStyle(CheckCascade.CHILDREN);
+        tree.setCheckNodes(CheckNodes.LEAF);
     }
 
     @UiFactory
