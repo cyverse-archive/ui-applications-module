@@ -24,9 +24,6 @@
 		<ui:attributes height="-1" width=".90" margins="{centerMargins}" />
 
 	</ui:with>
-	<ui:style>
-		
-	</ui:style>
 	<ui:with field="treeStore" type="com.sencha.gxt.data.shared.TreeStore" />
 	<ui:with field="listStore" type="com.sencha.gxt.data.shared.ListStore" />
 	<ui:with field="cm"
@@ -37,34 +34,34 @@
 	</ui:with>
 	<con:VerticalLayoutContainer ui:field="container">
 		<con:child layoutData="{layoutData}">
-			<form:FieldLabel text="App Name" labelAlign="TOP"
-				toolTip="Click app name to edit">
+			<form:FieldLabel ui:field="appfield" labelAlign="TOP"
+				toolTip="{strings.publicNameNote}">
 				<form:widget>
-					<form:TextField debugId="idTxtAppName" name="name" 
-						ui:field="appName" allowBlank="false" toolTip="Click app name to edit">
+					<form:TextField debugId="idTxtAppName" name="{strings.publicName}" 
+						ui:field="appName" allowBlank="false" toolTip="{strings.publicNameNote}">
 					</form:TextField>
 				</form:widget>
 			</form:FieldLabel>
 		</con:child>
 		<con:child layoutData="{layoutData}">
-			<form:FieldLabel text="Description" labelAlign="TOP"
-				toolTip="Click app description to edit">
+			<form:FieldLabel ui:field="descfield" labelAlign="TOP"
+				toolTip="{strings.publicDescriptionNote}">
 				<form:widget>
 					<form:TextArea debugId="idTxtAppDesc" name="desc"
 						height="100" ui:field="appDesc" allowBlank="false"
-						toolTip="Click app description to edit">
+						toolTip="{strings.publicDescriptionNote}">
 					</form:TextArea>
 				</form:widget>
 			</form:FieldLabel>
 		</con:child>
 		<con:child layoutData="{layoutData}">
-			<cp:ContentPanel headingText="Select Catagory"
+			<cp:ContentPanel ui:field="catPanel"
 				height="200">
 				<tree:Tree ui:field="tree" autoExpand="true" />
 			</cp:ContentPanel>
 		</con:child>
 		<con:child layoutData="{layoutData}">
-			<cp:ContentPanel headingText="Relevant Links" height="150">
+			<cp:ContentPanel ui:field="refPanel" height="150">
 				<con:VerticalLayoutContainer>
 					<con:child>
 						<toolbar:ToolBar>

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.iplantc.core.resources.client.IplantResources;
+import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
@@ -29,9 +30,11 @@ import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.TreeStore;
+import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.CellSelectionModel;
@@ -89,6 +92,18 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
     @UiField
     TextButton delBtn;
 
+    @UiField
+    ContentPanel catPanel;
+
+    @UiField
+    ContentPanel refPanel;
+
+    @UiField
+    FieldLabel appfield;
+
+    @UiField
+    FieldLabel descfield;
+
     private GridEditing<AppRefLink> editing;
 
     private Presenter presenter;
@@ -107,6 +122,32 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
         tree.setCheckStyle(CheckCascade.CHILDREN);
         tree.setCheckNodes(CheckNodes.LEAF);
         widget = uiBinder.createAndBindUi(this);
+        CellSelectionModel<AppRefLink> csm = buildRefCellSelecitonModel();
+        grid.setSelectionModel(csm);
+        editing = createGridEditing();
+        ColumnConfig<AppRefLink, String> cc = grid.getColumnModel().getColumn(0);
+        editing.addEditor(cc, buildRefLinkEditor());
+        container.setScrollMode(ScrollMode.AUTOY);
+        initFieldLabels();
+        appName.setValue(selectedApp.getName());
+    }
+
+    private String buildRequiredFieldLabel(String label) {
+        if (label == null) {
+            return null;
+        }
+
+        return "<span class='required_marker'>*</span> " + label; //$NON-NLS-1$
+    }
+
+    private void initFieldLabels() {
+        appfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicName()));
+        descfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicDescription()));
+        refPanel.setHeadingHtml(buildRequiredFieldLabel(I18N.DISPLAY.publicAttach()));
+        catPanel.setHeadingHtml(buildRequiredFieldLabel(I18N.DISPLAY.publicCategories()));
+    }
+
+    private CellSelectionModel<AppRefLink> buildRefCellSelecitonModel() {
         CellSelectionModel<AppRefLink> csm = new CellSelectionModel<AppRefLink>();
         csm.addCellSelectionChangedHandler(new CellSelectionChangedHandler<AppRefLink>() {
             @Override
@@ -119,12 +160,7 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 
             }
         });
-        grid.setSelectionModel(csm);
-        editing = createGridEditing();
-        ColumnConfig<AppRefLink, String> cc = grid.getColumnModel().getColumn(0);
-        editing.addEditor(cc, buildRefLinkEditor());
-        container.setScrollMode(ScrollMode.AUTOY);
-        appName.setValue(selectedApp.getName());
+        return csm;
     }
 
     private void initCategoryTree() {
