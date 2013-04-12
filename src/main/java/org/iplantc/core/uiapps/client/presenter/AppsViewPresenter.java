@@ -73,6 +73,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
     private final EventBus eventBus = EventBus.getInstance();
     private static String WORKSPACE;
+    private static String USER_APPS_GROUP;
     private static String FAVORITES;
 
     protected final AppsView view;
@@ -150,6 +151,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
         if (properties.getPrivateWorkspaceItems() != null) {
             JSONArray items = JSONParser.parseStrict(properties.getPrivateWorkspaceItems()).isArray();
+            USER_APPS_GROUP = JsonUtil.getRawValueAsString(items.get(0));
             FAVORITES = JsonUtil.getRawValueAsString(items.get(1));
         }
 
@@ -340,6 +342,24 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
 
             @Override
             public void onSuccess(String result) {
+                // Update the user's private apps group count.
+                AppGroup userAppsGrp = view.findAppGroupByName(USER_APPS_GROUP);
+                if (userAppsGrp != null) {
+                    view.updateAppGroupAppCount(userAppsGrp, userAppsGrp.getAppCount() + 1);
+                }
+
+                // If the current app group is Workspace or the user's private apps, reload that group.
+                AppGroup selectedAppGroup = getSelectedAppGroup();
+                if (selectedAppGroup != null) {
+                    String selectedGroupName = selectedAppGroup.getName();
+
+                    if (selectedGroupName.equalsIgnoreCase(WORKSPACE)
+                            || selectedGroupName.equalsIgnoreCase(USER_APPS_GROUP)) {
+                        fetchApps(selectedAppGroup);
+                    }
+                }
+
+                // Fire an EditWorkflowEvent for the new workflow copy.
                 Splittable serviceWorkflowJson = StringQuoter.split(result);
                 eventBus.fireEvent(new EditWorkflowEvent(app, serviceWorkflowJson));
             }
