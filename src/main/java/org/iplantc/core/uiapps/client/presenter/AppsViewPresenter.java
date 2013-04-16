@@ -13,6 +13,7 @@ import org.iplantc.core.uiapps.client.events.CreateNewAppEvent;
 import org.iplantc.core.uiapps.client.events.CreateNewWorkflowEvent;
 import org.iplantc.core.uiapps.client.events.EditAppEvent;
 import org.iplantc.core.uiapps.client.events.EditWorkflowEvent;
+import org.iplantc.core.uiapps.client.events.RunAppEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
@@ -481,39 +482,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     @Override
     public void submitClicked() {
         App selectedApp = getSelectedApp();
-        // final Window makePublicWin = new Window();
-        // makePublicWin.setModal(true);
-        //
-        // SubmitAppForPublicUsePanel requestForm = new SubmitAppForPublicUsePanel(selectedApp,
-        // new AsyncCallback<String>() {
-        // @Override
-        // public void onSuccess(String url) {
-        // makePublicWin.hide();
-        //
-        // new IplantInfoBox(I18N.DISPLAY.makePublicSuccessTitle(),
-        // I18N.DISPLAY.makePublicSuccessMessage(url)).show();
-        //
-        // // Create and fire event
-        // AppGroupCountUpdateEvent event = new AppGroupCountUpdateEvent(false,
-        // AppGroupType.BETA);
-        // eventBus.fireEvent(event);
-        // }
-        //
-        // @Override
-        // public void onFailure(Throwable caught) {
-        // makePublicWin.hide();
-        // if (caught != null) {
-        // ErrorHandler.post(I18N.DISPLAY.makePublicFail(), caught);
-        // }
-        // }
-        // });
-        //
-        // makePublicWin.setHeadingText(selectedApp.getName()
-        //                + " " + I18N.DISPLAY.publicSubmissionForm()); //$NON-NLS-1$
-        // makePublicWin.setPixelSize(615, 480);
-        // makePublicWin.setResizable(false);
-        // makePublicWin.add(requestForm);
-
         SubmitAppForPublicDialog dialog = new SubmitAppForPublicDialog(selectedApp);
         dialog.show();
 
@@ -530,7 +498,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     }
 
     @Override
-    public void onAppNameSelected(App app) {
+    public void onAppInfoClick(App app) {
         showAppInfoWindow(app);
     }
 
@@ -614,5 +582,11 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     @Override
     public Grid<App> getAppsGrid() {
         return view.getAppsGrid();
+    }
+
+    @Override
+    public void onAppRunClick() {
+        RunAppEvent event = new RunAppEvent(getSelectedApp());
+        EventBus.getInstance().fireEvent(event);
     }
 }

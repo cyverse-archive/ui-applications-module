@@ -342,8 +342,8 @@ public class AppsViewImpl implements AppsView {
     }
 
     @Override
-    public void onAppHyperlinkSelected(App app) {
-        presenter.onAppNameSelected(app);
+    public void onAppInfoClick(App app) {
+        presenter.onAppInfoClick(app);
     }
 
     @Override

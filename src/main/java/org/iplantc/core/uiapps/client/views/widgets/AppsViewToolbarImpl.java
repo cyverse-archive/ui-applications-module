@@ -1,5 +1,8 @@
 package org.iplantc.core.uiapps.client.views.widgets;
 
+import org.iplantc.core.uiapps.client.events.RunAppEvent;
+import org.iplantc.core.uicommons.client.events.EventBus;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -33,7 +36,7 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     MenuItem createWorkflow;
 
     @UiField
-    TextButton appInfo;
+    TextButton appRun;
 
     @UiField
     TextButton requestTool;
@@ -67,9 +70,9 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
         this.presenter = presenter;
     }
 
-    @UiHandler("appInfo")
+    @UiHandler("appRun")
     public void appInfoClicked(SelectEvent event) {
-        presenter.onAppInfoClicked();
+        presenter.onAppRunClick();
     }
 
     @UiHandler("requestTool")
@@ -129,7 +132,7 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
 
     @Override
     public void setAppInfoButtonEnabled(boolean enabled) {
-        appInfo.setEnabled(enabled);
+        appRun.setEnabled(enabled);
     }
 
     @Override

@@ -53,10 +53,10 @@
          </button:TextButton>
       </toolbar:child>
       <toolbar:child layoutData="{boxDataNoFlex}">
-         <button:TextButton ui:field="appInfo"
-                            debugId="idAppInfoBtn"
-                            text="{strings.appInfo}"
-                            icon="{icons.info}" />
+         <button:TextButton ui:field="appRun"
+                            debugId="idAppRunBtn"
+                            text="{strings.run}"
+                            icon="{icons.run}" />
       </toolbar:child>
       <toolbar:child layoutData="{boxDataNoFlex}">
          <button:TextButton ui:field="requestTool"

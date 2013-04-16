@@ -7,8 +7,8 @@ import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppProperties;
 import org.iplantc.core.uiapps.client.views.cells.AppHyperlinkCell;
+import org.iplantc.core.uiapps.client.views.cells.AppInfoCell;
 import org.iplantc.core.uiapps.client.views.cells.AppRatingCell;
-import org.iplantc.core.uiapps.client.views.cells.AppRunCell;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
@@ -28,7 +28,7 @@ public class AppColumnModel extends ColumnModel<App> {
         AppProperties props = GWT.create(AppProperties.class);
         List<ColumnConfig<App, ?>> list = new ArrayList<ColumnConfig<App, ?>>();
 
-        ColumnConfig<App, App> run = new ColumnConfig<App, App>(
+        ColumnConfig<App, App> info = new ColumnConfig<App, App>(
                 new IdentityValueProvider<App>(), 20);
 
         ColumnConfig<App, App> name = new ColumnConfig<App, App>(
@@ -38,22 +38,22 @@ public class AppColumnModel extends ColumnModel<App> {
         ColumnConfig<App, App> rating = new ColumnConfig<App, App>(new IdentityValueProvider<App>(),
                 105, "Rating"); //$NON-NLS-1$
 
-        run.setSortable(false);
+        info.setSortable(false);
 
-        run.setResizable(false);
+        info.setResizable(false);
         name.setResizable(true);
         rating.setResizable(false);
 
-        run.setFixed(true);
+        info.setFixed(true);
         rating.setFixed(true);
 
-        run.setCell(new AppRunCell());
+        info.setCell(new AppInfoCell(view));
         name.setCell(new AppHyperlinkCell(view));
         rating.setCell(new AppRatingCell());
 
         rating.setAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
-        list.add(run);
+        list.add(info);
         list.add(name);
         list.add(integrator);
         list.add(rating);

@@ -1,11 +1,14 @@
 package org.iplantc.core.uiapps.client.views.cells;
 
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;
+import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
+import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
 import org.iplantc.core.resources.client.IplantResources;
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.events.RunAppEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
+import org.iplantc.core.uiapps.client.views.AppsView;
 import org.iplantc.core.uicommons.client.events.EventBus;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -22,15 +25,15 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.user.client.Event;
 
-public class AppRunCell extends AbstractCell<App> {
+public class AppInfoCell extends AbstractCell<App> {
 
     interface MyCss extends CssResource {
-        @ClassName("app_run")
+        @ClassName("app_info")
         String appRun();
     }
 
     interface Resources extends ClientBundle {
-        @Source("AppRunCell.css")
+        @Source("AppInfoCell.css")
         MyCss css();
     }
 
@@ -42,18 +45,19 @@ public class AppRunCell extends AbstractCell<App> {
 
     private static final Resources resources = GWT.create(Resources.class);
     private static final Templates templates = GWT.create(Templates.class);
+    private AppsView view;
 
-    public AppRunCell() {
-        // super(CLICK, MOUSEOVER, MOUSEOUT);
-        super(CLICK);
+    public AppInfoCell(AppsView view) {
+        super(CLICK, MOUSEOVER, MOUSEOUT);
+        this.view = view;
         resources.css().ensureInjected();
 
     }
 
     @Override
     public void render(Cell.Context context, App value, SafeHtmlBuilder sb) {
-        sb.append(templates.cell(resources.css().appRun(), IplantResources.RESOURCES.run().getSafeUri(),
-                I18N.DISPLAY.run()));
+        sb.append(templates.cell(resources.css().appRun(),
+                IplantResources.RESOURCES.info().getSafeUri(), I18N.DISPLAY.clickAppInfo()));
     }
 
     @Override
@@ -90,7 +94,7 @@ public class AppRunCell extends AbstractCell<App> {
     }
 
     private void doOnClick(Element eventTarget, App value) {
-        EventBus.getInstance().fireEvent(new RunAppEvent(value));
+        view.onAppInfoClick(value);
     }
 
 }
