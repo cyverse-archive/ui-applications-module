@@ -23,10 +23,9 @@ import org.iplantc.core.uiapps.client.views.dialogs.NewToolRequestDialog;
 import org.iplantc.core.uiapps.client.views.dialogs.SubmitAppForPublicDialog;
 import org.iplantc.core.uiapps.client.views.widgets.AppInfoView;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
-import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultLoadEvent;
-import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultLoadEventHandler;
-import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultSelectedEvent;
-import org.iplantc.core.uiapps.client.views.widgets.events.AppSearch3ResultSelectedEventHandler;
+import org.iplantc.core.uiapps.client.views.widgets.events.AppSearchResultLoadEvent;
+import org.iplantc.core.uiapps.client.views.widgets.events.AppSearchResultLoadEventHandler;
+import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchRpcProxy;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.models.CommonModelAutoBeanFactory;
@@ -108,22 +107,17 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     }
 
     private void initHandlers() {
-        eventBus.addHandler(AppSearch3ResultSelectedEvent.TYPE,
-                new AppSearch3ResultSelectedEventHandler() {
-                    @Override
-                    public void onSelect(AppSearch3ResultSelectedEvent event) {
-                        setDesiredSelectedApp(event.getAppId());
-                        view.selectAppGroup(event.getAppGroupId().getId());
-                    }
-
-                });
-        eventBus.addHandler(AppSearch3ResultLoadEvent.TYPE,
-                new AppSearch3ResultLoadEventHandler() {
-                    @Override
-                    public void onLoad(AppSearch3ResultLoadEvent event) {
-                        view.setApps(event.getResults());
-                    }
-                });
+        eventBus.addHandler(AppSearchResultLoadEvent.TYPE, new AppSearchResultLoadEventHandler() {
+            @Override
+            public void onLoad(AppSearchResultLoadEvent event) {
+                if (event.getSource() == getAppSearchRpcProxy()) {
+                    view.selectAppGroup(null);
+                    view.setCenterPanelHeading(I18N.DISPLAY.searchAppResultsHeader(event.getSearchText()));
+                    view.setApps(event.getResults());
+                    view.unMaskCenterPanel();
+                }
+            }
+        });
         eventBus.addHandler(AppFavoritedEvent.TYPE, new AppFavoritedEventHander() {
 
             @Override
@@ -614,5 +608,10 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     @Override
     public Grid<App> getAppsGrid() {
         return view.getAppsGrid();
+    }
+
+    @Override
+    public AppSearchRpcProxy getAppSearchRpcProxy() {
+        return toolbar.getAppSearchRpcProxy();
     }
 }

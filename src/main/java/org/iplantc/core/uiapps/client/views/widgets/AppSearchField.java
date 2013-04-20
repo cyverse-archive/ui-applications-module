@@ -1,7 +1,13 @@
 package org.iplantc.core.uiapps.client.views.widgets;
 
 import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uicommons.client.widgets.SearchField;
+
+import com.google.gwt.dom.client.InputElement;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+import com.sencha.gxt.data.shared.loader.PagingLoader;
 
 /**
  * A SearchField for the App Catalog main toolbar that performs remote app searches.
@@ -9,24 +15,18 @@ import org.iplantc.core.uicommons.client.widgets.SearchField;
  * @author psarando
  * 
  */
-public class AppSearchField extends SearchField {
-    protected String tag;
-
-    public AppSearchField(String tag) {
-        // Set the dataIndex to something that is not in the App grid in order to prevent the filter
-        // field from appearing in the column menus, and to prevent the column heading from being
-        // emphasized by the GridFilters using this field's StringFilter.
-        super("n/a"); //$NON-NLS-1$
-
-        this.tag = tag;
+public class AppSearchField extends SearchField<App> {
+    public AppSearchField(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> loader) {
+        super(loader);
 
         setWidth(255);
         setEmptyText(I18N.DISPLAY.searchApps());
-        setMaxLength(255);
+        InputElement inputField = getInputEl().cast();
+        inputField.setMaxLength(255);
     }
 
     @Override
     protected void clearFilter() {
-        // Do not set the StringFilter value to null in order to prevent a remote load from triggering.
+        // Do not reload.
     }
 }

@@ -1,9 +1,9 @@
-package org.iplantc.core.uiapps.client.events;
+package org.iplantc.core.uiapps.client.views.widgets.events;
 
 import java.util.List;
 
-import org.iplantc.core.uiapps.client.events.handlers.AppSearchResultLoadEventHandler;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
+import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchRpcProxy;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -22,12 +22,11 @@ public class AppSearchResultLoadEvent extends GwtEvent<AppSearchResultLoadEventH
      */
     public static final GwtEvent.Type<AppSearchResultLoadEventHandler> TYPE = new GwtEvent.Type<AppSearchResultLoadEventHandler>();
 
-    private String tag;
     private String searchText;
     private List<App> results;
 
-    public AppSearchResultLoadEvent(String tag, String searchText, List<App> results) {
-        setTag(tag);
+    public AppSearchResultLoadEvent(AppSearchRpcProxy proxy, String searchText, List<App> results) {
+        setSource(proxy);
         setSearchText(searchText);
         setResults(results);
     }
@@ -40,14 +39,6 @@ public class AppSearchResultLoadEvent extends GwtEvent<AppSearchResultLoadEventH
     @Override
     protected void dispatch(AppSearchResultLoadEventHandler handler) {
         handler.onLoad(this);
-    }
-
-    public String getTag() {
-        return tag == null ? "" : tag; //$NON-NLS-1$
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 
     public String getSearchText() {

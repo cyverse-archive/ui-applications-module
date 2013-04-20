@@ -5,118 +5,110 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.iplantc.core.uiapps.client.Services;
-import org.iplantc.core.uiapps.client.events.AppSearchResultLoadEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppList;
-import org.iplantc.core.uiapps.client.services.AppServiceFacade;
+import org.iplantc.core.uiapps.client.views.widgets.events.AppSearchResultLoadEvent;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 
-import com.extjs.gxt.ui.client.data.FilterConfig;
-import com.extjs.gxt.ui.client.data.FilterPagingLoadConfig;
-import com.extjs.gxt.ui.client.data.RpcProxy;
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+import com.sencha.gxt.data.client.loader.RpcProxy;
+import com.sencha.gxt.data.shared.loader.FilterConfig;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 /**
- * An RpcProxy for a ListLoader that will call the searchApp service, then process the JSON results into
- * an App list.
+ * An RpcProxy for an AppLoadConfig that will call the searchApp service, then process the JSON results
+ * into an AppListLoadResult.
  * 
  * @author psarando
  * 
  */
-public class AppSearchRpcProxy extends RpcProxy<List<App>> {
-    protected String tag;
-    protected AppServiceFacade templateService;
+public class AppSearchRpcProxy extends RpcProxy<FilterPagingLoadConfig, PagingLoadResult<App>> {
     private String lastQueryText = ""; //$NON-NLS-1$
-
-    public AppSearchRpcProxy(String tag) {
-        this.tag = tag;
-        this.templateService = Services.APP_SERVICE;
-    }
 
     public String getLastQueryText() {
         return lastQueryText;
     }
 
     @Override
-    protected void load(Object loadConfig, final AsyncCallback<List<App>> callback) {
-        if (templateService == null) {
-            Exception error = new Exception("Could not access service");
-
-            ErrorHandler.post(error);
-            callback.onFailure(error);
-
-            return;
-        }
-
-        // Get the proxy's search params.
-        FilterPagingLoadConfig config = (FilterPagingLoadConfig)loadConfig;
-
+    public void load(FilterPagingLoadConfig loadConfig,
+            final AsyncCallback<PagingLoadResult<App>> callback) {
         // Cache the query text.
         lastQueryText = ""; //$NON-NLS-1$
 
-        List<FilterConfig> filterConfigs = config.getFilterConfigs();
+        // Get the proxy's search params.
+        List<FilterConfig> filterConfigs = loadConfig.getFilters();
         if (filterConfigs != null && !filterConfigs.isEmpty()) {
-            lastQueryText = (String)filterConfigs.get(0).getValue();
+            lastQueryText = filterConfigs.get(0).getValue();
         }
 
-        if (lastQueryText == null || lastQueryText.isEmpty()) {
+        if (Strings.isNullOrEmpty(lastQueryText)) {
             // nothing to search
             return;
         }
 
         // Cache the search text for this callback; used to sort the results.
         final String searchText = lastQueryText;
+        final AppSearchRpcProxy source = this;
 
-        // Create a callback for the AppTemplateServiceFacade.
-        AsyncCallback<String> templateServiceCallback = new AsyncCallback<String>() {
+        // Call the searchApp service with this proxy's query.
+        Services.APP_SERVICE.searchApp(lastQueryText, new AsyncCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
                 List<App> apps = AutoBeanCodex.decode(factory, AppList.class, result).as().getApps();
 
-                Collections.sort(apps, new Comparator<App>() {
-                    @Override
-                    public int compare(App app1, App app2) {
-                        String app1Name = app1.getName();
-                        String app2Name = app2.getName();
-
-                        String lowerSearchText = searchText.toLowerCase();
-                        boolean app1NameMatches = app1Name.toLowerCase().contains(lowerSearchText);
-                        boolean app2NameMatches = app2Name.toLowerCase().contains(lowerSearchText);
-
-                        if (app1NameMatches && !app2NameMatches) {
-                            // Only app1's name contains the search term, so order it before app2
-                            return -1;
-                        }
-                        if (!app1NameMatches && app2NameMatches) {
-                            // Only app2's name contains the search term, so order it before app1
-                            return 1;
-                        }
-
-                        return app1Name.compareToIgnoreCase(app2Name);
-                    }
-                });
+                Collections.sort(apps, new AppComparator(searchText));
 
                 // Pass the App list to this proxy's load callback.
-                callback.onSuccess(apps);
+                AppListLoadResult searchResult = AppSearchAutoBeanFactory.instance.dataLoadResult().as();
+                searchResult.setData(apps);
+                callback.onSuccess(searchResult);
 
                 // Fire the search results load event.
                 EventBus eventBus = EventBus.getInstance();
-                eventBus.fireEvent(new AppSearchResultLoadEvent(tag, searchText, apps));
+                eventBus.fireEvent(new AppSearchResultLoadEvent(source, searchText, apps));
             }
 
             @Override
             public void onFailure(Throwable caught) {
+                // TODO Add user error message or remove post here?
                 ErrorHandler.post(caught);
                 callback.onFailure(caught);
             }
-        };
+        });
+    }
 
-        // Call the searchApp service with this proxy's query.
-        templateService.searchApp(lastQueryText, templateServiceCallback);
+    private final class AppComparator implements Comparator<App> {
+        final String searchTextLowerCase;
+
+        AppComparator(String searchText) {
+            searchTextLowerCase = searchText == null ? "" : searchText.toLowerCase(); //$NON-NLS-1$
+        }
+
+        @Override
+        public int compare(App app1, App app2) {
+            String app1Name = app1.getName();
+            String app2Name = app2.getName();
+
+            boolean app1NameMatches = app1Name.toLowerCase().contains(searchTextLowerCase);
+            boolean app2NameMatches = app2Name.toLowerCase().contains(searchTextLowerCase);
+
+            if (app1NameMatches && !app2NameMatches) {
+                // Only app1's name contains the search term, so order it before app2
+                return -1;
+            }
+            if (!app1NameMatches && app2NameMatches) {
+                // Only app2's name contains the search term, so order it before app1
+                return 1;
+            }
+
+            return app1Name.compareToIgnoreCase(app2Name);
+        }
     }
 }

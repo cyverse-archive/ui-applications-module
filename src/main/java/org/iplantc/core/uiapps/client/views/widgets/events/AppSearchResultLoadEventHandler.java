@@ -1,6 +1,5 @@
-package org.iplantc.core.uiapps.client.events.handlers;
+package org.iplantc.core.uiapps.client.views.widgets.events;
 
-import org.iplantc.core.uiapps.client.events.AppSearchResultLoadEvent;
 
 import com.google.gwt.event.shared.EventHandler;
 

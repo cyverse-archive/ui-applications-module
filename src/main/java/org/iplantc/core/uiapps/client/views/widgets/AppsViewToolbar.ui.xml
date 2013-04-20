@@ -32,6 +32,10 @@
     <ui:attributes titleText="{strings.submitForPublicUse}" trackMouse="true" />
   </ui:with>
 
+    <ui:with
+        field="loader"
+        type="com.sencha.gxt.data.shared.loader.PagingLoader" />
+
    <toolbar:ToolBar ui:field="toolBar">
       <toolbar:child layoutData="{boxDataNoFlex}">
          <button:TextButton ui:field="create"
@@ -90,7 +94,7 @@
                             toolTipConfig="{submitToolTip}"/>
       </toolbar:child>
       <toolbar:child layoutData="{boxData}">
-         <MyWidgets:AppSearchField3 ui:field="appSearch" />
+         <MyWidgets:AppSearchField ui:field="appSearch" />
       </toolbar:child>
    </toolbar:ToolBar>
 </ui:UiBinder>
