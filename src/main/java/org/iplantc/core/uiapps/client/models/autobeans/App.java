@@ -85,6 +85,16 @@ public interface App extends HasId, HasName, HasDescription {
     @PropertyName("step_count")
     void setStepCount(int step_count);
 
+    @PropertyName("can_run")
+    boolean isRunnable();
+
+    @PropertyName("can_run")
+    void setRunnable(boolean can_run);
+
+    List<String> getReferences();
+
+    void setReferences(List<String> references);
+
     List<AppDataObject> getInputs();
 
     void setInputs(List<AppDataObject> inputs);

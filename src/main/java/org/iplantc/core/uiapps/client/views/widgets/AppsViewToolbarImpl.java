@@ -1,15 +1,22 @@
 package org.iplantc.core.uiapps.client.views.widgets;
 
-import org.iplantc.core.uiapps.client.events.RunAppEvent;
-import org.iplantc.core.uicommons.client.events.EventBus;
+
+import org.iplantc.core.uiapps.client.models.autobeans.App;
+import org.iplantc.core.uiapps.client.views.widgets.proxy.AppLoadConfig;
+import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchAutoBeanFactory;
+import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchRpcProxy;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+import com.sencha.gxt.data.shared.loader.PagingLoader;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.menu.Item;
@@ -25,6 +32,7 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
 
     private final Widget widget;
     private Presenter presenter;
+    private AppSearchRpcProxy proxy;
 
     @UiField
     TextButton create;
@@ -54,7 +62,27 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     TextButton submit;
 
     @UiField
-    AppSearchField3 appSearch;
+    AppSearchField appSearch;
+
+    @UiField
+    PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> loader;
+
+    @UiFactory
+    PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> createPagingLoader() {
+        proxy = new AppSearchRpcProxy();
+        PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> loader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>>(
+                proxy);
+
+        AppLoadConfig appLoadConfig = AppSearchAutoBeanFactory.instance.loadConfig().as();
+        loader.useLoadConfig(appLoadConfig);
+
+        return loader;
+    }
+
+    @UiFactory
+    AppSearchField createAppSearchField() {
+        return new AppSearchField(loader);
+    }
 
     public AppsViewToolbarImpl() {
         widget = uiBinder.createAndBindUi(this);
@@ -165,4 +193,8 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
         requestTool.setVisible(visible);
     }
 
+    @Override
+    public AppSearchRpcProxy getAppSearchRpcProxy() {
+        return proxy;
+    }
 }

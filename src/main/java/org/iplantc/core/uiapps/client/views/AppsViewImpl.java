@@ -6,6 +6,7 @@ import org.iplantc.core.resources.client.IplantResources;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -212,12 +213,16 @@ public class AppsViewImpl implements AppsView {
 
     @Override
     public void selectAppGroup(String appGroupId) {
-        AppGroup ag = treeStore.findModelWithKey(appGroupId);
-        if (ag != null) {
-            tree.getSelectionModel().select(ag, false);
-            tree.scrollIntoView(ag);
-            // Set heading
-            setCenterPanelHeading(ag.getName());
+        if (Strings.isNullOrEmpty(appGroupId)) {
+            tree.getSelectionModel().deselectAll();
+        } else {
+            AppGroup ag = treeStore.findModelWithKey(appGroupId);
+            if (ag != null) {
+                tree.getSelectionModel().select(ag, false);
+                tree.scrollIntoView(ag);
+                // Set heading
+                setCenterPanelHeading(ag.getName());
+            }
         }
     }
 

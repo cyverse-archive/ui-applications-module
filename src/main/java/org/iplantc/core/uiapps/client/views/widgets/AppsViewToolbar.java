@@ -2,6 +2,7 @@ package org.iplantc.core.uiapps.client.views.widgets;
 
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
+import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchRpcProxy;
 
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -50,7 +51,10 @@ public interface AppsViewToolbar extends IsWidget {
 
         void onEditClicked();
 
+
         public void onAppRunClick();
+
+        AppSearchRpcProxy getAppSearchRpcProxy();
     }
 
     void setPresenter(Presenter presenter);
@@ -76,4 +80,6 @@ public interface AppsViewToolbar extends IsWidget {
     void setSubmitButtonVisible(boolean visible);
 
     void setRequestToolButtonVisible(boolean visible);
+
+    AppSearchRpcProxy getAppSearchRpcProxy();
 }
