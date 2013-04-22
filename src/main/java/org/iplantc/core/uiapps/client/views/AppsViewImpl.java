@@ -360,4 +360,9 @@ public class AppsViewImpl implements AppsView {
     public void expandAppGroups() {
         tree.expandAll();
     }
+
+    @Override
+    public void onAppNameSelected(final App app) {
+        presenter.onAppNameSelected(app);
+    }
 }

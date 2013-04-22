@@ -29,6 +29,8 @@ public interface AppsView extends IsWidget {
         AppGroup getSelectedAppGroup();
 
         void onAppInfoClick(App app);
+        
+        void onAppNameSelected(App app);
 
         void go(HasOneWidget container, HasId selectedAppGroup, HasId selectedApp);
 
@@ -90,6 +92,8 @@ public interface AppsView extends IsWidget {
     App findApp(String appId);
 
     void onAppInfoClick(App app);
+
+    void onAppNameSelected(final App app);
 
     Grid<App> getAppsGrid();
 

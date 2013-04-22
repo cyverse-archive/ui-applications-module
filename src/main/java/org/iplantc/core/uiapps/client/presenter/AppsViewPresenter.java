@@ -588,4 +588,9 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         return toolbar.getAppSearchRpcProxy();
 
     }
+
+    @Override
+    public void onAppNameSelected(final App app) {
+        EventBus.getInstance().fireEvent(new RunAppEvent(app));
+    }
 }
