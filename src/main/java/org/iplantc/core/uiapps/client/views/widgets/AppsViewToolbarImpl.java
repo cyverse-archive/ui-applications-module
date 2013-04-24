@@ -32,7 +32,8 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
 
     private final Widget widget;
     private Presenter presenter;
-    private AppSearchRpcProxy proxy;
+    private final AppSearchRpcProxy proxy;
+    private final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> loader;
 
     @UiField
     TextButton create;
@@ -64,12 +65,18 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     @UiField
     AppSearchField appSearch;
 
-    @UiField
-    PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> loader;
-
     @UiFactory
-    PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> createPagingLoader() {
+    AppSearchField createAppSearchField() {
+        return new AppSearchField(loader);
+    }
+
+    public AppsViewToolbarImpl() {
         proxy = new AppSearchRpcProxy();
+        loader = createPagingLoader();
+        widget = uiBinder.createAndBindUi(this);
+    }
+
+    private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> createPagingLoader() {
         PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>> loader = new PagingLoader<FilterPagingLoadConfig, PagingLoadResult<App>>(
                 proxy);
 
@@ -77,15 +84,6 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
         loader.useLoadConfig(appLoadConfig);
 
         return loader;
-    }
-
-    @UiFactory
-    AppSearchField createAppSearchField() {
-        return new AppSearchField(loader);
-    }
-
-    public AppsViewToolbarImpl() {
-        widget = uiBinder.createAndBindUi(this);
     }
 
     @Override
