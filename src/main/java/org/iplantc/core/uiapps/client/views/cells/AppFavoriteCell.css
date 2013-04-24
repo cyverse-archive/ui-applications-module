@@ -23,7 +23,7 @@
 }
 
 @sprite .appUnavailable {
-	gwt-image: "appUnavailableIcon";
+	gwt-image: "exclamation";
 	float: left;
 }
 
