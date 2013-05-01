@@ -365,4 +365,9 @@ public class AppsViewImpl implements AppsView {
     public void onAppNameSelected(final App app) {
         presenter.onAppNameSelected(app);
     }
+
+    @Override
+    public boolean isTreeStoreEmpty() {
+        return treeStore.getAll().isEmpty();
+    }
 }

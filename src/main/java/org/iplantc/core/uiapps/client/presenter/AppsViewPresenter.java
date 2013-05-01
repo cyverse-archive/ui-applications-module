@@ -243,20 +243,18 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     public void go(HasOneWidget container, final HasId selectedAppGroup, final HasId selectedApp) {
         go(container);
 
+        if (!view.isTreeStoreEmpty()) {
+            doInitialAppSelection(selectedAppGroup, selectedApp);
+
+            return;
+        }
         // Fetch AppGroups
         appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
             @Override
             public void onSuccess(List<AppGroup> result) {
                 view.addAppGroups(null, result);
                 view.expandAppGroups();
-                // Select previous user selections
-                if ((selectedAppGroup != null) && (selectedApp != null)) {
-                    view.selectAppGroup(selectedAppGroup.getId());
-                    AppsViewPresenter.this.setDesiredSelectedApp(selectedApp);
-                    // view.selectApp(selectedApp.getId());
-                } else {
-                    view.selectFirstAppGroup();
-                }
+                doInitialAppSelection(selectedAppGroup, selectedApp);
             }
 
             @Override
@@ -265,6 +263,17 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
                 ErrorHandler.post(caught);
             }
         });
+    }
+
+    private void doInitialAppSelection(HasId selectedAppGroup, HasId selectedApp) {
+        // Select previous user selections
+        if ((selectedAppGroup != null) && (selectedApp != null)) {
+            view.selectAppGroup(selectedAppGroup.getId());
+            AppsViewPresenter.this.setDesiredSelectedApp(selectedApp);
+        } else {
+            view.selectFirstAppGroup();
+        }
+
     }
 
     @Override

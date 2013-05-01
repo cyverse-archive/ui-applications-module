@@ -98,4 +98,6 @@ public interface AppsView extends IsWidget {
     Grid<App> getAppsGrid();
 
     void expandAppGroups();
+
+    boolean isTreeStoreEmpty();
 }

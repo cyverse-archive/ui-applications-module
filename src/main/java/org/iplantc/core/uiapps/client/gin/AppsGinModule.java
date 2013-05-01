@@ -21,7 +21,7 @@ public class AppsGinModule extends AbstractGinModule {
         }).toProvider(AppGroupTreeStoreProvider.class).in(Singleton.class);
 
         bind(new TypeLiteral<Tree<AppGroup, String>>() {
-        }).toProvider(AppGroupTreeProvider.class).in(Singleton.class);
+        }).toProvider(AppGroupTreeProvider.class);
 
         bind(AppsView.class).to(AppsViewImpl.class);
         bind(AppsView.Presenter.class).to(AppsViewPresenter.class);
