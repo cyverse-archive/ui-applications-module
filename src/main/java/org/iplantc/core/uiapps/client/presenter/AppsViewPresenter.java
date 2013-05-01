@@ -29,7 +29,7 @@ import org.iplantc.core.uiapps.client.views.widgets.events.AppSearchResultLoadEv
 import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchRpcProxy;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
-import org.iplantc.core.uicommons.client.models.CommonModelAutoBeanFactory;
+import org.iplantc.core.uicommons.client.models.CommonModelUtils;
 import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.HasId;
 import org.iplantc.core.uicommons.client.models.UserInfo;
@@ -83,8 +83,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     private AppsViewToolbar toolbar;
 
     private HasId desiredSelectedAppId;
-
-    private final CommonModelAutoBeanFactory factory = GWT.create(CommonModelAutoBeanFactory.class);
 
     @Inject
     public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar) {
@@ -380,12 +378,8 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         Services.USER_APP_SERVICE.copyApp(app.getId(), new AsyncCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Splittable splitResult = StringQuoter.createSplittable();
-                StringQuoter.split(result).get("analysis_id").assign(splitResult, "id");
-
-                AutoBean<HasId> hasId = AutoBeanCodex.decode(factory, HasId.class, splitResult);
-
-                if (!hasId.as().getId().isEmpty()) {
+                HasId hasId = CommonModelUtils.createHasIdFromString(StringQuoter.split(result).get("analysis_id").asString());
+                if (!hasId.getId().isEmpty()) {
                     AppGroup selectedAppGroup = getSelectedAppGroup();
                     if (selectedAppGroup != null) {
                         fetchApps(selectedAppGroup);
@@ -394,8 +388,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
                     if (appGroup != null) {
                         view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() + 1);
                     }
-                    eventBus.fireEvent(new EditAppEvent(hasId.as()));
-                    fetchTemplateAndFireEditAppEvent(hasId.as());
+                    eventBus.fireEvent(new EditAppEvent(hasId));
                 }
             }
 
@@ -404,22 +397,6 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
             public void onFailure(Throwable caught) {
                 // TODO Add error message for the user.
                 ErrorHandler.post(caught);
-            }
-        });
-    }
-
-    private void fetchTemplateAndFireEditAppEvent(final HasId app) {
-        Services.USER_APP_SERVICE.getTemplate(app.getId(), new AsyncCallback<String>() {
-
-            @Override
-            public void onSuccess(String result) {
-                Splittable legacyAppTemplate = StringQuoter.split(result);
-                eventBus.fireEvent(new EditAppEvent(app, legacyAppTemplate));
-            }
-
-            @Override
-            public void onFailure(Throwable caught) {
-                ErrorHandler.post(I18N.ERROR.failToRetrieveApp(), caught);
             }
         });
     }
@@ -512,7 +489,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         if (selectedApp.getStepCount() > 1) {
             fetchWorkflowAndFireEditEvent(selectedApp);
         } else {
-            fetchTemplateAndFireEditAppEvent(selectedApp);
+            eventBus.fireEvent(new EditAppEvent(selectedApp));
         }
     }
 
@@ -593,6 +570,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         EventBus.getInstance().fireEvent(event);
     }
 
+    @Override
     public AppSearchRpcProxy getAppSearchRpcProxy() {
         return toolbar.getAppSearchRpcProxy();
 

@@ -97,14 +97,6 @@ public interface AppUserServiceFacade extends AppServiceFacade {
     void copyWorkflow(String workflowId, AsyncCallback<String> callback);
 
     /**
-     * Retrieves a template from the database.
-     * 
-     * @param templateId unique identifier for the template.
-     * @param callback called when the RPC call is complete.
-     */
-    void getTemplate(String tag, AsyncCallback<String> asyncCallback);
-
-    /**
      * 
      * @param appId
      * @param callback
