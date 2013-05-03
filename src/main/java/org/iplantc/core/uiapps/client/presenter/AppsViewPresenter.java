@@ -378,15 +378,16 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
         Services.USER_APP_SERVICE.copyApp(app.getId(), new AsyncCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                // Update the user's private apps group count.
+                AppGroup usersAppsGrp = view.findAppGroupByName(USER_APPS_GROUP);
+                if (usersAppsGrp != null) {
+                    view.updateAppGroupAppCount(usersAppsGrp, usersAppsGrp.getAppCount() + 1);
+                }
                 HasId hasId = CommonModelUtils.createHasIdFromString(StringQuoter.split(result).get("analysis_id").asString());
                 if (!hasId.getId().isEmpty()) {
                     AppGroup selectedAppGroup = getSelectedAppGroup();
                     if (selectedAppGroup != null) {
                         fetchApps(selectedAppGroup);
-                    }
-                    AppGroup appGroup = view.findAppGroup(app.getGroupId());
-                    if (appGroup != null) {
-                        view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() + 1);
                     }
                     eventBus.fireEvent(new EditAppEvent(hasId));
                 }
