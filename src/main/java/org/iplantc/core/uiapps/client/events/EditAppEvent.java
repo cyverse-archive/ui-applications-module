@@ -44,4 +44,5 @@ public class EditAppEvent extends GwtEvent<EditAppEventHandler> {
     public Splittable getLegacyAppTemplate() {
         return legacyAppTemplate;
     }
+
 }
