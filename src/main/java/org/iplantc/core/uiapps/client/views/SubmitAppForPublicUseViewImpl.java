@@ -32,6 +32,7 @@ import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.button.ToolButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.CompleteEditEvent;
 import com.sencha.gxt.widget.core.client.event.CompleteEditEvent.CompleteEditHandler;
@@ -153,13 +154,17 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
             return null;
         }
 
-        return "<span class='required_marker'>*</span> " + label; //$NON-NLS-1$
+        return "<span style='color:red; top:-5px;' >*</span> " + label; //$NON-NLS-1$
     }
 
     private void initFieldLabels() {
         appfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicName()));
         descfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicDescription()));
         refPanel.setHeadingHtml(I18N.DISPLAY.publicAttach());
+        ToolButton tool_help_ref = new ToolButton(ToolButton.QUESTION);
+        refPanel.getHeader().addTool(tool_help_ref);
+        ToolButton tool_help_cat = new ToolButton(ToolButton.QUESTION);
+        catPanel.getHeader().addTool(tool_help_cat);
         catPanel.setHeadingHtml(buildRequiredFieldLabel(I18N.DISPLAY.publicCategories()));
     }
 
