@@ -20,6 +20,7 @@ import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent.SubmitCompleteHandler;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.FileUploadField;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
@@ -90,6 +91,32 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     @UiField
     FormPanel formPanel;
 
+    @UiField
+    FieldLabel toolNameLbl;
+
+    @UiField
+    FieldLabel toolDescLbl;
+
+    @UiField
+    FieldLabel srcLbl;
+
+    @UiField
+    FieldLabel docUrlLbl;
+
+    @UiField
+    FieldLabel versionLbl;
+
+    @UiField
+    FieldLabel archLbl;
+
+    @UiField
+    FieldLabel multiLbl;
+
+    @UiField
+    FieldLabel upldTestLbl;
+
+    @UiField
+    FieldLabel cmdLineLbl;
 
 
     @UiTemplate("NewToolRequestFormView.ui.xml")
@@ -116,6 +143,19 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
         initSrcModeSelection();
         initValidators();
+        initRequiredLabels();
+    }
+
+    private void initRequiredLabels() {
+        toolNameLbl.setHTML(buildRequiredFieldLabel(toolNameLbl.getText()));
+        toolDescLbl.setHTML(buildRequiredFieldLabel(toolDescLbl.getText()));
+        srcLbl.setHTML(buildRequiredFieldLabel(srcLbl.getText()));
+        docUrlLbl.setHTML(buildRequiredFieldLabel(docUrlLbl.getText()));
+        versionLbl.setHTML(buildRequiredFieldLabel(versionLbl.getText()));
+        archLbl.setHTML(buildRequiredFieldLabel(archLbl.getText()));
+        multiLbl.setHTML(buildRequiredFieldLabel(multiLbl.getText()));
+        upldTestLbl.setHTML(buildRequiredFieldLabel(upldTestLbl.getText()));
+        cmdLineLbl.setHTML(buildRequiredFieldLabel(cmdLineLbl.getText()));
     }
 
 
@@ -123,6 +163,14 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     private void initValidators() {
         binLink.addValidator(new UrlValidator());
         toolDoc.addValidator(new UrlValidator());
+    }
+
+    private String buildRequiredFieldLabel(String label) {
+        if (label == null) {
+            return null;
+        }
+
+        return "<span style='color:red; top:-5px;' >*</span> " + label; //$NON-NLS-1$
     }
 
     void initSrcModeSelection() {
@@ -152,9 +200,9 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
     @Override
     public void onSubmitBtnClick() {
-        final AutoProgressMessageBox box = new AutoProgressMessageBox("Progress",
-                "Submitting your request, please wait...");
-        box.setProgressText("Submitting...");
+        final AutoProgressMessageBox box = new AutoProgressMessageBox(I18N.DISPLAY.submitting(),
+                I18N.DISPLAY.submitRequest());
+        box.setProgressText(I18N.DISPLAY.submitting());
 
         if (formPanel.isValid()) {
             // remove unused file upload fields

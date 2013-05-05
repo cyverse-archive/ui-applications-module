@@ -13,11 +13,10 @@ import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView.Presenter;
 import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseViewImpl;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.widget.core.client.Dialog;
-import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.button.ToolButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
@@ -26,7 +25,7 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
  * @author sriram
  * 
  */
-public class SubmitAppForPublicDialog extends Dialog {
+public class SubmitAppForPublicDialog extends IPlantDialog {
 
     private ToolButton tool_help;
 
@@ -55,18 +54,23 @@ public class SubmitAppForPublicDialog extends Dialog {
 
     public SubmitAppForPublicDialog(final App selectedApp) {
         initDialog();
-        TextButton okBtn = getButtonById(PredefinedButton.OK.toString());
-
-
         SubmitAppForPublicUseView view = new SubmitAppForPublicUseViewImpl(selectedApp);
         final Presenter p = new SubmitAppForPublicPresenter(view, new SubmitAppForPublicCallbackImpl());
         p.go(this);
-        okBtn.setText(I18N.DISPLAY.submit());
-        okBtn.addSelectHandler(new SelectHandler() {
+        setOkButtonText(I18N.DISPLAY.submit());
+        addOkButtonSelectHandler(new SelectHandler() {
 
             @Override
             public void onSelect(SelectEvent event) {
                 p.onSubmit();
+            }
+        });
+        addCancelButtonSelectHandler(new SelectHandler() {
+            
+            @Override
+            public void onSelect(SelectEvent event) {
+                hide();
+                
             }
         });
     }
@@ -74,10 +78,10 @@ public class SubmitAppForPublicDialog extends Dialog {
     private void initDialog() {
         setHeadingText(I18N.DISPLAY.publicSubmissionForm()); //$NON-NLS-1$
         setPixelSize(615, 480);
-        setResizable(false);
         setPredefinedButtons(PredefinedButton.OK, PredefinedButton.CANCEL);
         tool_help = new ToolButton(ToolButton.QUESTION);
         getHeader().addTool(tool_help);
+        setHideOnButtonClick(false);
     }
 
 }
