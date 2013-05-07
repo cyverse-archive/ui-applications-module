@@ -11,6 +11,7 @@ import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.models.autobeans.AppRefLink;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
+import org.iplantc.core.uicommons.client.widgets.ContextualHelpPopup;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
@@ -22,6 +23,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
@@ -37,6 +39,7 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.CompleteEditEvent;
 import com.sencha.gxt.widget.core.client.event.CompleteEditEvent.CompleteEditHandler;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.form.TextField;
@@ -127,6 +130,20 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
         initFieldLabels();
         appName.setValue(selectedApp.getName());
         appDesc.setValue(selectedApp.getDescription());
+        loadReferences();
+        addhelp();
+    }
+
+    private void loadReferences() {
+        AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
+        if (selectedApp.getReferences() != null && selectedApp.getReferences().size() > 0) {
+            for (String item : selectedApp.getReferences()) {
+                AutoBean<AppRefLink> bean = AutoBeanCodex.decode(factory, AppRefLink.class, "{}");
+                AppRefLink link = bean.as();
+                link.setRefLink(item);
+                listStore.add(link);
+            }
+        }
     }
 
     private void initGrid() {
@@ -140,10 +157,10 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 
             @Override
             public void onCompleteEdit(CompleteEditEvent<AppRefLink> event) {
-                    String refLink = editor.getCurrentValue();
-                    AppRefLink ref = listStore.get(0);
-                    ref.setRefLink(refLink);
-                    listStore.update(ref);
+                String refLink = editor.getCurrentValue();
+                AppRefLink ref = listStore.get(0);
+                ref.setRefLink(refLink);
+                listStore.update(ref);
             }
         });
         grid.getView().setAutoExpandColumn(cc);
@@ -157,14 +174,38 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
         return "<span style='color:red; top:-5px;' >*</span> " + label; //$NON-NLS-1$
     }
 
+    private void addhelp() {
+        final ToolButton tool_help_ref = new ToolButton(ToolButton.QUESTION);
+        refPanel.getHeader().addTool(tool_help_ref);
+        tool_help_ref.addSelectHandler(new SelectHandler() {
+            
+            @Override
+            public void onSelect(SelectEvent event) {
+                ContextualHelpPopup popup = new ContextualHelpPopup();
+                popup.add(new HTML(I18N.HELP.publicSubmissionFormAttach()));
+                popup.showAt(tool_help_ref.getAbsoluteLeft(), tool_help_ref.getAbsoluteTop() + 15);
+                
+            }
+        });
+        final ToolButton tool_help_cat = new ToolButton(ToolButton.QUESTION);
+        catPanel.getHeader().addTool(tool_help_cat);
+        tool_help_cat.addSelectHandler(new SelectHandler() {
+            
+            @Override
+            public void onSelect(SelectEvent event) {
+                ContextualHelpPopup popup = new ContextualHelpPopup();
+                popup.add(new HTML(I18N.HELP.publicSubmissionFormCategories()));
+                popup.showAt(tool_help_cat.getAbsoluteLeft(), tool_help_cat.getAbsoluteTop() + 15);
+                
+            }
+        });
+    }
+
     private void initFieldLabels() {
         appfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicName()));
         descfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicDescription()));
         refPanel.setHeadingHtml(I18N.DISPLAY.publicAttach());
-        ToolButton tool_help_ref = new ToolButton(ToolButton.QUESTION);
-        refPanel.getHeader().addTool(tool_help_ref);
-        ToolButton tool_help_cat = new ToolButton(ToolButton.QUESTION);
-        catPanel.getHeader().addTool(tool_help_cat);
+
         catPanel.setHeadingHtml(buildRequiredFieldLabel(I18N.DISPLAY.publicCategories()));
     }
 

@@ -17,7 +17,6 @@ import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.widget.core.client.button.ToolButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
@@ -27,7 +26,6 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
  */
 public class SubmitAppForPublicDialog extends IPlantDialog {
 
-    private ToolButton tool_help;
 
     private final class SubmitAppForPublicCallbackImpl implements AsyncCallback<String> {
         @Override
@@ -79,8 +77,6 @@ public class SubmitAppForPublicDialog extends IPlantDialog {
         setHeadingText(I18N.DISPLAY.publicSubmissionForm()); //$NON-NLS-1$
         setPixelSize(615, 480);
         setPredefinedButtons(PredefinedButton.OK, PredefinedButton.CANCEL);
-        tool_help = new ToolButton(ToolButton.QUESTION);
-        getHeader().addTool(tool_help);
         setHideOnButtonClick(false);
     }
 
