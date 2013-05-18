@@ -1,0 +1,170 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:con="urn:import:com.sencha.gxt.widget.core.client.container"
+	xmlns:c="urn:import:com.sencha.gxt.widget.core.client.button"
+	xmlns:form="urn:import:com.sencha.gxt.widget.core.client.form"
+	xmlns:gwt="urn:import:com.google.gwt.widget.client" xmlns:t="urn:import:com.google.gwt.i18n.server.testing">
+
+	<ui:with field="strings"
+		type="org.iplantc.core.resources.client.messages.IplantDisplayStrings" />
+
+	<ui:with field="layoutData"
+		type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">
+		<ui:attributes height="-1" width=".90" />
+	</ui:with>
+	<form:FormPanel ui:field="formPanel" encoding="MULTIPART"
+		method="POST" width="420" action="apps/new_tool_request">
+		<con:VerticalLayoutContainer ui:field="container">
+			<form:FieldSet ui:field="toolSet" headingText="{strings.toolTab}"
+				collapsible="true">
+				<con:VerticalLayoutContainer>
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel ui:field="toolNameLbl" text="{strings.toolNameLabel}" labelSeparator=""
+							labelAlign="TOP">
+							<form:widget>
+								<form:TextField debugId="idTxtToolName" name="name" ui:field="toolName" allowBlank="false">
+								</form:TextField>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel ui:field="toolDescLbl"  text="{strings.toolDesc}"
+							labelAlign="TOP">
+							<form:widget>
+								<form:TextArea debugId="idTxtToolDesc" name="description" ui:field="toolDesc" allowBlank="false" height="150">
+								</form:TextArea>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel ui:field="attribLbl"  text="{strings.toolAttributionLabel}"
+							labelAlign="TOP" >
+							<form:widget>
+								<form:TextArea debugId="idTxtAttrib" name="attribution" ui:field="toolAttrib" allowBlank="true" height="150">
+								</form:TextArea>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.srcLinkPrompt}" ui:field="srcLbl"
+							labelAlign="TOP">
+							<form:widget>
+								<g:HorizontalPanel spacing="3">
+									<form:Radio  debugId="idRdoTooLink" ui:field="toolLink" name="toollinkUpld"
+										boxLabel="Link" value="true"></form:Radio>
+									<form:Radio  debugId="idRdoToolUpld" ui:field="toolUpld" name="toollinkUpld"
+										boxLabel="Upload"></form:Radio>
+								</g:HorizontalPanel>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="" labelSeparator=""
+							labelAlign="TOP">
+							<form:widget>
+								<form:FileUploadField debugId="idFileUpldTool" ui:field="binUpld"
+									visible="false" name="src_upload_file" allowBlank="true"></form:FileUploadField>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="" labelSeparator=""
+							labelAlign="TOP">
+							<form:widget>
+								<form:TextField debugId="idTxtToolUrl" name="src_url" ui:field="binLink" visible="true"
+									allowBlank="true"></form:TextField>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.docLink}" ui:field="docUrlLbl"
+							labelAlign="TOP" labelSeparator="">
+							<form:widget>
+								<form:TextField debugId="idTxToolDocUrl" name="documentation_url" ui:field="toolDoc" allowBlank="false">
+								</form:TextField>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.version}"
+							labelAlign="TOP" labelSeparator="" ui:field="versionLbl">
+							<form:widget>
+								<form:TextField debugId="idTxtVersion" name="version" ui:field="toolVersion"
+									allowBlank="false">
+								</form:TextField>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.architecture}"
+							labelAlign="TOP" labelSeparator="" ui:field="archLbl">
+							<form:widget>
+								<form:SimpleComboBox debugId="idCboArch" name="architecture" ui:field="archCbo"
+									allowBlank="true" forceSelection="true" triggerAction="ALL" editable="false">
+								</form:SimpleComboBox>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.isMultiThreaded}"
+							labelAlign="TOP" labelSeparator="" ui:field="multiLbl">
+							<form:widget>
+								<form:SimpleComboBox debugId="idCboMultiThreaded" name="multithreaded" ui:field="multiThreadCbo"
+									allowBlank="true" forceSelection="true" triggerAction="ALL" editable="false">
+								</form:SimpleComboBox>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+				</con:VerticalLayoutContainer>
+			</form:FieldSet>
+			<form:FieldSet ui:field="otherSet" headingText="{strings.otherTab}"
+				collapsible="true">
+				<con:VerticalLayoutContainer>
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.upldTestData}" labelAlign="TOP" ui:field="upldTestLbl">
+							<form:widget>
+								<form:FileUploadField name="test_data_file" debugId="fileUpldTest"
+									ui:field="testDataUpld" allowBlank="false"></form:FileUploadField>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+
+
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.cmdLineRun}"
+							labelAlign="TOP" ui:field="cmdLineLbl">
+							<form:widget>
+								<form:TextArea debugId="idTxtCmdLine" name="cmd_line" ui:field="runInfo" allowBlank="false" height="150">
+								</form:TextArea>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+
+
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.otherData}" labelAlign="TOP">
+							<form:widget>
+								<form:FileUploadField  debugId="idFileUpldOtherData" name="additional_data_file"
+									ui:field="otherDataUpld" allowBlank="true"></form:FileUploadField>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+
+					<con:child layoutData="{layoutData}">
+						<form:FieldLabel text="{strings.otherInfo}" labelAlign="TOP">
+							<form:widget>
+								<form:TextArea debugId="idTxtAddnlInfo" name="additional_info" ui:field="otherInfo" allowBlank="true" height="150">
+								</form:TextArea>
+							</form:widget>
+						</form:FieldLabel>
+					</con:child>
+				</con:VerticalLayoutContainer>
+			</form:FieldSet>
+		</con:VerticalLayoutContainer>
+
+	</form:FormPanel>
+</ui:UiBinder>

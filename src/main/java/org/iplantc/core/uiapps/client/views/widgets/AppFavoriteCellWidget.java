@@ -1,0 +1,41 @@
+package org.iplantc.core.uiapps.client.views.widgets;
+
+import org.iplantc.core.uiapps.client.models.autobeans.App;
+import org.iplantc.core.uiapps.client.views.cells.AppFavoriteCell;
+
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.user.cellview.client.CellWidget;
+import com.google.gwt.view.client.ProvidesKey;
+
+public class AppFavoriteCellWidget extends CellWidget<App> {
+
+    private final AppFavoriteCell cell;
+
+    public AppFavoriteCellWidget() {
+        this(new AppFavoriteCell(), null, null);
+    }
+
+    public AppFavoriteCellWidget(AppFavoriteCell cell) {
+        this(cell, null, null);
+    }
+
+    public AppFavoriteCellWidget(AppFavoriteCell cell, ProvidesKey<App> keyProvider) {
+        this(cell, null, keyProvider);
+    }
+
+    public AppFavoriteCellWidget(App app) {
+        this(new AppFavoriteCell(), app, null);
+    }
+
+
+    public AppFavoriteCellWidget(AppFavoriteCell cell, App app, ProvidesKey<App> keyProvider) {
+        super(cell, app, keyProvider);
+        this.cell = cell;
+    }
+
+    @Override
+    public Cell<App> getCell() {
+        return cell;
+    }
+
+}
