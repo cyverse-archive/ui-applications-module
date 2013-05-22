@@ -59,376 +59,387 @@ import com.sencha.gxt.widget.core.client.tree.Tree.CheckNodes;
 import com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance;
 
 /**
- * 
+ *
  * A form that enables the user to make an app public
- * 
+ *
  * @author sriram
- * 
+ *
  */
 public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView {
 
-    private static SubmitAppForPublicUseViewUiBinder uiBinder = GWT
-            .create(SubmitAppForPublicUseViewUiBinder.class);
-
-    final private Widget widget;
-
-    @UiField
-    TextField appName;
-
-    @UiField
-    TextArea appDesc;
-
-    @UiField
-    VerticalLayoutContainer container;
-
-    @UiField(provided = true)
-    TreeStore<AppGroup> treeStore;
-
-    @UiField(provided = true)
-    Tree<AppGroup, String> tree;
-
-    @UiField
-    Grid<AppRefLink> grid;
-
-    @UiField
-    ListStore<AppRefLink> listStore;
-
-    @UiField
-    TextButton addBtn;
-
-    @UiField
-    TextButton delBtn;
-
-    @UiField
-    ContentPanel catPanel;
-
-    @UiField
-    ContentPanel refPanel;
-
-    @UiField
-    FieldLabel appfield;
-
-    @UiField
-    FieldLabel descfield;
-
-    private GridEditing<AppRefLink> editing;
-
-    private Presenter presenter;
-
-    private App selectedApp;
-
-    @UiTemplate("SubmitAppForPublicUseView.ui.xml")
-    interface SubmitAppForPublicUseViewUiBinder extends UiBinder<Widget, SubmitAppForPublicUseViewImpl> {
-    }
-
-    public SubmitAppForPublicUseViewImpl(App selectedApp) {
-        initCategoryTree();
-        this.selectedApp = selectedApp;
-        widget = uiBinder.createAndBindUi(this);
-        initGrid();
-        container.setScrollMode(ScrollMode.AUTOY);
-        initFieldLabels();
-        appName.setValue(selectedApp.getName());
-        appDesc.setValue(selectedApp.getDescription());
-        loadReferences();
-        addhelp();
-    }
-
-    private void loadReferences() {
-        AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
-        if (selectedApp.getReferences() != null && selectedApp.getReferences().size() > 0) {
-            for (String item : selectedApp.getReferences()) {
-                AutoBean<AppRefLink> bean = AutoBeanCodex.decode(factory, AppRefLink.class, "{}");
-                AppRefLink link = bean.as();
-                link.setRefLink(item);
-                listStore.add(link);
-            }
-        }
-    }
-
-    private void initGrid() {
-        CellSelectionModel<AppRefLink> csm = buildRefCellSelecitonModel();
-        grid.setSelectionModel(csm);
-        editing = createGridEditing();
-        ColumnConfig<AppRefLink, String> cc = grid.getColumnModel().getColumn(0);
-        final TextField editor = buildRefLinkEditor();
-        editing.addEditor(cc, editor);
-        editing.addCompleteEditHandler(new CompleteEditHandler<AppRefLink>() {
-
-            @Override
-            public void onCompleteEdit(CompleteEditEvent<AppRefLink> event) {
-                String refLink = editor.getCurrentValue();
-                AppRefLink ref = listStore.get(0);
-                ref.setRefLink(refLink);
-                listStore.update(ref);
-            }
-        });
-        grid.getView().setAutoExpandColumn(cc);
-    }
-
-    private String buildRequiredFieldLabel(String label) {
-        if (label == null) {
-            return null;
-        }
-
-        return "<span style='color:red; top:-5px;' >*</span> " + label; //$NON-NLS-1$
-    }
-
-    private void addhelp() {
-        final ToolButton tool_help_ref = new ToolButton(ToolButton.QUESTION);
-        refPanel.getHeader().addTool(tool_help_ref);
-        tool_help_ref.addSelectHandler(new SelectHandler() {
-            
-            @Override
-            public void onSelect(SelectEvent event) {
-                ContextualHelpPopup popup = new ContextualHelpPopup();
-                popup.add(new HTML(I18N.HELP.publicSubmissionFormAttach()));
-                popup.showAt(tool_help_ref.getAbsoluteLeft(), tool_help_ref.getAbsoluteTop() + 15);
-                
-            }
-        });
-        final ToolButton tool_help_cat = new ToolButton(ToolButton.QUESTION);
-        catPanel.getHeader().addTool(tool_help_cat);
-        tool_help_cat.addSelectHandler(new SelectHandler() {
-            
-            @Override
-            public void onSelect(SelectEvent event) {
-                ContextualHelpPopup popup = new ContextualHelpPopup();
-                popup.add(new HTML(I18N.HELP.publicSubmissionFormCategories()));
-                popup.showAt(tool_help_cat.getAbsoluteLeft(), tool_help_cat.getAbsoluteTop() + 15);
-                
-            }
-        });
-    }
-
-    private void initFieldLabels() {
-        appfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicName()));
-        descfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicDescription()));
-        refPanel.setHeadingHtml(I18N.DISPLAY.publicAttach());
-
-        catPanel.setHeadingHtml(buildRequiredFieldLabel(I18N.DISPLAY.publicCategories()));
-    }
-
-    private CellSelectionModel<AppRefLink> buildRefCellSelecitonModel() {
-        CellSelectionModel<AppRefLink> csm = new CellSelectionModel<AppRefLink>();
-        csm.addCellSelectionChangedHandler(new CellSelectionChangedHandler<AppRefLink>() {
-            @Override
-            public void onCellSelectionChanged(CellSelectionChangedEvent<AppRefLink> event) {
-                List<CellSelection<AppRefLink>> list = event.getSelection();
-                if (list.size() > 0) {
-                    if (list.get(0).getModel() == null) {
-                        delBtn.disable();
-                    } else {
-                        delBtn.enable();
-                    }
-                } else {
-                    delBtn.disable();
-                }
-
-            }
-        });
-        return csm;
-    }
-
-    private void initCategoryTree() {
-        treeStore = new TreeStore<AppGroup>(new ModelKeyProvider<AppGroup>() {
-
-            @Override
-            public String getKey(AppGroup item) {
-                return item.getId();
-            }
-        });
-        tree = new Tree<AppGroup, String>(treeStore, new ValueProvider<AppGroup, String>() {
-
-            @Override
-            public String getValue(AppGroup object) {
-                return object.getName();
-            }
-
-            @Override
-            public void setValue(AppGroup object, String value) {
-                // do nothing intentionally
-            }
-
-            @Override
-            public String getPath() {
-                return null;
-            }
-        });
-
-        setTreeIcons();
-        tree.setCheckable(true);
-        tree.setCheckStyle(CheckCascade.CHILDREN);
-        tree.setCheckNodes(CheckNodes.LEAF);
-    }
-
-    @UiFactory
-    ListStore<AppRefLink> buildRefLinksStore() {
-        return new ListStore<AppRefLink>(new ModelKeyProvider<AppRefLink>() {
-
-            @Override
-            public String getKey(AppRefLink item) {
-                return item.getId();
-            }
-        });
-
-    }
-
-    @UiFactory
-    ColumnModel<AppRefLink> buildRefLinkColumn() {
-        List<ColumnConfig<AppRefLink, ?>> columns = new ArrayList<ColumnConfig<AppRefLink, ?>>();
-
-        ColumnConfig<AppRefLink, String> link = new ColumnConfig<AppRefLink, String>(
-                new ValueProvider<AppRefLink, String>() {
-
-                    @Override
-                    public String getValue(AppRefLink object) {
-                        return object.getRefLink();
-                    }
-
-                    @Override
-                    public void setValue(AppRefLink object, String value) {
-                        // do nothing
-
-                    }
-
-                    @Override
-                    public String getPath() {
-
-                        return null;
-                    }
-                }, 200);
-
-        link.setHideable(false);
-        link.setMenuDisabled(true);
-        columns.add(link);
-        return new ColumnModel<AppRefLink>(columns);
-    }
-
-    private TextField buildRefLinkEditor() {
-        TextField field = new TextField();
-        field.addValidator(new UrlValidator());
-        field.setAllowBlank(false);
-        return field;
-    }
-
-    /**
-     * FIXME JDS This needs to be implemented in an {@link TreeAppearance}
-     */
-    private void setTreeIcons() {
-        com.sencha.gxt.widget.core.client.tree.TreeStyle style = tree.getStyle();
-        style.setNodeCloseIcon(IplantResources.RESOURCES.category());
-        style.setNodeOpenIcon(IplantResources.RESOURCES.category_open());
-        style.setLeafIcon(IplantResources.RESOURCES.subCategory());
-    }
-
-    @Override
-    public Widget asWidget() {
-        return widget;
-    }
-
-    @Override
-    public void setPresenter(Presenter p) {
-        this.presenter = p;
-
-    }
-
-    @UiHandler("addBtn")
-    public void addClicked(SelectEvent event) {
-        AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
-        AutoBean<AppRefLink> bean = AutoBeanCodex.decode(factory, AppRefLink.class, "{}");
-        editing.cancelEditing();
-        AppRefLink link = bean.as();
-        link.setId(new Date().getTime() + "");
-        listStore.add(0, link);
-        editing.startEditing(new GridCell(0, 0));
-    }
-
-    @UiHandler("delBtn")
-    public void delClicked(SelectEvent event) {
-        List<AppRefLink> links = grid.getSelectionModel().getSelectedItems();
-        for (AppRefLink link : links) {
-            listStore.remove(link);
-        }
-    }
-
-    @Override
-    public TreeStore<AppGroup> getTreeStore() {
-        return treeStore;
-    }
-
-    @Override
-    public void expandAppGroups() {
-        tree.expandAll();
-    }
-
-    private GridEditing<AppRefLink> createGridEditing() {
-        return new GridInlineEditing<AppRefLink>(grid);
-    }
-
-    @Override
-    public boolean validate() {
-        return appName.getCurrentValue() != null && appName.getCurrentValue().length() <= 255
-                && appDesc.getCurrentValue() != null && checkRefLinksGrid() && checkAppGroups();
-
-    }
-
-    @Override
-    public JSONObject toJson() {
-        JSONObject json = new JSONObject();
-
-        json.put("analysis_id", getJsonString(selectedApp.getId())); //$NON-NLS-1$
-        json.put("name", getJsonString(appName.getValue()));
-        json.put("desc", getJsonString(appDesc.getValue())); //$NON-NLS-1$
-        json.put("groups", buildSelectedCategoriesAsJson()); //$NON-NLS-1$
-        json.put("references", buildRefLinksAsJson()); //$NON-NLS-1$
-
-        return json;
-    }
-
-    private boolean checkRefLinksGrid() {
-        if (listStore.size() > 0) {
-            for (AppRefLink link : listStore.getAll()) {
-                if (link.getRefLink() == null || link.getRefLink().isEmpty()) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return true;
-        }
-
-    }
-
-    private boolean checkAppGroups() {
-        if (tree.getCheckedSelection().size() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private JSONValue buildRefLinksAsJson() {
-        JSONArray arr = new JSONArray();
-        int index = 0;
-        for (AppRefLink model : listStore.getAll()) {
-            arr.set(index++, new JSONString(model.getRefLink()));
-        }
-        return arr;
-    }
-
-    private JSONString getJsonString(String value) {
-        return new JSONString(value == null ? "" : value); //$NON-NLS-1$
-    }
-
-    private JSONArray buildSelectedCategoriesAsJson() {
-        JSONArray arr = new JSONArray();
-        int index = 0;
-        for (AppGroup model : tree.getCheckedSelection()) {
-            arr.set(index++, new JSONString(model.getId()));
-        }
-        return arr;
-    }
-    //
+	private static SubmitAppForPublicUseViewUiBinder uiBinder = GWT
+			.create(SubmitAppForPublicUseViewUiBinder.class);
+
+	final private Widget widget;
+
+	@UiField
+	TextField appName;
+
+	@UiField
+	TextArea appDesc;
+
+	@UiField
+	VerticalLayoutContainer container;
+
+	@UiField(provided = true)
+	TreeStore<AppGroup> treeStore;
+
+	@UiField(provided = true)
+	Tree<AppGroup, String> tree;
+
+	@UiField
+	Grid<AppRefLink> grid;
+
+	@UiField
+	ListStore<AppRefLink> listStore;
+
+	@UiField
+	TextButton addBtn;
+
+	@UiField
+	TextButton delBtn;
+
+	@UiField
+	ContentPanel catPanel;
+
+	@UiField
+	ContentPanel refPanel;
+
+	@UiField
+	FieldLabel appfield;
+
+	@UiField
+	FieldLabel descfield;
+
+	private GridEditing<AppRefLink> editing;
+
+	private Presenter presenter;
+
+	private App selectedApp;
+
+	@UiTemplate("SubmitAppForPublicUseView.ui.xml")
+	interface SubmitAppForPublicUseViewUiBinder extends
+			UiBinder<Widget, SubmitAppForPublicUseViewImpl> {
+	}
+
+	public SubmitAppForPublicUseViewImpl(App selectedApp) {
+		initCategoryTree();
+		this.selectedApp = selectedApp;
+		widget = uiBinder.createAndBindUi(this);
+		initGrid();
+		container.setScrollMode(ScrollMode.AUTOY);
+		initFieldLabels();
+		appName.setValue(selectedApp.getName());
+		appDesc.setValue(selectedApp.getDescription());
+		addhelp();
+	}
+
+	@Override
+	public void loadReferences(List<AppRefLink> refs) {
+		listStore.clear();
+		listStore.addAll(refs);
+	}
+
+	private void initGrid() {
+		CellSelectionModel<AppRefLink> csm = buildRefCellSelecitonModel();
+		grid.setSelectionModel(csm);
+		editing = createGridEditing();
+		ColumnConfig<AppRefLink, String> cc = grid.getColumnModel()
+				.getColumn(0);
+		final TextField editor = buildRefLinkEditor();
+		editing.addEditor(cc, editor);
+		editing.addCompleteEditHandler(new CompleteEditHandler<AppRefLink>() {
+
+			@Override
+			public void onCompleteEdit(CompleteEditEvent<AppRefLink> event) {
+				String refLink = editor.getCurrentValue();
+				AppRefLink ref = listStore.get(0);
+				ref.setRefLink(refLink);
+				listStore.update(ref);
+			}
+		});
+		grid.getView().setAutoExpandColumn(cc);
+	}
+
+	private String buildRequiredFieldLabel(String label) {
+		if (label == null) {
+			return null;
+		}
+
+		return "<span style='color:red; top:-5px;' >*</span> " + label; //$NON-NLS-1$
+	}
+
+	private void addhelp() {
+		final ToolButton tool_help_ref = new ToolButton(ToolButton.QUESTION);
+		refPanel.getHeader().addTool(tool_help_ref);
+		tool_help_ref.addSelectHandler(new SelectHandler() {
+
+			@Override
+			public void onSelect(SelectEvent event) {
+				ContextualHelpPopup popup = new ContextualHelpPopup();
+				popup.add(new HTML(I18N.HELP.publicSubmissionFormAttach()));
+				popup.showAt(tool_help_ref.getAbsoluteLeft(),
+						tool_help_ref.getAbsoluteTop() + 15);
+
+			}
+		});
+		final ToolButton tool_help_cat = new ToolButton(ToolButton.QUESTION);
+		catPanel.getHeader().addTool(tool_help_cat);
+		tool_help_cat.addSelectHandler(new SelectHandler() {
+
+			@Override
+			public void onSelect(SelectEvent event) {
+				ContextualHelpPopup popup = new ContextualHelpPopup();
+				popup.add(new HTML(I18N.HELP.publicSubmissionFormCategories()));
+				popup.showAt(tool_help_cat.getAbsoluteLeft(),
+						tool_help_cat.getAbsoluteTop() + 15);
+
+			}
+		});
+	}
+
+	private void initFieldLabels() {
+		appfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.publicName()));
+		descfield.setHTML(buildRequiredFieldLabel(I18N.DISPLAY
+				.publicDescription()));
+		refPanel.setHeadingHtml(I18N.DISPLAY.publicAttach());
+
+		catPanel.setHeadingHtml(buildRequiredFieldLabel(I18N.DISPLAY
+				.publicCategories()));
+	}
+
+	private CellSelectionModel<AppRefLink> buildRefCellSelecitonModel() {
+		CellSelectionModel<AppRefLink> csm = new CellSelectionModel<AppRefLink>();
+		csm.addCellSelectionChangedHandler(new CellSelectionChangedHandler<AppRefLink>() {
+			@Override
+			public void onCellSelectionChanged(
+					CellSelectionChangedEvent<AppRefLink> event) {
+				List<CellSelection<AppRefLink>> list = event.getSelection();
+				if (list.size() > 0) {
+					if (list.get(0).getModel() == null) {
+						delBtn.disable();
+					} else {
+						delBtn.enable();
+					}
+				} else {
+					delBtn.disable();
+				}
+
+			}
+		});
+		return csm;
+	}
+
+	private void initCategoryTree() {
+		treeStore = new TreeStore<AppGroup>(new ModelKeyProvider<AppGroup>() {
+
+			@Override
+			public String getKey(AppGroup item) {
+				return item.getId();
+			}
+		});
+		tree = new Tree<AppGroup, String>(treeStore,
+				new ValueProvider<AppGroup, String>() {
+
+					@Override
+					public String getValue(AppGroup object) {
+						return object.getName();
+					}
+
+					@Override
+					public void setValue(AppGroup object, String value) {
+						// do nothing intentionally
+					}
+
+					@Override
+					public String getPath() {
+						return null;
+					}
+				});
+
+		setTreeIcons();
+		tree.setCheckable(true);
+		tree.setCheckStyle(CheckCascade.CHILDREN);
+		tree.setCheckNodes(CheckNodes.LEAF);
+	}
+
+	@UiFactory
+	ListStore<AppRefLink> buildRefLinksStore() {
+		return new ListStore<AppRefLink>(new ModelKeyProvider<AppRefLink>() {
+
+			@Override
+			public String getKey(AppRefLink item) {
+				return item.getId();
+			}
+		});
+
+	}
+
+	@UiFactory
+	ColumnModel<AppRefLink> buildRefLinkColumn() {
+		List<ColumnConfig<AppRefLink, ?>> columns = new ArrayList<ColumnConfig<AppRefLink, ?>>();
+
+		ColumnConfig<AppRefLink, String> link = new ColumnConfig<AppRefLink, String>(
+				new ValueProvider<AppRefLink, String>() {
+
+					@Override
+					public String getValue(AppRefLink object) {
+						return object.getRefLink();
+					}
+
+					@Override
+					public void setValue(AppRefLink object, String value) {
+						// do nothing
+
+					}
+
+					@Override
+					public String getPath() {
+
+						return null;
+					}
+				},250, I18N.DISPLAY.links());
+
+		link.setHideable(false);
+		link.setMenuDisabled(true);
+		columns.add(link);
+		return new ColumnModel<AppRefLink>(columns);
+	}
+
+	private TextField buildRefLinkEditor() {
+		TextField field = new TextField();
+		field.addValidator(new UrlValidator());
+		field.setAllowBlank(false);
+		return field;
+	}
+
+	/**
+	 * FIXME JDS This needs to be implemented in an {@link TreeAppearance}
+	 */
+	private void setTreeIcons() {
+		com.sencha.gxt.widget.core.client.tree.TreeStyle style = tree
+				.getStyle();
+		style.setNodeCloseIcon(IplantResources.RESOURCES.category());
+		style.setNodeOpenIcon(IplantResources.RESOURCES.category_open());
+		style.setLeafIcon(IplantResources.RESOURCES.subCategory());
+	}
+
+	@Override
+	public Widget asWidget() {
+		return widget;
+	}
+
+	@Override
+	public void setPresenter(Presenter p) {
+		this.presenter = p;
+
+	}
+
+	@UiHandler("addBtn")
+	public void addClicked(SelectEvent event) {
+		AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
+		AutoBean<AppRefLink> bean = AutoBeanCodex.decode(factory,
+				AppRefLink.class, "{}");
+		editing.cancelEditing();
+		AppRefLink link = bean.as();
+		link.setId(new Date().getTime() + "");
+		listStore.add(0, link);
+		editing.startEditing(new GridCell(0, 0));
+	}
+
+	@UiHandler("delBtn")
+	public void delClicked(SelectEvent event) {
+		List<AppRefLink> links = grid.getSelectionModel().getSelectedItems();
+		for (AppRefLink link : links) {
+			listStore.remove(link);
+		}
+	}
+
+	@Override
+	public TreeStore<AppGroup> getTreeStore() {
+		return treeStore;
+	}
+
+	@Override
+	public void expandAppGroups() {
+		tree.expandAll();
+	}
+
+	private GridEditing<AppRefLink> createGridEditing() {
+		return new GridInlineEditing<AppRefLink>(grid);
+	}
+
+	@Override
+	public boolean validate() {
+		return appName.getCurrentValue() != null
+				&& appName.getCurrentValue().length() <= 255
+				&& appDesc.getCurrentValue() != null && checkRefLinksGrid()
+				&& checkAppGroups();
+
+	}
+
+	@Override
+	public JSONObject toJson() {
+		JSONObject json = new JSONObject();
+
+		json.put("analysis_id", getJsonString(selectedApp.getId())); //$NON-NLS-1$
+		json.put("name", getJsonString(appName.getValue()));
+		json.put("desc", getJsonString(appDesc.getValue())); //$NON-NLS-1$
+		json.put("groups", buildSelectedCategoriesAsJson()); //$NON-NLS-1$
+		json.put("references", buildRefLinksAsJson()); //$NON-NLS-1$
+
+		return json;
+	}
+
+	private boolean checkRefLinksGrid() {
+		if (listStore.size() > 0) {
+			for (AppRefLink link : listStore.getAll()) {
+				if (link.getRefLink() == null || link.getRefLink().isEmpty()) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return true;
+		}
+
+	}
+
+	private boolean checkAppGroups() {
+		if (tree.getCheckedSelection().size() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private JSONValue buildRefLinksAsJson() {
+		JSONArray arr = new JSONArray();
+		int index = 0;
+		for (AppRefLink model : listStore.getAll()) {
+			arr.set(index++, new JSONString(model.getRefLink()));
+		}
+		return arr;
+	}
+
+	private JSONString getJsonString(String value) {
+		return new JSONString(value == null ? "" : value); //$NON-NLS-1$
+	}
+
+	private JSONArray buildSelectedCategoriesAsJson() {
+		JSONArray arr = new JSONArray();
+		int index = 0;
+		for (AppGroup model : tree.getCheckedSelection()) {
+			arr.set(index++, new JSONString(model.getId()));
+		}
+		return arr;
+	}
+
+	//
+
+	@Override
+	public App getSelectedApp() {
+		return selectedApp;
+	}
 
 }
