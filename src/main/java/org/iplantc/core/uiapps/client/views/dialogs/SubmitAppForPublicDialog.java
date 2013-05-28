@@ -6,11 +6,9 @@ package org.iplantc.core.uiapps.client.views.dialogs;
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.events.AppGroupCountUpdateEvent;
 import org.iplantc.core.uiapps.client.events.AppGroupCountUpdateEvent.AppGroupType;
+import org.iplantc.core.uiapps.client.gin.AppsInjector;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
-import org.iplantc.core.uiapps.client.presenter.SubmitAppForPublicPresenter;
-import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView;
 import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView.Presenter;
-import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseViewImpl;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
@@ -52,9 +50,8 @@ public class SubmitAppForPublicDialog extends IPlantDialog {
 
     public SubmitAppForPublicDialog(final App selectedApp) {
         initDialog();
-        SubmitAppForPublicUseView view = new SubmitAppForPublicUseViewImpl(selectedApp);
-        final Presenter p = new SubmitAppForPublicPresenter(view, new SubmitAppForPublicCallbackImpl());
-        p.go(this);
+        final Presenter p = AppsInjector.INSTANCE.getSubmitAppForPublixUsePresenter();
+        p.go(this, selectedApp, new SubmitAppForPublicCallbackImpl());
         setOkButtonText(I18N.DISPLAY.submit());
         addOkButtonSelectHandler(new SelectHandler() {
 

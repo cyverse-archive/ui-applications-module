@@ -2,8 +2,11 @@ package org.iplantc.core.uiapps.client.gin;
 
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.presenter.AppsViewPresenter;
+import org.iplantc.core.uiapps.client.presenter.SubmitAppForPublicPresenter;
 import org.iplantc.core.uiapps.client.views.AppsView;
 import org.iplantc.core.uiapps.client.views.AppsViewImpl;
+import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView;
+import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseViewImpl;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbarImpl;
 
@@ -26,6 +29,9 @@ public class AppsGinModule extends AbstractGinModule {
         bind(AppsView.class).to(AppsViewImpl.class);
         bind(AppsView.Presenter.class).to(AppsViewPresenter.class);
         bind(AppsViewToolbar.class).to(AppsViewToolbarImpl.class);
+        bind(SubmitAppForPublicUseView.class).to(SubmitAppForPublicUseViewImpl.class);
+        bind(SubmitAppForPublicUseView.Presenter.class).to(SubmitAppForPublicPresenter.class);
+
     }
 
 }

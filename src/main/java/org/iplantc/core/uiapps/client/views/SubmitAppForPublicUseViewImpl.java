@@ -25,6 +25,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.core.client.ValueProvider;
@@ -113,8 +114,6 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 
 	private GridEditing<AppRefLink> editing;
 
-	private Presenter presenter;
-
 	private App selectedApp;
 
 	@UiTemplate("SubmitAppForPublicUseView.ui.xml")
@@ -122,15 +121,14 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 			UiBinder<Widget, SubmitAppForPublicUseViewImpl> {
 	}
 
-	public SubmitAppForPublicUseViewImpl(App selectedApp) {
+    @Inject
+    public SubmitAppForPublicUseViewImpl() {
 		initCategoryTree();
-		this.selectedApp = selectedApp;
 		widget = uiBinder.createAndBindUi(this);
 		initGrid();
 		container.setScrollMode(ScrollMode.AUTOY);
 		initFieldLabels();
-		appName.setValue(selectedApp.getName());
-		appDesc.setValue(selectedApp.getDescription());
+
 		addhelp();
 	}
 
@@ -329,12 +327,6 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 		return widget;
 	}
 
-	@Override
-	public void setPresenter(Presenter p) {
-		this.presenter = p;
-
-	}
-
 	@UiHandler("addBtn")
 	public void addClicked(SelectEvent event) {
 		AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
@@ -435,11 +427,16 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 		return arr;
 	}
 
-	//
-
 	@Override
 	public App getSelectedApp() {
 		return selectedApp;
 	}
+
+    @Override
+    public void setSelectedApp(App selectedApp) {
+        this.selectedApp = selectedApp;
+        appName.setValue(selectedApp.getName());
+        appDesc.setValue(selectedApp.getDescription());
+    }
 
 }
