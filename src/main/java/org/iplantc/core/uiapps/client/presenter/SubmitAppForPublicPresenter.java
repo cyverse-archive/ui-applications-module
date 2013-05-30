@@ -5,11 +5,12 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
-import org.iplantc.core.uiapps.client.Services;
+import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.models.autobeans.AppRefLink;
 import org.iplantc.core.uiapps.client.presenter.proxy.PublicAppGroupProxy;
+import org.iplantc.core.uiapps.client.services.AppUserServiceFacade;
 import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.models.DEProperties;
@@ -26,27 +27,24 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 
-public class SubmitAppForPublicPresenter
-		implements
-		org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView.Presenter {
+public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Presenter {
 
-	private SubmitAppForPublicUseView view;
-	private AsyncCallback<String> callback;
+	private final SubmitAppForPublicUseView view;
+    private AsyncCallback<String> callback;
+    private final AppUserServiceFacade appService;
+    private final PublicAppGroupProxy appGroupProxy;
 
 	@Inject
-	public SubmitAppForPublicPresenter(SubmitAppForPublicUseView view,
-			AsyncCallback<String> asyncCallback) {
+    public SubmitAppForPublicPresenter(SubmitAppForPublicUseView view, AppUserServiceFacade appService, PublicAppGroupProxy appGroupProxy) {
 		this.view = view;
-		this.callback = asyncCallback;
-		this.view.setPresenter(this);
-		getAppDetails();
+        this.appService = appService;
+        this.appGroupProxy = appGroupProxy;
 	}
 
 	@Override
 	public void go(HasOneWidget container) {
 		container.setWidget(view);
 		// Fetch AppGroups
-		PublicAppGroupProxy appGroupProxy = new PublicAppGroupProxy();
 		appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
 			@Override
 			public void onSuccess(List<AppGroup> result) {
@@ -93,7 +91,7 @@ public class SubmitAppForPublicPresenter
 	}
 
 	private void getAppDetails() {
-		Services.USER_APP_SERVICE.getAppDetails(view.getSelectedApp().getId(),
+        appService.getAppDetails(view.getSelectedApp().getId(),
 				new AsyncCallback<String>() {
 
 					@Override
@@ -127,7 +125,7 @@ public class SubmitAppForPublicPresenter
 					@Override
 					public void onSuccess(final String url) {
 						obj.put("wiki_url", new JSONString(url));
-						Services.USER_APP_SERVICE.publishToWorld(obj,
+                appService.publishToWorld(obj,
 								new AsyncCallback<String>() {
 									@Override
 									public void onSuccess(String result) {
@@ -160,5 +158,13 @@ public class SubmitAppForPublicPresenter
 
 		return linksList;
 	}
+
+    @Override
+    public void go(HasOneWidget container, App selectedApp, AsyncCallback<String> callback) {
+        view.setSelectedApp(selectedApp);
+        this.callback = callback;
+        getAppDetails();
+        go(container);
+    }
 
 }

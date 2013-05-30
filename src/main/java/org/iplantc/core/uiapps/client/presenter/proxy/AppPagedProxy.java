@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
-import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
@@ -23,11 +22,10 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 import com.sencha.gxt.data.shared.loader.PagingLoadResultBean;
 
 class AppPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<App>> {
-    private final AppUserServiceFacade service;
+    private final AppUserServiceFacade service = GWT.create(AppUserServiceFacade.class);
     private AppGroup currentAg;
 
     public AppPagedProxy() {
-        this.service = Services.USER_APP_SERVICE;
     }
 
     @Override

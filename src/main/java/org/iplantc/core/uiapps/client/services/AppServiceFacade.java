@@ -1,6 +1,10 @@
 package org.iplantc.core.uiapps.client.services;
 
 
+import java.util.List;
+
+import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.data.shared.SortDir;
 
@@ -36,7 +40,14 @@ public interface AppServiceFacade {
      * @param workspaceId
      * @param callback
      */
-    void getAppGroups(String workspaceId, AsyncCallback<String> callback);
+    void getAppGroups(String workspaceId, AsyncCallback<List<AppGroup>> callback);
+
+    /**
+     * Retrieves a hierarchy of all <code>AppGroups</code>s via a secured endpoint.
+     * 
+     * @param callback
+     */
+    void getAppGroups(AsyncCallback<List<AppGroup>> callback);
 
     /**
      * Searches for all active Apps with a name or description that contains the given search term.
