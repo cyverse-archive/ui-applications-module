@@ -34,13 +34,13 @@ import com.google.gwt.user.client.Event;
  */
 public class AppHyperlinkCell extends AbstractCell<App> {
 
-    interface MyCss extends CssResource {
+    public interface MyCss extends CssResource {
         String appName();
 
         String appDisabled();
     }
 
-    interface Resources extends ClientBundle {
+     public interface Resources extends ClientBundle {
         @Source("AppHyperlinkCell.css")
         MyCss css();
     }
@@ -48,17 +48,17 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     /**
      * The HTML templates used to render the cell.
      */
-    interface Templates extends SafeHtmlTemplates {
+    public interface Templates extends SafeHtmlTemplates {
 
         @SafeHtmlTemplates.Template("<span name=\"{3}\" class=\"{0}\" qtip=\"{2}\">{1}</span>")
         SafeHtml cell(String textClassName, SafeHtml name, String textToolTip, String elementName);
     }
 
-    private final Resources resources = GWT.create(Resources.class);
-    private final Templates templates = GWT.create(Templates.class);
-    private final AppFavoriteCell favoriteCell = new AppFavoriteCell();
-    private final AppsView view;
-    private static final String ELEMENT_NAME = "appName";
+    public final Resources resources = GWT.create(Resources.class);
+    protected final Templates templates = GWT.create(Templates.class);
+    protected final AppFavoriteCell favoriteCell = new AppFavoriteCell();
+    protected final AppsView view;
+    public static final String ELEMENT_NAME = "appName";
 
     public AppHyperlinkCell(AppsView view) {
         super(CLICK, MOUSEOVER, MOUSEOUT);

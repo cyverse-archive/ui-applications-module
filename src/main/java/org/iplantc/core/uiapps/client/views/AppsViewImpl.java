@@ -138,7 +138,7 @@ public class AppsViewImpl implements AppsView {
     }
 
     @UiFactory
-    ColumnModel<App> createColumnModel() {
+    public ColumnModel<App> createColumnModel() {
         return new AppColumnModel(this);
     }
 
