@@ -29,7 +29,7 @@
 					</con:child>
 
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel ui:field="toolDescLbl"  text="{strings.toolDesc}"
+						<form:FieldLabel ui:field="toolDescLbl"
 							labelAlign="TOP">
 							<form:widget>
 								<form:TextArea debugId="idTxtToolDesc" name="description" ui:field="toolDesc" allowBlank="false" height="150">
@@ -49,14 +49,14 @@
 					</con:child>
 
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="{strings.srcLinkPrompt}" ui:field="srcLbl"
-							labelAlign="TOP">
+						<form:FieldLabel ui:field="srcLbl"
+							labelAlign="TOP" >
 							<form:widget>
 								<g:HorizontalPanel spacing="3">
 									<form:Radio  debugId="idRdoTooLink" ui:field="toolLink" name="toollinkUpld"
-										boxLabel="Link" value="true"></form:Radio>
+										boxLabel="Link" value="false"></form:Radio>
 									<form:Radio  debugId="idRdoToolUpld" ui:field="toolUpld" name="toollinkUpld"
-										boxLabel="Upload"></form:Radio>
+										boxLabel="Upload" value="true"></form:Radio>
 								</g:HorizontalPanel>
 							</form:widget>
 						</form:FieldLabel>
@@ -66,7 +66,7 @@
 							labelAlign="TOP">
 							<form:widget>
 								<form:FileUploadField debugId="idFileUpldTool" ui:field="binUpld"
-									visible="false" name="src_upload_file" allowBlank="true"></form:FileUploadField>
+									visible="true" allowBlank="true"></form:FileUploadField>
 							</form:widget>
 						</form:FieldLabel>
 					</con:child>
@@ -74,7 +74,7 @@
 						<form:FieldLabel text="" labelSeparator=""
 							labelAlign="TOP">
 							<form:widget>
-								<form:TextField debugId="idTxtToolUrl" name="src_url" ui:field="binLink" visible="true"
+								<form:TextField debugId="idTxtToolUrl" name="src_url" ui:field="binLink" visible="false"
 									allowBlank="true"></form:TextField>
 							</form:widget>
 						</form:FieldLabel>
@@ -125,7 +125,7 @@
 				collapsible="true">
 				<con:VerticalLayoutContainer>
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="{strings.upldTestData}" labelAlign="TOP" ui:field="upldTestLbl">
+						<form:FieldLabel  labelAlign="TOP" ui:field="upldTestLbl" >
 							<form:widget>
 								<form:FileUploadField name="test_data_file" debugId="fileUpldTest"
 									ui:field="testDataUpld" allowBlank="false"></form:FileUploadField>
@@ -135,8 +135,8 @@
 
 
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="{strings.cmdLineRun}"
-							labelAlign="TOP" ui:field="cmdLineLbl">
+						<form:FieldLabel
+							labelAlign="TOP" ui:field="cmdLineLbl" >
 							<form:widget>
 								<form:TextArea debugId="idTxtCmdLine" name="cmd_line" ui:field="runInfo" allowBlank="false" height="150">
 								</form:TextArea>
@@ -146,7 +146,7 @@
 
 
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="{strings.otherData}" labelAlign="TOP">
+						<form:FieldLabel text="{strings.otherData}" labelAlign="TOP" >
 							<form:widget>
 								<form:FileUploadField  debugId="idFileUpldOtherData" name="additional_data_file"
 									ui:field="otherDataUpld" allowBlank="true"></form:FileUploadField>
@@ -155,7 +155,7 @@
 					</con:child>
 
 					<con:child layoutData="{layoutData}">
-						<form:FieldLabel text="{strings.otherInfo}" labelAlign="TOP">
+						<form:FieldLabel text="{strings.otherInfo}" labelAlign="TOP" >
 							<form:widget>
 								<form:TextArea debugId="idTxtAddnlInfo" name="additional_info" ui:field="otherInfo" allowBlank="true" height="150">
 								</form:TextArea>

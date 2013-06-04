@@ -148,14 +148,14 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
     private void initRequiredLabels() {
         toolNameLbl.setHTML(buildRequiredFieldLabel(toolNameLbl.getText()));
-        toolDescLbl.setHTML(buildRequiredFieldLabel(toolDescLbl.getText()));
-        srcLbl.setHTML(buildRequiredFieldLabel(srcLbl.getText()));
+        toolDescLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.toolDesc()));
+        srcLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.srcLinkPrompt()));
         docUrlLbl.setHTML(buildRequiredFieldLabel(docUrlLbl.getText()));
         versionLbl.setHTML(buildRequiredFieldLabel(versionLbl.getText()));
         archLbl.setHTML(buildRequiredFieldLabel(archLbl.getText()));
         multiLbl.setHTML(buildRequiredFieldLabel(multiLbl.getText()));
-        upldTestLbl.setHTML(buildRequiredFieldLabel(upldTestLbl.getText()));
-        cmdLineLbl.setHTML(buildRequiredFieldLabel(cmdLineLbl.getText()));
+        upldTestLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.upldTestData()));
+        cmdLineLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.cmdLineRun()));
     }
 
 

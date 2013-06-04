@@ -2,13 +2,11 @@ package org.iplantc.core.uiapps.client.presenter.proxy;
 
 import java.util.List;
 
-import org.iplantc.core.uiapps.client.Services;
-import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
-import org.iplantc.core.uicommons.client.models.UserInfo;
+import org.iplantc.core.uiapps.client.services.AppServiceFacade;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 
 /**
@@ -17,15 +15,16 @@ import com.sencha.gxt.data.client.loader.RpcProxy;
  */
 public class AppGroupProxy extends RpcProxy<AppGroup, List<AppGroup>> {
 
-    private final AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
+    private final AppServiceFacade serviceFacade;
 
-    public AppGroupProxy() {
+    @Inject
+    public AppGroupProxy(AppServiceFacade serviceFacade) {
+        this.serviceFacade = serviceFacade;
     }
 
     @Override
     public void load(AppGroup loadConfig, final AsyncCallback<List<AppGroup>> callback) {
-        Services.APP_SERVICE.getAppGroups(UserInfo.getInstance().getWorkspaceId(),
-                new AppGroupAsyncCallback(factory, callback));
+        serviceFacade.getAppGroups(callback);
     }
 
 }

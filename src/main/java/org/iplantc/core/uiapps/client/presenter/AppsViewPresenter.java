@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
-import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.events.AppDeleteEvent;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEventHander;
@@ -19,10 +18,12 @@ import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.models.autobeans.AppList;
 import org.iplantc.core.uiapps.client.presenter.proxy.AppGroupProxy;
+import org.iplantc.core.uiapps.client.views.AppInfoView;
+import org.iplantc.core.uiapps.client.services.AppServiceFacade;
+import org.iplantc.core.uiapps.client.services.AppUserServiceFacade;
 import org.iplantc.core.uiapps.client.views.AppsView;
 import org.iplantc.core.uiapps.client.views.dialogs.NewToolRequestDialog;
 import org.iplantc.core.uiapps.client.views.dialogs.SubmitAppForPublicDialog;
-import org.iplantc.core.uiapps.client.views.widgets.AppInfoView;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearchResultLoadEvent;
 import org.iplantc.core.uiapps.client.views.widgets.events.AppSearchResultLoadEventHandler;
@@ -33,7 +34,6 @@ import org.iplantc.core.uicommons.client.models.CommonModelUtils;
 import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.HasId;
 import org.iplantc.core.uicommons.client.models.UserInfo;
-import org.iplantc.core.uicommons.client.presenter.Presenter;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
@@ -69,7 +69,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
  * @author jstroot
  *
  */
-public class AppsViewPresenter implements Presenter, AppsView.Presenter {
+public class AppsViewPresenter implements AppsView.Presenter {
 
     private final EventBus eventBus = EventBus.getInstance();
     private static String WORKSPACE;
@@ -83,10 +83,14 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     private AppsViewToolbar toolbar;
 
     private HasId desiredSelectedAppId;
+    private final AppServiceFacade appService;
+    private final AppUserServiceFacade appUserService;
 
     @Inject
-    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar) {
+    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar, AppServiceFacade appService, AppUserServiceFacade appUserService) {
         this.view = view;
+        this.appService = appService;
+        this.appUserService = appUserService;
 
         builder = new MyBuilder(this);
 
@@ -207,7 +211,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
      */
     protected void fetchApps(final AppGroup ag) {
         view.maskCenterPanel(I18N.DISPLAY.loadingMask());
-        Services.APP_SERVICE.getApps(ag.getId(), new AsyncCallback<String>() {
+        appService.getApps(ag.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
@@ -313,7 +317,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     @Override
     public void onCopyClicked() {
         final App selectedApp = getSelectedApp();
-        Services.USER_APP_SERVICE.appExportable(selectedApp.getId(), new AsyncCallback<String>() {
+        appUserService.appExportable(selectedApp.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
@@ -340,7 +344,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     }
 
     private void copyWorkflow(final App app) {
-        Services.USER_APP_SERVICE.copyWorkflow(app.getId(), new AsyncCallback<String>() {
+        appUserService.copyWorkflow(app.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
@@ -375,7 +379,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     }
 
     private void copyApp(final App app) {
-        Services.USER_APP_SERVICE.copyApp(app.getId(), new AsyncCallback<String>() {
+        appUserService.copyApp(app.getId(), new AsyncCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 // Update the user's private apps group count.
@@ -403,7 +407,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
     }
 
     private void fetchWorkflowAndFireEditEvent(final App app) {
-        Services.USER_APP_SERVICE.editWorkflow(app.getId(), new AsyncCallback<String>() {
+        appUserService.editWorkflow(app.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
@@ -431,7 +435,7 @@ public class AppsViewPresenter implements Presenter, AppsView.Presenter {
                 Dialog btn = (Dialog)event.getSource();
                 String text = btn.getHideButton().getItemId();
                 if (text.equals(PredefinedButton.YES.name())) {
-                    Services.USER_APP_SERVICE.deleteAppFromWorkspace(UserInfo.getInstance()
+                    appUserService.deleteAppFromWorkspace(UserInfo.getInstance()
                             .getUsername(), UserInfo.getInstance().getFullUsername(), app.getId(),
                             new AsyncCallback<String>() {
 

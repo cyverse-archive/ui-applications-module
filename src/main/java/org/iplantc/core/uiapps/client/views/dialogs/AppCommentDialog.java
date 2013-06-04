@@ -2,27 +2,25 @@ package org.iplantc.core.uiapps.client.views.dialogs;
 
 
 import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
 
-import com.extjs.gxt.ui.client.event.BaseEvent;
-import com.extjs.gxt.ui.client.event.Events;
-import com.extjs.gxt.ui.client.event.Listener;
-import com.extjs.gxt.ui.client.widget.Dialog;
-import com.extjs.gxt.ui.client.widget.Label;
-import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.VerticalPanel;
-import com.extjs.gxt.ui.client.widget.form.TextArea;
-import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.TextArea;
 
 /**
  * A simple dialog that lets the user enter a comment on an app. The dialog is initially disabled and can
  * be enabled via unmaskDialog().
  *
- * @author hariolf
- * @deprecated Class needs to be deleted or ported to GXT3
+ * @author sriram
+ *
  */
-@Deprecated
-public class AppCommentDialog extends Dialog {
+
+public class AppCommentDialog extends IPlantDialog {
     private TextArea textArea;
     private Command onConfirm;
 
@@ -38,14 +36,13 @@ public class AppCommentDialog extends Dialog {
     }
 
     private void init(String appName) {
-        setHeading(I18N.DISPLAY.appCommentDialogTitle());
-        setLayout(new FitLayout());
-        setButtons(Dialog.OKCANCEL);
-        setSize(400, 250);
+        setHeadingText(I18N.DISPLAY.appCommentDialogTitle());
+        setPredefinedButtons(PredefinedButton.OK, PredefinedButton.CANCEL);
+        setSize("400", "250");
         setResizable(false);
 
         textArea = new TextArea();
-        textArea.setSize(385, 164);
+        textArea.setSize("385", "164");
         setFocusWidget(textArea);
         compose(appName);
         maskDialog();
@@ -53,12 +50,14 @@ public class AppCommentDialog extends Dialog {
         setHideOnButtonClick(true);
 
         // call onConfirm on OK
-        getButtonById(OK).addListener(Events.OnClick, new Listener<BaseEvent>() {
-            @Override
-            public void handleEvent(BaseEvent be) {
-                onConfirm.execute();
-            }
-        });
+        addOkButtonSelectHandler(new SelectHandler() {
+
+			@Override
+			public void onSelect(SelectEvent event) {
+				onConfirm.execute();
+
+			}
+		});
 
         setModal(true);
     }
@@ -77,7 +76,7 @@ public class AppCommentDialog extends Dialog {
      */
     public void maskDialog() {
         textArea.mask(I18N.DISPLAY.loadingMask());
-        getButtonById(Dialog.OK).disable();
+       getOkButton().disable();
     }
 
     /**
@@ -85,13 +84,13 @@ public class AppCommentDialog extends Dialog {
      */
     public void unmaskDialog() {
         textArea.unmask();
-        getButtonById(Dialog.OK).enable();
+        getOkButton().enable();
     }
 
     private void compose(String appName) {
         VerticalPanel pnl = new VerticalPanel();
         pnl.add(new Label(I18N.DISPLAY.appCommentExplanation(appName)));
-        LayoutContainer lc = new LayoutContainer(new FitLayout());
+        HorizontalLayoutContainer lc = new HorizontalLayoutContainer();
         lc.add(textArea);
         pnl.add(lc);
         add(pnl);

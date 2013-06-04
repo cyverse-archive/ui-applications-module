@@ -9,7 +9,7 @@
 		.container {
 			background-color: white;
 		}
-		
+
 		.details {
 			border: 2px green;
 		}
@@ -43,7 +43,7 @@
 	</ui:with>
 
 	<container:VerticalLayoutContainer
-		styleName="{style.container}">
+		styleName="{style.container}" ui:field="info_container">
 		<container:child layoutData="{topData}">
 			<myCell:AppFavoriteCellWidget ui:field="favIcon" />
 		</container:child>
@@ -58,4 +58,4 @@
 		</container:child>
 	</container:VerticalLayoutContainer>
 
-</ui:UiBinder> 
+</ui:UiBinder>

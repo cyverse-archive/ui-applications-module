@@ -1,6 +1,5 @@
 package org.iplantc.core.uiapps.client.presenter.proxy;
 
-import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
@@ -18,11 +17,10 @@ import com.sencha.gxt.data.shared.loader.ListLoadResultBean;
 
 public class AppRpcProxy extends RpcProxy<ListLoadConfig, ListLoadResult<App>> {
 
-    private final AppUserServiceFacade service;
+    private final AppUserServiceFacade service = GWT.create(AppUserServiceFacade.class);
     private AppGroup currentAg;
 
     public AppRpcProxy() {
-        this.service = Services.USER_APP_SERVICE;
     }
 
     @Override
