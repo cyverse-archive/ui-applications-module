@@ -37,6 +37,9 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
 
     @UiField
     TextButton create;
+    
+    @UiField
+    TextButton edit;
 
     @UiField
     MenuItem createNewApp;
@@ -51,13 +54,13 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     TextButton requestTool;
 
     @UiField
-    TextButton copy;
+    MenuItem copy;
 
     @UiField
-    TextButton edit;
+    MenuItem editApp;
 
     @UiField
-    TextButton delete;
+    MenuItem delete;
 
     @UiField
     TextButton submit;
@@ -107,17 +110,17 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     }
 
     @UiHandler("copy")
-    public void copyClicked(SelectEvent event) {
+    public void copyClicked(SelectionEvent<Item> event) {
         presenter.onCopyClicked();
     }
 
-    @UiHandler("edit")
-    public void editClicked(SelectEvent event) {
+    @UiHandler("editApp")
+    public void editClicked(SelectionEvent<Item> event) {
         presenter.onEditClicked();
     }
 
     @UiHandler("delete")
-    public void deleteClicked(SelectEvent event) {
+    public void deleteClicked(SelectionEvent<Item> event) {
         presenter.onDeleteClicked();
     }
 
