@@ -66,7 +66,7 @@
 							labelAlign="TOP">
 							<form:widget>
 								<form:FileUploadField debugId="idFileUpldTool" ui:field="binUpld"
-									visible="true" allowBlank="true"></form:FileUploadField>
+									visible="true" name="src_upload_file" allowBlank="true"></form:FileUploadField>
 							</form:widget>
 						</form:FieldLabel>
 					</con:child>
@@ -161,6 +161,14 @@
 								</form:TextArea>
 							</form:widget>
 						</form:FieldLabel>
+					</con:child>
+						<con:child layoutData="{layoutData}">
+								<form:TextField debugId="idTxtUser" name="user" ui:field="user" allowBlank="true" height="150" visible="false">
+								</form:TextField>
+					</con:child>
+						<con:child layoutData="{layoutData}">
+								<form:TextField debugId="idTxtEmail" name="email" ui:field="email" allowBlank="true" height="150" visible="false">
+								</form:TextField>
 					</con:child>
 				</con:VerticalLayoutContainer>
 			</form:FieldSet>
