@@ -4,6 +4,7 @@ import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
+import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -243,7 +244,7 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
                 box.hide();
                 JSONObject obj = JsonUtil.getObject(event.getResults());
                 if(obj!= null && obj.get("error") == null) {
-                    AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.DISPLAY.requestConfirmMsg());
+                    IplantInfoBox amb = new IplantInfoBox(I18N.DISPLAY.alert(), I18N.DISPLAY.requestConfirmMsg());
                     amb.show();
                 } else {
                     AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.ERROR.newToolRequestError());
