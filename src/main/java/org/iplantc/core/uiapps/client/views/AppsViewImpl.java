@@ -123,6 +123,7 @@ public class AppsViewImpl implements AppsView {
                 });
         setTreeIcons();
         new QuickTip(grid).getToolTipConfig().setTrackMouse(true);
+        westPanel.getHeader().getTool(0).getElement().setId(WEST_COLLAPSE_BTN_ID);
     }
 
 

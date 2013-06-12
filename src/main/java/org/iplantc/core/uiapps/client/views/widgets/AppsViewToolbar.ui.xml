@@ -73,7 +73,7 @@
 				toolTipConfig="{submitToolTip}" />
 		</toolbar:child>
 		<toolbar:child layoutData="{boxData}">
-			<MyWidgets:AppSearchField ui:field="appSearch"
+			<MyWidgets:AppSearchField ui:field="appSearch" debugId="idAppsSrc"
 				emptyText="{strings.searchApps}" />
 		</toolbar:child>
 	</toolbar:ToolBar>

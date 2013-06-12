@@ -2,6 +2,7 @@ package org.iplantc.core.uiapps.client.views.widgets;
 
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
+import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar.Presenter.Builder;
 import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchRpcProxy;
 
 import com.google.gwt.user.client.ui.HasOneWidget;
@@ -27,8 +28,10 @@ public interface AppsViewToolbar extends IsWidget {
             Builder hideToolbarButtonSubmit();
 
             Builder hideToolbarButtonRequestTool();
-
+            
             void go(HasOneWidget container, final AppGroup selectedAppGroup, final App selectedApp);
+
+            Builder hideToolbarMenuEdit();
         }
 
         public Builder builder();
@@ -82,4 +85,8 @@ public interface AppsViewToolbar extends IsWidget {
     void setRequestToolButtonVisible(boolean visible);
 
     AppSearchRpcProxy getAppSearchRpcProxy();
+
+    void setEditMenuEnabled(boolean enabled);
+
+    void setEditMenuVisible(boolean visible);
 }

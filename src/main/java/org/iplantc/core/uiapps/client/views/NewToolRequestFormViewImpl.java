@@ -1,11 +1,15 @@
 package org.iplantc.core.uiapps.client.views;
 
+import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
+import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -87,6 +91,12 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
     @UiField
     TextField toolDoc;
+    
+    @UiField
+    TextField user;
+    
+    @UiField
+    TextField email;
 
     @UiField
     FormPanel formPanel;
@@ -144,6 +154,7 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
         initSrcModeSelection();
         initValidators();
         initRequiredLabels();
+        addUserInfo();
     }
 
     private void initRequiredLabels() {
@@ -156,6 +167,11 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
         multiLbl.setHTML(buildRequiredFieldLabel(multiLbl.getText()));
         upldTestLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.upldTestData()));
         cmdLineLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.cmdLineRun()));
+    }
+    
+    private void addUserInfo() {
+        user.setValue(UserInfo.getInstance().getUsername());
+        email.setValue(UserInfo.getInstance().getEmail());
     }
 
 
@@ -226,8 +242,14 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
             @Override
             public void onSubmitComplete(SubmitCompleteEvent event) {
                 box.hide();
-                AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), event.getResults());
-                amb.show();
+                JSONObject obj = JsonUtil.getObject(event.getResults());
+                if(obj!= null && obj.get("error") == null) {
+                    IplantInfoBox amb = new IplantInfoBox(I18N.DISPLAY.alert(), I18N.DISPLAY.requestConfirmMsg());
+                    amb.show();
+                } else {
+                    AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.ERROR.newToolRequestError());
+                    amb.show();
+                }
                 presenter.onRequestComplete();
             }
         });

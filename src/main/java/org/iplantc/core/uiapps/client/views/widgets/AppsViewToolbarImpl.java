@@ -138,10 +138,15 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     public void createWorkflowClicked(SelectionEvent<Item> event) {
         presenter.createWorkflowClicked();
     }
+    
+    @Override
+    public void setEditMenuEnabled(boolean enabled) {
+        edit.setEnabled(enabled);
+    }
 
     @Override
     public void setEditButtonEnabled(boolean enabled) {
-        edit.setEnabled(enabled);
+        editApp.setEnabled(enabled);
     }
 
     @Override
@@ -173,10 +178,15 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     public void setCopyButtonVisible(boolean visible) {
         copy.setVisible(visible);
     }
+    
+    @Override
+    public void setEditMenuVisible(boolean visible) {
+        edit.setVisible(visible);
+    }
 
     @Override
     public void setEditButtonVisible(boolean visible) {
-        edit.setVisible(visible);
+        editApp.setVisible(visible);
     }
 
     @Override
