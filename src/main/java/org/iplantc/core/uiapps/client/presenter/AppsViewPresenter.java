@@ -175,6 +175,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
         toolbar.setSubmitButtonEnabled(false);
         toolbar.setCopyButtonEnabled(false);
         toolbar.setAppInfoButtonEnabled(false);
+        toolbar.setEditMenuEnabled(false);
 
         view.setCenterPanelHeading(ag.getName());
         fetchApps(ag);
@@ -189,13 +190,16 @@ public class AppsViewPresenter implements AppsView.Presenter {
             toolbar.setSubmitButtonEnabled(false);
             toolbar.setCopyButtonEnabled(false);
             toolbar.setAppInfoButtonEnabled(false);
+            toolbar.setEditMenuEnabled(false);
         } else if (app.isPublic()) {
+            toolbar.setEditMenuEnabled(true);
             toolbar.setEditButtonEnabled(false);
             toolbar.setDeleteButtonEnabled(false);
             toolbar.setSubmitButtonEnabled(false);
             toolbar.setCopyButtonEnabled(true);
             toolbar.setAppInfoButtonEnabled(true);
         } else {
+            toolbar.setEditMenuEnabled(true);
             toolbar.setEditButtonEnabled(true);
             toolbar.setDeleteButtonEnabled(true);
             toolbar.setSubmitButtonEnabled(true);
@@ -559,6 +563,12 @@ public class AppsViewPresenter implements AppsView.Presenter {
         @Override
         public Builder hideToolbarButtonRequestTool() {
             presenter.getToolbar().setRequestToolButtonVisible(false);
+            return this;
+        }
+        
+        @Override
+        public Builder hideToolbarMenuEdit() {
+            presenter.getToolbar().setEditMenuVisible(false);
             return this;
         }
 
