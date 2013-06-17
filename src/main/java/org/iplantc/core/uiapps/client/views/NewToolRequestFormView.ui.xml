@@ -8,12 +8,16 @@
 	<ui:with field="strings"
 		type="org.iplantc.core.resources.client.messages.IplantDisplayStrings" />
 
+    <ui:with
+        field="constants"
+        type="org.iplantc.core.uicommons.client.DEClientConstants" />
+
 	<ui:with field="layoutData"
 		type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">
 		<ui:attributes height="-1" width=".90" />
 	</ui:with>
 	<form:FormPanel ui:field="formPanel" encoding="MULTIPART"
-		method="POST" width="420" action="apps/new_tool_request">
+		method="POST" width="420" action="{constants.toolRequestServlet}">
 		<con:VerticalLayoutContainer ui:field="container">
 			<form:FieldSet ui:field="toolSet" headingText="{strings.toolTab}"
 				collapsible="true">

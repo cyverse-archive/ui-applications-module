@@ -1,5 +1,7 @@
 package org.iplantc.core.uiapps.client;
 
+import org.iplantc.core.uicommons.client.DEClientConstants;
+
 import com.google.gwt.core.client.GWT;
 
 /**
@@ -10,6 +12,5 @@ import com.google.gwt.core.client.GWT;
  */
 public class Constants {
     /** CommonConstants, auto-populated from .properties by GWT */
-    public static final CommonAppConstants CLIENT = (CommonAppConstants)GWT
-            .create(CommonAppConstants.class);
+    public static final DEClientConstants CLIENT = GWT.create(DEClientConstants.class);
 }
