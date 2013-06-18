@@ -16,6 +16,7 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
+import com.sencha.gxt.core.client.util.Format;
 import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.sencha.gxt.widget.core.client.Composite;
@@ -242,10 +243,11 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
             @Override
             public void onSubmitComplete(SubmitCompleteEvent event) {
                 box.hide();
-                JSONObject obj = JsonUtil.getObject(event.getResults());
-                if(obj!= null && obj.get("error") == null) {
-                    IplantInfoBox amb = new IplantInfoBox(I18N.DISPLAY.alert(), I18N.DISPLAY.requestConfirmMsg());
-                    amb.show();
+                JSONObject obj = JsonUtil.getObject(Format.stripTags(event.getResults()));
+                if (JsonUtil.getBoolean(obj, "success", false)) { //$NON-NLS-1$
+                    IplantInfoBox successMsg = new IplantInfoBox(I18N.DISPLAY.success(), I18N.DISPLAY
+                            .requestConfirmMsg());
+                    successMsg.show();
                 } else {
                     AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.ERROR.newToolRequestError());
                     amb.show();
