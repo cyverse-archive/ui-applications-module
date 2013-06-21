@@ -9,7 +9,7 @@
 }
 
 .appDisabled {
-	color: black;
+	color: red;
 	font-size: 12px;
 	height: 15px;
 	padding-top: 2px;
