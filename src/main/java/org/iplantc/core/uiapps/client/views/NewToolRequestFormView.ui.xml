@@ -3,7 +3,8 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:con="urn:import:com.sencha.gxt.widget.core.client.container"
 	xmlns:c="urn:import:com.sencha.gxt.widget.core.client.button"
 	xmlns:form="urn:import:com.sencha.gxt.widget.core.client.form"
-	xmlns:gwt="urn:import:com.google.gwt.widget.client" xmlns:t="urn:import:com.google.gwt.i18n.server.testing">
+	xmlns:gwt="urn:import:com.google.gwt.widget.client" xmlns:t="urn:import:com.google.gwt.i18n.server.testing"
+	xmlns:ipc="urn:import:org.iplantc.core.uicommons.client.widgets">
 
 	<ui:with field="strings"
 		type="org.iplantc.core.resources.client.messages.IplantDisplayStrings" />
@@ -69,8 +70,8 @@
 						<form:FieldLabel text="" labelSeparator=""
 							labelAlign="TOP">
 							<form:widget>
-								<form:FileUploadField debugId="idFileUpldTool" ui:field="binUpld"
-									visible="true" name="src_upload_file" allowBlank="true"></form:FileUploadField>
+								<ipc:IPCFileUploadField debugId="idFileUpldTool" ui:field="binUpld"
+									visible="true" name="src_upload_file" allowBlank="true"/>
 							</form:widget>
 						</form:FieldLabel>
 					</con:child>
@@ -131,8 +132,8 @@
 					<con:child layoutData="{layoutData}">
 						<form:FieldLabel  labelAlign="TOP" ui:field="upldTestLbl" >
 							<form:widget>
-								<form:FileUploadField name="test_data_file" debugId="fileUpldTest"
-									ui:field="testDataUpld" allowBlank="false"></form:FileUploadField>
+								<ipc:IPCFileUploadField name="test_data_file" debugId="fileUpldTest"
+									ui:field="testDataUpld" allowBlank="false"/>
 							</form:widget>
 						</form:FieldLabel>
 					</con:child>
@@ -152,8 +153,9 @@
 					<con:child layoutData="{layoutData}">
 						<form:FieldLabel text="{strings.otherData}" labelAlign="TOP" >
 							<form:widget>
-								<form:FileUploadField  debugId="idFileUpldOtherData" name="additional_data_file"
-									ui:field="otherDataUpld" allowBlank="true"></form:FileUploadField>
+								<ipc:IPCFileUploadField debugId="idFileUpldOtherData" 
+								    name="additional_data_file" ui:field="otherDataUpld" 
+								    allowBlank="true"/>
 							</form:widget>
 						</form:FieldLabel>
 					</con:child>
