@@ -3,6 +3,7 @@ package org.iplantc.core.uiapps.client.views;
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uicommons.client.models.UserInfo;
+import org.iplantc.core.uicommons.client.validators.NameValidator3;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 
@@ -86,6 +87,9 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
     @UiField
     FileUploadField otherDataUpld;
+
+    @UiField
+    TextField toolName;
 
     @UiField
     TextField binLink;
@@ -178,6 +182,7 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
 
     private void initValidators() {
+        toolName.addValidator(new NameValidator3());
         binLink.addValidator(new UrlValidator());
         toolDoc.addValidator(new UrlValidator());
     }
