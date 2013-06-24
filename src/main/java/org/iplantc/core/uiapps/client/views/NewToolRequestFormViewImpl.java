@@ -1,6 +1,5 @@
 package org.iplantc.core.uiapps.client.views;
 
-import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.validators.LengthRangeValidator;
@@ -12,14 +11,12 @@ import org.iplantc.core.uicommons.client.widgets.IPCFileUploadField;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
-import com.sencha.gxt.core.client.util.Format;
 import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.sencha.gxt.widget.core.client.Composite;
@@ -225,44 +222,9 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
     @Override
     public void onSubmitBtnClick() {
-        final AutoProgressMessageBox box = new AutoProgressMessageBox(I18N.DISPLAY.submitting(),
-                I18N.DISPLAY.submitRequest());
-        box.setProgressText(I18N.DISPLAY.submitting());
-
-        if (formPanel.isValid()) {
-            // remove unused file upload fields
-            if (!binUpld.isVisible()) {
-                binUpld.removeFromParent();
-            }
-
-            if (testDataUpld.getValue() == null || testDataUpld.getValue().isEmpty()) {
-                testDataUpld.removeFromParent();
-            }
-
-            if (otherDataUpld.getValue() == null || otherDataUpld.getValue().isEmpty()) {
-                otherDataUpld.removeFromParent();
-            }
-
-            box.auto();
-            box.show();
-            formPanel.submit();
+        if (presenter != null) {
+            presenter.onSubmitForm();
         }
-        formPanel.addSubmitCompleteHandler(new SubmitCompleteHandler() {
-            @Override
-            public void onSubmitComplete(SubmitCompleteEvent event) {
-                box.hide();
-                JSONObject obj = JsonUtil.getObject(Format.stripTags(event.getResults()));
-                if (JsonUtil.getBoolean(obj, "success", false)) { //$NON-NLS-1$
-                    IplantInfoBox successMsg = new IplantInfoBox(I18N.DISPLAY.success(), I18N.DISPLAY
-                            .requestConfirmMsg());
-                    successMsg.show();
-                } else {
-                    AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.ERROR.newToolRequestError());
-                    amb.show();
-                }
-                presenter.onRequestComplete();
-            }
-        });
     }
 
     @Override
@@ -278,6 +240,56 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     @Override
     public void setPresenter(Presenter p) {
         this.presenter = p;
+    }
+
+    @Override
+    public void indicateSubmissionFailure() {
+        final AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.ERROR.newToolRequestError());
+        amb.show();
+    }
+
+    @Override
+    public void indicateSubmissionSuccess() {
+        final IplantInfoBox successMsg = new IplantInfoBox(I18N.DISPLAY.success(), I18N.DISPLAY.requestConfirmMsg());
+        successMsg.show();
+    }
+
+    @Override
+    public final boolean isValid() {
+        return formPanel.isValid();
+    }
+
+    @Override
+    public final void submit() {
+        final AutoProgressMessageBox box = new AutoProgressMessageBox(I18N.DISPLAY.submitting(), I18N.DISPLAY.submitRequest());
+        box.setProgressText(I18N.DISPLAY.submitting());
+        box.auto();
+        box.show();
+        formPanel.submit();
+        formPanel.addSubmitCompleteHandler(new SubmitCompleteHandler() {
+            @Override
+            public void onSubmitComplete(SubmitCompleteEvent event) {
+                box.hide();
+                if (presenter != null) {
+                    presenter.onSubmissionComplete(event.getResults());
+                }
+            }
+        });
+    }
+
+    @Override
+    public final void trimFields() {
+        if (!binUpld.isVisible()) {
+            binUpld.removeFromParent();
+        }
+
+        if (testDataUpld.getValue() == null || testDataUpld.getValue().isEmpty()) {
+            testDataUpld.removeFromParent();
+        }
+
+        if (otherDataUpld.getValue() == null || otherDataUpld.getValue().isEmpty()) {
+            otherDataUpld.removeFromParent();
+        }
     }
 
 }
