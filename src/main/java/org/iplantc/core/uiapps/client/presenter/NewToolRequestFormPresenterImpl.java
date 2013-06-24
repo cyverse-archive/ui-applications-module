@@ -18,6 +18,13 @@ import com.sencha.gxt.core.client.util.Format;
  */
 public class NewToolRequestFormPresenterImpl implements Presenter {
 
+    private static String toRelPath(final String path) {
+        if (path == null || path.equalsIgnoreCase("null")) {
+            return "";
+        }
+        return path.replaceAll(".*[\\\\/]", "");
+    }
+
     private NewToolRequestFormView view;
     private Command callback;
 
@@ -42,9 +49,14 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
 
     @Override
     public final void onSubmitForm() {
-        if (view.isValid()) {
-            view.trimFields();
+        if (isFormValid()) {
+            // uploadToolBinary();
+            // uploadTestData();
+            // uploadOtherData();
+            view.trimUploadFields();
             view.submit();
+        } else {
+            // TODO indicate form is invalid
         }
     }
 
@@ -62,6 +74,20 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
         if (callback != null) {
             callback.execute();
         }
+
+    }
+
+    private boolean isFormValid() {
+        boolean valid = view.isValid();
+        
+        if (valid) {
+            final String binPath = toRelPath(view.getToolBinaryPath());
+            final String testDataPath = toRelPath(view.getTestDataPath());
+            final String otherDataPath = toRelPath(view.getOtherDataPath());
+            valid = binPath.equals(testDataPath) || binPath.equals(otherDataPath);
+        }
+        
+        return valid;
     }
 
 }

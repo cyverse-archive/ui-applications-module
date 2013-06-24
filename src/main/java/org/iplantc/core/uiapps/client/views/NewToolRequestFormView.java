@@ -23,6 +23,21 @@ public interface NewToolRequestFormView extends IsWidget {
     void setPresenter(Presenter p);
 
     /**
+     * Returns the current value of the other data field
+     */
+    String getOtherDataPath();
+
+    /**
+     * Returns the current value of the test data field.
+     */
+    String getTestDataPath();
+
+    /**
+     * Returns the current value of the tool's binary field.
+     */
+    String getToolBinaryPath();
+
+    /**
      * Show the user a failed submission message
      */
     void indicateSubmissionFailure();
@@ -47,8 +62,8 @@ public interface NewToolRequestFormView extends IsWidget {
     void submit();
 
     /**
-     * Remove the unused optional fields from the form.
+     * Remove the upload fields from the form.
      */
-    void trimFields();
+    void trimUploadFields();
 
 }

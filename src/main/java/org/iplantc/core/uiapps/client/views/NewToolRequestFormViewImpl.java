@@ -243,13 +243,28 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     }
 
     @Override
-    public void indicateSubmissionFailure() {
+    public final String getOtherDataPath() {
+        return otherDataUpld.getValue();
+    }
+
+    @Override
+    public final String getTestDataPath() {
+        return testDataUpld.getValue();
+    }
+
+    @Override
+    public final String getToolBinaryPath() {
+        return binUpld.getValue();
+    }
+
+    @Override
+    public final void indicateSubmissionFailure() {
         final AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.ERROR.newToolRequestError());
         amb.show();
     }
 
     @Override
-    public void indicateSubmissionSuccess() {
+    public final void indicateSubmissionSuccess() {
         final IplantInfoBox successMsg = new IplantInfoBox(I18N.DISPLAY.success(), I18N.DISPLAY.requestConfirmMsg());
         successMsg.show();
     }
@@ -278,7 +293,7 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     }
 
     @Override
-    public final void trimFields() {
+    public final void trimUploadFields() {
         if (!binUpld.isVisible()) {
             binUpld.removeFromParent();
         }
