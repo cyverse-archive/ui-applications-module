@@ -2,7 +2,6 @@ package org.iplantc.core.uiapps.client.views.widgets;
 
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
-import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar.Presenter.Builder;
 import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchRpcProxy;
 
 import com.google.gwt.user.client.ui.HasOneWidget;

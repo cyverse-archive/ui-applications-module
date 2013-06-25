@@ -68,8 +68,6 @@ public class AppInfoView implements IsWidget {
 
 	private ContentPanel dcPanel;
 
-	private final Widget widget;
-
 	private AccordionLayoutAppearance appearance;
 
 	private AccordionLayoutContainer dcCon;
@@ -78,7 +76,7 @@ public class AppInfoView implements IsWidget {
 
 	public AppInfoView(final App app) {
 		this.app = app;
-		widget = BINDER.createAndBindUi(this);
+        BINDER.createAndBindUi(this);
 		favIcon.setValue(this.app);
 		initDetailsPnl();
 		initDCPanel();
