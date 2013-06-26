@@ -8,6 +8,8 @@ import org.iplantc.core.uiapps.client.events.AppDeleteEvent;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEvent;
 import org.iplantc.core.uiapps.client.events.AppFavoritedEventHander;
 import org.iplantc.core.uiapps.client.events.AppGroupCountUpdateEvent;
+import org.iplantc.core.uiapps.client.events.AppUpdatedEvent;
+import org.iplantc.core.uiapps.client.events.AppUpdatedEvent.AppUpdatedEventHandler;
 import org.iplantc.core.uiapps.client.events.CreateNewAppEvent;
 import org.iplantc.core.uiapps.client.events.CreateNewWorkflowEvent;
 import org.iplantc.core.uiapps.client.events.EditAppEvent;
@@ -18,9 +20,9 @@ import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.models.autobeans.AppList;
 import org.iplantc.core.uiapps.client.presenter.proxy.AppGroupProxy;
-import org.iplantc.core.uiapps.client.views.AppInfoView;
 import org.iplantc.core.uiapps.client.services.AppServiceFacade;
 import org.iplantc.core.uiapps.client.services.AppUserServiceFacade;
+import org.iplantc.core.uiapps.client.views.AppInfoView;
 import org.iplantc.core.uiapps.client.views.AppsView;
 import org.iplantc.core.uiapps.client.views.dialogs.NewToolRequestDialog;
 import org.iplantc.core.uiapps.client.views.dialogs.SubmitAppForPublicDialog;
@@ -122,7 +124,6 @@ public class AppsViewPresenter implements AppsView.Presenter {
             }
         });
         eventBus.addHandler(AppFavoritedEvent.TYPE, new AppFavoritedEventHander() {
-
             @Override
             public void onAppFavorited(AppFavoritedEvent event) {
                 AppGroup favAppGrp = view.findAppGroupByName(FAVORITES);
@@ -136,6 +137,19 @@ public class AppsViewPresenter implements AppsView.Presenter {
                         || getSelectedAppGroup().getName().equalsIgnoreCase(FAVORITES)) {
                     view.removeApp(view.findApp(event.getAppId()));
                 }
+            }
+        });
+
+        eventBus.addHandler(AppUpdatedEvent.TYPE, new AppUpdatedEventHandler() {
+            @Override
+            public void onAppUpdated(AppUpdatedEvent event) {
+
+                // JDS Always assume that the app is in the "Apps Under Development" group
+                AppGroup userAppGrp = view.findAppGroupByName(USER_APPS_GROUP);
+                if (userAppGrp != null) {
+                    view.selectAppGroup(userAppGrp.getId());
+                }
+
             }
         });
 
@@ -221,7 +235,9 @@ public class AppsViewPresenter implements AppsView.Presenter {
             public void onSuccess(String result) {
                 AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
                 AutoBean<AppList> bean = AutoBeanCodex.decode(factory, AppList.class, result);
-                view.setApps(bean.as().getApps());
+                List<App> apps = bean.as().getApps();
+                view.setApps(apps);
+                view.updateAppGroupAppCount(ag, apps.size());
 
                 if (getDesiredSelectedApp() != null) {
                     view.selectApp(getDesiredSelectedApp().getId());
