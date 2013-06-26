@@ -5,10 +5,8 @@ import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
 import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
 import org.iplantc.core.resources.client.messages.I18N;
-import org.iplantc.core.uiapps.client.events.RunAppEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.views.AppsView;
-import org.iplantc.core.uicommons.client.events.EventBus;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
@@ -40,7 +38,7 @@ public class AppHyperlinkCell extends AbstractCell<App> {
         String appDisabled();
     }
 
-     public interface Resources extends ClientBundle {
+    public interface Resources extends ClientBundle {
         @Source("AppHyperlinkCell.css")
         MyCss css();
     }
@@ -120,6 +118,8 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     }
 
     private void doOnClick(final Element eventTarget, final App value) {
-        view.onAppNameSelected(value);
+        if (!value.isDisabled()) {
+            view.onAppNameSelected(value);
+        }
     }
 }

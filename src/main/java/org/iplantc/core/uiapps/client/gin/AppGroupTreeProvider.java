@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.TreeStore;
+import com.sencha.gxt.theme.gray.client.tree.GrayTreeAppearance;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 
 public class AppGroupTreeProvider implements Provider<Tree<AppGroup, String>> {
@@ -35,7 +36,7 @@ public class AppGroupTreeProvider implements Provider<Tree<AppGroup, String>> {
             public String getPath() {
                 return null;
             }
-        });
+        }, new GrayTreeAppearance());
 
     }
 

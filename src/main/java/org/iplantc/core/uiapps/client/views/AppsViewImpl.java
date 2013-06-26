@@ -22,6 +22,7 @@ import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
 import com.sencha.gxt.data.shared.loader.ListLoader;
 import com.sencha.gxt.data.shared.loader.TreeLoader;
+import com.sencha.gxt.theme.gray.client.panel.GrayContentPanelAppearance;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
@@ -126,6 +127,11 @@ public class AppsViewImpl implements AppsView {
         westPanel.getHeader().getTool(0).getElement().setId(WEST_COLLAPSE_BTN_ID);
     }
 
+    
+    @UiFactory
+    ContentPanel createContentPanel() {
+        return new ContentPanel(new GrayContentPanelAppearance());
+    }
 
     @UiFactory
     ListStore<App> createListStore() {
@@ -232,6 +238,12 @@ public class AppsViewImpl implements AppsView {
         return grid.getSelectionModel().getSelectedItem();
     }
 
+    @Override
+    
+    public List<App> getAllSelectedApps() {
+        return grid.getSelectionModel().getSelectedItems();
+    }
+    
     @Override
     public AppGroup getSelectedAppGroup() {
         return tree.getSelectionModel().getSelectedItem();

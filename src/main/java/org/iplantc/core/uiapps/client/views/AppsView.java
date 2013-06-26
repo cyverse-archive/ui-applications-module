@@ -100,4 +100,6 @@ public interface AppsView extends IsWidget {
     void expandAppGroups();
 
     boolean isTreeStoreEmpty();
+
+    List<App> getAllSelectedApps();
 }

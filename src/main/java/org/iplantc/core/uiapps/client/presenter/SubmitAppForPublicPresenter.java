@@ -74,7 +74,7 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 
 			@Override
 			public void onFailure(Throwable caught) {
-				ErrorHandler.post(caught);
+				ErrorHandler.post(I18N.ERROR.publishFailureDefaultMessage(),caught);
 			}
 		});
 	}
@@ -96,7 +96,7 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 
 					@Override
 					public void onFailure(Throwable caught) {
-						ErrorHandler.post(caught.toString());
+						ErrorHandler.post(I18N.ERROR.publishFailureDefaultMessage(), caught);
 
 					}
 
@@ -120,6 +120,9 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 						ErrorHandler.post(I18N.ERROR
 								.cantCreateConfluencePage(JsonUtil.getString(
 										obj, "name")), caught);
+						
+						//SS:uncomment this for testing purposes only...
+						//onSuccess("http://test.com/url");
 					}
 
 					@Override

@@ -3,8 +3,11 @@ package org.iplantc.core.uiapps.client.views;
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uicommons.client.models.UserInfo;
+import org.iplantc.core.uicommons.client.validators.LengthRangeValidator;
+import org.iplantc.core.uicommons.client.validators.NameValidator3;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
+import org.iplantc.core.uicommons.client.widgets.IPCFileUploadField;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -16,6 +19,7 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
+import com.sencha.gxt.core.client.util.Format;
 import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.sencha.gxt.widget.core.client.Composite;
@@ -26,7 +30,6 @@ import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent.SubmitCompleteHandler;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
-import com.sencha.gxt.widget.core.client.form.FileUploadField;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.Radio;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
@@ -78,13 +81,16 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     SimpleComboBox<String> archCbo;
 
     @UiField
-    FileUploadField binUpld;
+    IPCFileUploadField binUpld;
 
     @UiField
-    FileUploadField testDataUpld;
+    IPCFileUploadField testDataUpld;
 
     @UiField
-    FileUploadField otherDataUpld;
+    IPCFileUploadField otherDataUpld;
+
+    @UiField
+    TextField toolName;
 
     @UiField
     TextField binLink;
@@ -174,11 +180,14 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
         email.setValue(UserInfo.getInstance().getEmail());
     }
 
-
-
     private void initValidators() {
+        toolName.addValidator(new LengthRangeValidator(I18N.DISPLAY.toolName(), 1, I18N.V_CONSTANTS.maxToolNameLength()));
+        toolName.addValidator(new NameValidator3());
         binLink.addValidator(new UrlValidator());
         toolDoc.addValidator(new UrlValidator());
+        binUpld.addValidator(new NameValidator3());
+        testDataUpld.addValidator(new NameValidator3());
+        otherDataUpld.addValidator(new NameValidator3());
     }
 
     private String buildRequiredFieldLabel(String label) {
@@ -242,10 +251,11 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
             @Override
             public void onSubmitComplete(SubmitCompleteEvent event) {
                 box.hide();
-                JSONObject obj = JsonUtil.getObject(event.getResults());
-                if(obj!= null && obj.get("error") == null) {
-                    IplantInfoBox amb = new IplantInfoBox(I18N.DISPLAY.alert(), I18N.DISPLAY.requestConfirmMsg());
-                    amb.show();
+                JSONObject obj = JsonUtil.getObject(Format.stripTags(event.getResults()));
+                if (JsonUtil.getBoolean(obj, "success", false)) { //$NON-NLS-1$
+                    IplantInfoBox successMsg = new IplantInfoBox(I18N.DISPLAY.success(), I18N.DISPLAY
+                            .requestConfirmMsg());
+                    successMsg.show();
                 } else {
                     AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.ERROR.newToolRequestError());
                     amb.show();
