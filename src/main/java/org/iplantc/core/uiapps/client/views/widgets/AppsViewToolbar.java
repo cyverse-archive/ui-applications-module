@@ -69,7 +69,7 @@ public interface AppsViewToolbar extends IsWidget {
 
     void setCopyButtonEnabled(boolean enabled);
 
-    void setAppInfoButtonEnabled(boolean enabled);
+    void setAppRunButtonEnabled(boolean enabled);
 
     void setCreateButtonVisible(boolean visible);
 

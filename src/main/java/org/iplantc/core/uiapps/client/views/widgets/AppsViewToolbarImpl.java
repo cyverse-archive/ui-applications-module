@@ -165,7 +165,7 @@ public class AppsViewToolbarImpl implements AppsViewToolbar {
     }
 
     @Override
-    public void setAppInfoButtonEnabled(boolean enabled) {
+    public void setAppRunButtonEnabled(boolean enabled) {
         appRun.setEnabled(enabled);
     }
 
