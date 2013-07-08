@@ -57,7 +57,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 
 /**
  * The presenter for the AppsView.
- *
+ * 
  * TODO JDS Document responsibility and intent of presenter.
  * <p>
  * Events fired from this presenter:
@@ -67,9 +67,9 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
  * <li> {@link CreateNewAppEvent}</li>
  * <li> {@link CreateNewWorkflowEvent}</li>
  * <ul>
- *
+ * 
  * @author jstroot
- *
+ * 
  */
 public class AppsViewPresenter implements AppsView.Presenter {
 
@@ -89,7 +89,8 @@ public class AppsViewPresenter implements AppsView.Presenter {
     private final AppUserServiceFacade appUserService;
 
     @Inject
-    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar, AppServiceFacade appService, AppUserServiceFacade appUserService) {
+    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar,
+            AppServiceFacade appService, AppUserServiceFacade appUserService) {
         this.view = view;
         this.appService = appService;
         this.appUserService = appUserService;
@@ -170,7 +171,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     /**
      * Sets a string which is a place holder for selection after a call to {@link #fetchApps(AppGroup)}
-     *
+     * 
      * @param selectedApp
      */
     private void setDesiredSelectedApp(HasId selectedApp) {
@@ -184,15 +185,15 @@ public class AppsViewPresenter implements AppsView.Presenter {
     @Override
     public void onAppGroupSelected(final AppGroup ag) {
         if (toolbar != null) {
-        toolbar.setEditButtonEnabled(false);
-        toolbar.setDeleteButtonEnabled(false);
-        toolbar.setSubmitButtonEnabled(false);
-        toolbar.setCopyButtonEnabled(false);
-        toolbar.setAppInfoButtonEnabled(false);
-        toolbar.setEditMenuEnabled(false);
+            toolbar.setEditButtonEnabled(false);
+            toolbar.setDeleteButtonEnabled(false);
+            toolbar.setSubmitButtonEnabled(false);
+            toolbar.setCopyButtonEnabled(false);
+            toolbar.setAppRunButtonEnabled(false);
+            toolbar.setEditMenuEnabled(false);
 
-        view.setCenterPanelHeading(ag.getName());
-        fetchApps(ag);
+            view.setCenterPanelHeading(ag.getName());
+            fetchApps(ag);
         }
     }
 
@@ -203,7 +204,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
             toolbar.setDeleteButtonEnabled(false);
             toolbar.setSubmitButtonEnabled(false);
             toolbar.setCopyButtonEnabled(false);
-            toolbar.setAppInfoButtonEnabled(false);
+            toolbar.setAppRunButtonEnabled(false);
             toolbar.setEditMenuEnabled(false);
         } else if (app.isPublic()) {
             toolbar.setEditMenuEnabled(true);
@@ -211,20 +212,25 @@ public class AppsViewPresenter implements AppsView.Presenter {
             toolbar.setDeleteButtonEnabled(false);
             toolbar.setSubmitButtonEnabled(false);
             toolbar.setCopyButtonEnabled(true);
-            toolbar.setAppInfoButtonEnabled(true);
+
         } else {
             toolbar.setEditMenuEnabled(true);
             toolbar.setEditButtonEnabled(true);
             toolbar.setDeleteButtonEnabled(true);
             toolbar.setSubmitButtonEnabled(true);
             toolbar.setCopyButtonEnabled(true);
-            toolbar.setAppInfoButtonEnabled(true);
+        }
+
+        if (app != null && toolbar != null && !app.isDisabled()) {
+            toolbar.setAppRunButtonEnabled(true);
+        } else {
+            toolbar.setAppRunButtonEnabled(false);
         }
     }
 
     /**
      * Retrieves the apps for the given group by updating and executing the list loader
-     *
+     * 
      * @param ag
      */
     protected void fetchApps(final AppGroup ag) {
@@ -407,7 +413,8 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 if (usersAppsGrp != null) {
                     view.updateAppGroupAppCount(usersAppsGrp, usersAppsGrp.getAppCount() + 1);
                 }
-                HasId hasId = CommonModelUtils.createHasIdFromString(StringQuoter.split(result).get("analysis_id").asString());
+                HasId hasId = CommonModelUtils.createHasIdFromString(StringQuoter.split(result)
+                        .get("analysis_id").asString());
                 if (!hasId.getId().isEmpty()) {
                     AppGroup selectedAppGroup = getSelectedAppGroup();
                     if (selectedAppGroup != null) {
@@ -416,7 +423,6 @@ public class AppsViewPresenter implements AppsView.Presenter {
                     eventBus.fireEvent(new EditAppEvent(hasId));
                 }
             }
-
 
             @Override
             public void onFailure(Throwable caught) {
@@ -455,27 +461,26 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 Dialog btn = (Dialog)event.getSource();
                 String text = btn.getHideButton().getItemId();
                 if (text.equals(PredefinedButton.YES.name())) {
-                    appUserService.deleteAppFromWorkspace(UserInfo.getInstance()
-                            .getUsername(), UserInfo.getInstance().getFullUsername(), app.getId(),
-                            new AsyncCallback<String>() {
+                    appUserService.deleteAppFromWorkspace(UserInfo.getInstance().getUsername(), UserInfo
+                            .getInstance().getFullUsername(), app.getId(), new AsyncCallback<String>() {
 
-                                @Override
-                                public void onFailure(Throwable caught) {
-                                    ErrorHandler.post(I18N.ERROR.appRemoveFailure(), caught);
-                                }
+                        @Override
+                        public void onFailure(Throwable caught) {
+                            ErrorHandler.post(I18N.ERROR.appRemoveFailure(), caught);
+                        }
 
-                                @Override
-                                public void onSuccess(String result) {
-                                    // Remove from visible list and update AppGroup app counts
-                                    view.removeApp(app);
-                                    AppGroup appGroup = view.findAppGroup(app.getGroupId());
-                                    if (appGroup != null) {
-                                        view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() - 1);
-                                    }
+                        @Override
+                        public void onSuccess(String result) {
+                            // Remove from visible list and update AppGroup app counts
+                            view.removeApp(app);
+                            AppGroup appGroup = view.findAppGroup(app.getGroupId());
+                            if (appGroup != null) {
+                                view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() - 1);
+                            }
 
-                                    eventBus.fireEvent(new AppDeleteEvent(app.getId()));
-                                }
-                            });
+                            eventBus.fireEvent(new AppDeleteEvent(app.getId()));
+                        }
+                    });
                 }
 
             }
@@ -581,7 +586,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
             presenter.getToolbar().setRequestToolButtonVisible(false);
             return this;
         }
-        
+
         @Override
         public Builder hideToolbarMenuEdit() {
             presenter.getToolbar().setEditMenuVisible(false);
