@@ -183,6 +183,9 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
 
     private boolean isFormValid() {
         boolean valid = view.isValid();
+        if (!valid) {
+            return false;
+        }
         if (toolByUpload) {
             valid = !areUploadsSame(view.getToolBinaryUploader(), view.getTestDataUploader()) && valid;
             valid = !areUploadsSame(view.getToolBinaryUploader(), view.getOtherDataUploader()) && valid;
