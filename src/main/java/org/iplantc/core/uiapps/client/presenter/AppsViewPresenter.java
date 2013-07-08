@@ -251,8 +251,6 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 AutoBean<AppList> bean = AutoBeanCodex.decode(factory, AppList.class, result);
                 List<App> apps = bean.as().getApps();
                 view.setApps(apps);
-                view.updateAppGroupAppCount(ag, apps.size());
-
                 if (getDesiredSelectedApp() != null) {
                     view.selectApp(getDesiredSelectedApp().getId());
                 } else {
@@ -260,6 +258,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 }
                 setDesiredSelectedApp(null);
                 view.unMaskCenterPanel();
+                view.updateAppGroupAppCount(ag, apps.size());
             }
 
             @Override
