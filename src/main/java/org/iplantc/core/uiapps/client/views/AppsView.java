@@ -26,6 +26,8 @@ public interface AppsView extends IsWidget {
 
         App getSelectedApp();
 
+        List<App> getAllSelectedApps();
+
         AppGroup getSelectedAppGroup();
 
         void onAppInfoClick(App app);

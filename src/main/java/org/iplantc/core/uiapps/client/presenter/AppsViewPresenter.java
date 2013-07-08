@@ -37,6 +37,7 @@ import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.HasId;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -322,6 +323,11 @@ public class AppsViewPresenter implements AppsView.Presenter {
     }
 
     @Override
+    public List<App> getAllSelectedApps() {
+        return view.getAllSelectedApps();
+    }
+
+    @Override
     public AppGroup getSelectedAppGroup() {
         return view.getSelectedAppGroup();
     }
@@ -457,7 +463,11 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void onDeleteClicked() {
-        final App app = getSelectedApp();
+        final List<App> apps = getAllSelectedApps();
+        if (apps == null || apps.isEmpty()) {
+            return;
+        }
+
         ConfirmMessageBox msgBox = new ConfirmMessageBox(I18N.DISPLAY.warning(),
                 I18N.DISPLAY.appDeleteWarning());
 
@@ -468,26 +478,35 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 Dialog btn = (Dialog)event.getSource();
                 String text = btn.getHideButton().getItemId();
                 if (text.equals(PredefinedButton.YES.name())) {
-                    appUserService.deleteAppFromWorkspace(UserInfo.getInstance().getUsername(), UserInfo
-                            .getInstance().getFullUsername(), app.getId(), new AsyncCallback<String>() {
+                    List<String> appIds = Lists.newArrayList();
+                    for (App app : apps) {
+                        appIds.add(app.getId());
+                    }
 
-                        @Override
-                        public void onFailure(Throwable caught) {
-                            ErrorHandler.post(I18N.ERROR.appRemoveFailure(), caught);
-                        }
+                    appUserService.deleteAppFromWorkspace(userInfo.getUsername(),
+                            userInfo.getFullUsername(), appIds, new AsyncCallback<String>() {
 
-                        @Override
-                        public void onSuccess(String result) {
-                            // Remove from visible list and update AppGroup app counts
-                            view.removeApp(app);
-                            AppGroup appGroup = view.findAppGroup(app.getGroupId());
-                            if (appGroup != null) {
-                                view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() - 1);
-                            }
+                                @Override
+                                public void onFailure(Throwable caught) {
+                                    ErrorHandler.post(I18N.ERROR.appRemoveFailure(), caught);
+                                }
 
-                            eventBus.fireEvent(new AppDeleteEvent(app.getId()));
-                        }
-                    });
+                                @Override
+                                public void onSuccess(String result) {
+                                    for (App app : apps) {
+                                        // Remove from visible list and update AppGroup app counts
+                                        view.removeApp(app);
+
+                                        AppGroup appGroup = view.findAppGroup(app.getGroupId());
+                                        if (appGroup != null) {
+                                            view.updateAppGroupAppCount(appGroup,
+                                                    appGroup.getAppCount() - 1);
+                                        }
+
+                                        eventBus.fireEvent(new AppDeleteEvent(app.getId()));
+                                    }
+                                }
+                            });
                 }
 
             }

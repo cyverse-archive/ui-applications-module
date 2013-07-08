@@ -1,5 +1,7 @@
 package org.iplantc.core.uiapps.client.services;
 
+import java.util.List;
+
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -129,7 +131,7 @@ public interface AppUserServiceFacade extends AppServiceFacade {
      * @param id
      * @param asyncCallback
      */
-    void deleteAppFromWorkspace(String username, String fullUsername, String id,
+    void deleteAppFromWorkspace(String username, String fullUsername, List<String> ids,
             AsyncCallback<String> asyncCallback);
 
     /**
