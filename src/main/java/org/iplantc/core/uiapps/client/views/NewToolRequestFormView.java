@@ -1,46 +1,61 @@
 package org.iplantc.core.uiapps.client.views;
 
 import com.google.gwt.user.client.ui.IsWidget;
+import com.sencha.gxt.widget.core.client.form.IsField;
 
-public interface NewToolRequestFormView extends IsWidget {
+/**
+ * @param <A> the type representing tool architecture
+ * @param <Y> the type representing yes/no/maybe responses
+ */
+public interface NewToolRequestFormView<A, Y> extends IsWidget {
 
     public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter {
-        void onRequestError();
-
         /**
-         * This is the callback for when a user requests to submit the form.
+         * The method to be called when the user clicks the cancel button.
          */
-        void onSubmitForm();
+        void onCancelBtnClick();
 
         /**
-         * This is the callback for when a form has been received by the backend.
+         * The method to be called when the user clicks the submit button.
+         */
+        void onSubmitBtnClick();
+
+        /**
+         * The method to be called when the user decides whether or not to provide the tool binary
+         * by uploading a file.
          * 
-         * @param results The HTML-encoded results of the submission.
+         * @param byUpload If this is true, the file will be uploaded, otherwise the file will be
+         *            submitted by URL.
          */
-        void onSubmissionComplete(String results);
+        void onToolByUpload(boolean byUpload);
     }
 
     void setPresenter(Presenter p);
 
     /**
-     * Returns the current value of the other data field
+     * @return the uploader for the other data file
      */
-    String getOtherDataPath();
+    Uploader getOtherDataUploader();
 
     /**
-     * Returns the current value of the test data field.
+     * @return the uploader for the test data file
      */
-    String getTestDataPath();
+    Uploader getTestDataUploader();
 
     /**
-     * Returns the current value of the tool's binary field.
+     * @return the uploader for the tool's binary file
      */
-    String getToolBinaryPath();
+    Uploader getToolBinaryUploader();
 
     /**
      * Show the user a failed submission message
      */
-    void indicateSubmissionFailure();
+    void indicateSubmissionFailure(String reason);
+
+    /**
+     * Indicate to the user that the submission has started
+     */
+    void indicateSubmissionStart();
 
     /**
      * Show the user a successful submission message
@@ -48,22 +63,68 @@ public interface NewToolRequestFormView extends IsWidget {
     void indicateSubmissionSuccess();
 
     /**
-     * Checks if all of the user-provided fields are valid.
+     * Forces the user input to be validated.
+     * 
+     * @return it returns true if all of the user-provided values are valid, otherwise false.
      */
     boolean isValid();
 
-    void onSubmitBtnClick();
-
-    void onCancelBtnClick();
+    /**
+     * Tells the view whether or not to configure itself for uploading the tool binary.
+     * 
+     * @param byUpload if true, the view will configure itself for uploading the binary, otherwise
+     *            it will configure itself for receiving a URL.
+     */
+    void setToolByUpload(boolean byUpload);
 
     /**
-     * Submits the tool request.
+     * @return the tool name field
      */
-    void submit();
+    IsField<String> getNameField();
 
     /**
-     * Remove the upload fields from the form.
+     * @return the tool description field
      */
-    void trimUploadFields();
+    IsField<String> getDescriptionField();
+
+    /**
+     * @return the attribution field
+     */
+    IsField<String> getAttributionField();
+
+    /**
+     * @return the tool binary URL field
+     */
+    IsField<String> getSourceURLField();
+
+    /**
+     * @return the documentation URL field
+     */
+    IsField<String> getDocURLField();
+
+    /**
+     * @return the tool version field
+     */
+    IsField<String> getVersionField();
+
+    /**
+     * @return the field indicating if the tool is multi-threaded
+     */
+    IsField<Y> getMultithreadedField();
+
+    /**
+     * @return the command line usage instructions field
+     */
+    IsField<String> getInstructionsField();
+
+    /**
+     * @return the additional information field
+     */
+    IsField<String> getAdditionalInfoField();
+
+    /**
+     * @return the architecture field
+     */
+    IsField<A> getArchitectureField();
 
 }

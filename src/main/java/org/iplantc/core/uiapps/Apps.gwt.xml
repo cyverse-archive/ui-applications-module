@@ -12,4 +12,8 @@
    <inherits name='com.extjs.gxt.ui.GXT' />
    
    <source path="client" />
+   
+   <replace-with class="org.iplantc.core.uiapps.client.presenter.DefaultFileUploader">
+      <when-type-is class="org.iplantc.core.uiapps.client.presenter.FileUploader"/>
+   </replace-with>
 </module>
