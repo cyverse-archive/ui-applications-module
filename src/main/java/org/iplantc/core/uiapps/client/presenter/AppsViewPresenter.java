@@ -87,6 +87,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
     private HasId desiredSelectedAppId;
     private final AppServiceFacade appService;
     private final AppUserServiceFacade appUserService;
+    private final UserInfo userInfo;
 
     @Inject
     public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar,
@@ -110,6 +111,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
         initHandlers();
         initConstants();
+        userInfo = UserInfo.getInstance();
     }
 
     private void initHandlers() {
@@ -208,10 +210,16 @@ public class AppsViewPresenter implements AppsView.Presenter {
             toolbar.setEditMenuEnabled(false);
         } else if (app.isPublic()) {
             toolbar.setEditMenuEnabled(true);
-            toolbar.setEditButtonEnabled(false);
             toolbar.setDeleteButtonEnabled(false);
             toolbar.setSubmitButtonEnabled(false);
             toolbar.setCopyButtonEnabled(true);
+
+            if (userInfo.getEmail().equals(app.getIntegratorEmail())) {
+                // JDS If the current user is the integrator
+                toolbar.setEditButtonEnabled(true);
+            } else {
+                toolbar.setEditButtonEnabled(false);
+            }
 
         } else {
             toolbar.setEditMenuEnabled(true);
@@ -420,7 +428,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
                     if (selectedAppGroup != null) {
                         fetchApps(selectedAppGroup);
                     }
-                    eventBus.fireEvent(new EditAppEvent(hasId));
+                    eventBus.fireEvent(new EditAppEvent(hasId, false));
                 }
             }
 
@@ -519,7 +527,10 @@ public class AppsViewPresenter implements AppsView.Presenter {
         if (selectedApp.getStepCount() > 1) {
             fetchWorkflowAndFireEditEvent(selectedApp);
         } else {
-            eventBus.fireEvent(new EditAppEvent(selectedApp));
+            boolean isAppPublished = selectedApp.isPublic();
+            boolean isCurrentUserAppIntegrator = userInfo.getEmail().equals(selectedApp.getIntegratorEmail());
+
+            eventBus.fireEvent(new EditAppEvent(selectedApp, isAppPublished && isCurrentUserAppIntegrator));
         }
     }
 

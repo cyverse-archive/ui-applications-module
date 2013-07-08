@@ -5,7 +5,6 @@ import org.iplantc.core.uicommons.client.models.HasId;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.web.bindery.autobean.shared.Splittable;
 
 public class EditAppEvent extends GwtEvent<EditAppEventHandler> {
 
@@ -16,15 +15,11 @@ public class EditAppEvent extends GwtEvent<EditAppEventHandler> {
 
     public static final GwtEvent.Type<EditAppEventHandler> TYPE = new GwtEvent.Type<EditAppEventHandler>();
     private final HasId appToEdit;
-    private Splittable legacyAppTemplate;
+    private final boolean isUserIntegratorAndAppPublic;
 
-    public EditAppEvent(HasId appToEdit) {
+    public EditAppEvent(HasId appToEdit, boolean isUserIntegratorAndAppPublic) {
         this.appToEdit = appToEdit;
-    }
-
-    public EditAppEvent(HasId appToEdit, Splittable legacyAppTemplate) {
-        this(appToEdit);
-        this.legacyAppTemplate = legacyAppTemplate;
+        this.isUserIntegratorAndAppPublic = isUserIntegratorAndAppPublic;
     }
 
     @Override
@@ -41,8 +36,8 @@ public class EditAppEvent extends GwtEvent<EditAppEventHandler> {
         return appToEdit;
     }
 
-    public Splittable getLegacyAppTemplate() {
-        return legacyAppTemplate;
+    public boolean isUserIntegratorAndAppPublic() {
+        return isUserIntegratorAndAppPublic;
     }
 
 }
