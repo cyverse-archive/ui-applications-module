@@ -1,38 +1,29 @@
 package org.iplantc.core.uiapps.client.views;
 
-import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
-import org.iplantc.core.uicommons.client.models.UserInfo;
 import org.iplantc.core.uicommons.client.validators.LengthRangeValidator;
 import org.iplantc.core.uicommons.client.validators.NameValidator3;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
-import org.iplantc.core.uicommons.client.widgets.IPCFileUploadField;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
-import com.sencha.gxt.core.client.util.Format;
-import com.sencha.gxt.core.client.util.ToggleGroup;
-import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent;
-import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent.SubmitCompleteHandler;
+import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
-import com.sencha.gxt.widget.core.client.form.FieldSet;
-import com.sencha.gxt.widget.core.client.form.FormPanel;
+import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
+import com.sencha.gxt.widget.core.client.form.IsField;
 import com.sencha.gxt.widget.core.client.form.Radio;
-import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
+import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
 /**
@@ -42,70 +33,24 @@ import com.sencha.gxt.widget.core.client.form.TextField;
  * @author sriram
  *
  */
-public class NewToolRequestFormViewImpl extends Composite implements NewToolRequestFormView {
+public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements NewToolRequestFormView<A, Y> {
 
-    private static NewToolRequestFormViewUiBinder uiBinder = GWT
-            .create(NewToolRequestFormViewUiBinder.class);
+    @UiTemplate("NewToolRequestFormView.ui.xml")
+    interface NewToolRequestFormViewUiBinder extends UiBinder<Widget, NewToolRequestFormViewImpl<?, ?>> {
+    }
 
-    final private Widget widget;
+    private static final NewToolRequestFormViewUiBinder uiBinder = GWT.create(NewToolRequestFormViewUiBinder.class);
 
-    public final String YES = "Yes";
-    public final String NO = "No";
-    public final String DONT_KNOW = "Don't know";
+    private static String buildRequiredFieldLabel(final String label) {
+        if (label == null) {
+            return null;
+        }
 
-    public final String ARCH32 = "32-bit Generic";
-    public final String ARCH64 = "64-bit Generic";
-    public final String OTHERS = "Others";
-
-    private Presenter presenter;
-
-    @UiField(provided = true)
-    SimpleComboBox<String> multiThreadCbo;
+        return "<span style='color:red; top:-5px;' >*</span> " + label; //$NON-NLS-1$
+    }
 
     @UiField
     VerticalLayoutContainer container;
-
-    @UiField
-    FieldSet toolSet;
-
-    @UiField
-    FieldSet otherSet;
-
-    @UiField
-    Radio toolLink;
-
-    @UiField
-    Radio toolUpld;
-
-    @UiField(provided = true)
-    SimpleComboBox<String> archCbo;
-
-    @UiField
-    IPCFileUploadField binUpld;
-
-    @UiField
-    IPCFileUploadField testDataUpld;
-
-    @UiField
-    IPCFileUploadField otherDataUpld;
-
-    @UiField
-    TextField toolName;
-
-    @UiField
-    TextField binLink;
-
-    @UiField
-    TextField toolDoc;
-    
-    @UiField
-    TextField user;
-    
-    @UiField
-    TextField email;
-
-    @UiField
-    FormPanel formPanel;
 
     @UiField
     FieldLabel toolNameLbl;
@@ -115,6 +60,12 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
 
     @UiField
     FieldLabel srcLbl;
+
+    @UiField
+    Radio toolLink;
+
+    @UiField
+    Radio toolUpld;
 
     @UiField
     FieldLabel docUrlLbl;
@@ -134,50 +85,71 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
     @UiField
     FieldLabel cmdLineLbl;
 
+    @UiField
+    TextField toolName;
 
-    @UiTemplate("NewToolRequestFormView.ui.xml")
-    interface NewToolRequestFormViewUiBinder extends UiBinder<Widget, NewToolRequestFormViewImpl> {
-    }
+    @UiField
+    TextArea toolDesc;
 
-    public NewToolRequestFormViewImpl() {
-        multiThreadCbo = new SimpleComboBox<String>(new StringLabelProvider<String>());
-        multiThreadCbo.add(YES);
-        multiThreadCbo.add(NO);
-        multiThreadCbo.add(DONT_KNOW);
-        multiThreadCbo.setValue(DONT_KNOW);
+    @UiField
+    TextArea toolAttrib;
 
-        archCbo = new SimpleComboBox<String>(new StringLabelProvider<String>());
-        archCbo.add(ARCH32);
-        archCbo.add(ARCH64);
-        archCbo.add(OTHERS);
-        archCbo.add(DONT_KNOW);
-        archCbo.setValue(ARCH64);
+    @UiField
+    TextField binLink;
 
-        widget = uiBinder.createAndBindUi(this);
+    @UiField
+    TextField toolDoc;
+
+    @UiField
+    TextField toolVersion;
+
+    @UiField
+    TextArea runInfo;
+
+    @UiField
+    TextArea otherInfo;
+
+    @UiField(provided = true)
+    final ComboBox<A> archCbo;
+
+    @UiField(provided = true)
+    final ComboBox<Y> multiThreadCbo;
+
+    @UiField
+    UploadForm binUpld;
+
+    @UiField
+    UploadForm testDataUpld;
+
+    @UiField
+    UploadForm otherDataUpld;
+
+    private final AutoProgressMessageBox submissionProgressBox;
+
+    private Presenter presenter;
+
+    public NewToolRequestFormViewImpl(final ComboBox<A> archChooser, final ComboBox<Y> multithreadChooser) {
+        archCbo = archChooser;
+        multiThreadCbo = multithreadChooser;
+        initWidget(uiBinder.createAndBindUi(this));
+        submissionProgressBox = new AutoProgressMessageBox(I18N.DISPLAY.submitRequest());
+        submissionProgressBox.auto();
         container.setScrollMode(ScrollMode.AUTOY);
         container.setAdjustForScroll(true);
-
-        initSrcModeSelection();
         initValidators();
         initRequiredLabels();
-        addUserInfo();
     }
 
     private void initRequiredLabels() {
-        toolNameLbl.setHTML(buildRequiredFieldLabel(toolNameLbl.getText()));
+        toolNameLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.toolNameLabel()));
         toolDescLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.toolDesc()));
         srcLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.srcLinkPrompt()));
-        docUrlLbl.setHTML(buildRequiredFieldLabel(docUrlLbl.getText()));
-        versionLbl.setHTML(buildRequiredFieldLabel(versionLbl.getText()));
-        archLbl.setHTML(buildRequiredFieldLabel(archLbl.getText()));
-        multiLbl.setHTML(buildRequiredFieldLabel(multiLbl.getText()));
+        docUrlLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.docLink()));
+        versionLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.version()));
+        archLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.architecture()));
+        multiLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.isMultiThreaded()));
         upldTestLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.upldTestData()));
         cmdLineLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.cmdLineRun()));
-    }
-    
-    private void addUserInfo() {
-        user.setValue(UserInfo.getInstance().getUsername());
-        email.setValue(UserInfo.getInstance().getEmail());
     }
 
     private void initValidators() {
@@ -190,94 +162,123 @@ public class NewToolRequestFormViewImpl extends Composite implements NewToolRequ
         otherDataUpld.addValidator(new NameValidator3());
     }
 
-    private String buildRequiredFieldLabel(String label) {
-        if (label == null) {
-            return null;
+    @UiHandler("toolLink")
+    void onLinkSelect(final ChangeEvent unused) {
+        if (presenter != null) {
+            presenter.onToolByUpload(false);
         }
-
-        return "<span style='color:red; top:-5px;' >*</span> " + label; //$NON-NLS-1$
     }
 
-    void initSrcModeSelection() {
-        ToggleGroup toggle = new ToggleGroup();
-        toggle.add(toolLink);
-        toggle.add(toolUpld);
-        toggle.addValueChangeHandler(new ValueChangeHandler<HasValue<Boolean>>() {
-
-            @Override
-            public void onValueChange(ValueChangeEvent<HasValue<Boolean>> event) {
-                if (toolLink.getValue()) {
-                    binLink.setVisible(true);
-                    binLink.setAllowBlank(false);
-                    binUpld.setVisible(false);
-                    binUpld.setAllowBlank(true);
-
-                } else {
-                    binLink.setVisible(false);
-                    binLink.setAllowBlank(true);
-                    binUpld.setVisible(true);
-                    binUpld.setAllowBlank(false);
-                }
-
-            }
-        });
-    }
-
-    @Override
-    public void onSubmitBtnClick() {
-        final AutoProgressMessageBox box = new AutoProgressMessageBox(I18N.DISPLAY.submitting(),
-                I18N.DISPLAY.submitRequest());
-        box.setProgressText(I18N.DISPLAY.submitting());
-
-        if (formPanel.isValid()) {
-            // remove unused file upload fields
-            if (!binUpld.isVisible()) {
-                binUpld.removeFromParent();
-            }
-
-            if (testDataUpld.getValue() == null || testDataUpld.getValue().isEmpty()) {
-                testDataUpld.removeFromParent();
-            }
-
-            if (otherDataUpld.getValue() == null || otherDataUpld.getValue().isEmpty()) {
-                otherDataUpld.removeFromParent();
-            }
-
-            box.auto();
-            box.show();
-            formPanel.submit();
+    @UiHandler("toolUpld")
+    void onUploadSelect(final ChangeEvent unused) {
+        if (presenter != null) {
+            presenter.onToolByUpload(true);
         }
-        formPanel.addSubmitCompleteHandler(new SubmitCompleteHandler() {
-            @Override
-            public void onSubmitComplete(SubmitCompleteEvent event) {
-                box.hide();
-                JSONObject obj = JsonUtil.getObject(Format.stripTags(event.getResults()));
-                if (JsonUtil.getBoolean(obj, "success", false)) { //$NON-NLS-1$
-                    IplantInfoBox successMsg = new IplantInfoBox(I18N.DISPLAY.success(), I18N.DISPLAY
-                            .requestConfirmMsg());
-                    successMsg.show();
-                } else {
-                    AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), I18N.ERROR.newToolRequestError());
-                    amb.show();
-                }
-                presenter.onRequestComplete();
-            }
-        });
     }
 
     @Override
-    public void onCancelBtnClick() {
-        presenter.onRequestError();
+    public Uploader getOtherDataUploader() {
+        return otherDataUpld;
     }
 
     @Override
-    public Widget asWidget() {
-        return widget;
+    public Uploader getTestDataUploader() {
+        return testDataUpld;
     }
 
     @Override
-    public void setPresenter(Presenter p) {
+    public Uploader getToolBinaryUploader() {
+        return binUpld;
+    }
+
+    @Override
+    public final void indicateSubmissionStart() {
+        submissionProgressBox.setProgressText(I18N.DISPLAY.submitting());
+        submissionProgressBox.getProgressBar().reset();
+        submissionProgressBox.show();
+    }
+
+    @Override
+    public final void indicateSubmissionFailure(final String reason) {
+        submissionProgressBox.hide();
+        final AlertMessageBox amb = new AlertMessageBox(I18N.DISPLAY.alert(), reason);
+        amb.show();
+    }
+
+    @Override
+    public final void indicateSubmissionSuccess() {
+        submissionProgressBox.hide();
+        final IplantInfoBox successMsg = new IplantInfoBox(I18N.DISPLAY.success(), I18N.DISPLAY.requestConfirmMsg());
+        successMsg.show();
+    }
+
+    @Override
+    public boolean isValid() {
+        return FormPanelHelper.isValid(container, false);
+    }
+
+    @Override
+    public void setPresenter(final Presenter p) {
         this.presenter = p;
+    }
+
+    @Override
+    public void setToolByUpload(final boolean byUpload) {
+        toolUpld.setValue(byUpload);
+        binUpld.setVisible(byUpload);
+        binUpld.setEnabled(byUpload);
+        binLink.setVisible(!byUpload);
+        binLink.setEnabled(!byUpload);
+    }
+
+    @Override
+    public IsField<String> getNameField() {
+        return toolName;
+    }
+
+    @Override
+    public IsField<String> getDescriptionField() {
+        return toolDesc;
+    }
+
+    @Override
+    public IsField<String> getAttributionField() {
+        return toolAttrib;
+    }
+
+    @Override
+    public IsField<String> getSourceURLField() {
+        return binLink;
+    }
+
+    @Override
+    public IsField<String> getDocURLField() {
+        return toolDoc;
+    }
+
+    @Override
+    public IsField<String> getVersionField() {
+        return toolVersion;
+    }
+
+    @Override
+    public IsField<Y> getMultithreadedField() {
+        return multiThreadCbo;
+    }
+
+    @Override
+    public IsField<String> getInstructionsField() {
+        return runInfo;
+    }
+
+    @Override
+    public IsField<String> getAdditionalInfoField() {
+        return otherInfo;
+    }
+
+    @Override
+    public IsField<A> getArchitectureField() {
+        return archCbo;
     }
 
 }

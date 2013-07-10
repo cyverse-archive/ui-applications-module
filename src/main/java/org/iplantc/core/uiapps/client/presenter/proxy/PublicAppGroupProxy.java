@@ -20,6 +20,6 @@ public class PublicAppGroupProxy extends RpcProxy<AppGroup, List<AppGroup>> {
 
     @Override
     public void load(AppGroup loadConfig, final AsyncCallback<List<AppGroup>> callback) {
-        appService.getAppGroups("-1", callback);
+        appService.getPublicAppGroups(callback);
     }
 }

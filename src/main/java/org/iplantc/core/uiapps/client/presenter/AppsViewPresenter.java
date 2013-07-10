@@ -37,6 +37,7 @@ import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.HasId;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
@@ -57,7 +58,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 
 /**
  * The presenter for the AppsView.
- *
+ * 
  * TODO JDS Document responsibility and intent of presenter.
  * <p>
  * Events fired from this presenter:
@@ -67,9 +68,9 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
  * <li> {@link CreateNewAppEvent}</li>
  * <li> {@link CreateNewWorkflowEvent}</li>
  * <ul>
- *
+ * 
  * @author jstroot
- *
+ * 
  */
 public class AppsViewPresenter implements AppsView.Presenter {
 
@@ -87,9 +88,11 @@ public class AppsViewPresenter implements AppsView.Presenter {
     private HasId desiredSelectedAppId;
     private final AppServiceFacade appService;
     private final AppUserServiceFacade appUserService;
+    private final UserInfo userInfo;
 
     @Inject
-    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar, AppServiceFacade appService, AppUserServiceFacade appUserService) {
+    public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar,
+            AppServiceFacade appService, AppUserServiceFacade appUserService) {
         this.view = view;
         this.appService = appService;
         this.appUserService = appUserService;
@@ -109,6 +112,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
         initHandlers();
         initConstants();
+        userInfo = UserInfo.getInstance();
     }
 
     private void initHandlers() {
@@ -170,7 +174,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     /**
      * Sets a string which is a place holder for selection after a call to {@link #fetchApps(AppGroup)}
-     *
+     * 
      * @param selectedApp
      */
     private void setDesiredSelectedApp(HasId selectedApp) {
@@ -184,15 +188,15 @@ public class AppsViewPresenter implements AppsView.Presenter {
     @Override
     public void onAppGroupSelected(final AppGroup ag) {
         if (toolbar != null) {
-        toolbar.setEditButtonEnabled(false);
-        toolbar.setDeleteButtonEnabled(false);
-        toolbar.setSubmitButtonEnabled(false);
-        toolbar.setCopyButtonEnabled(false);
-        toolbar.setAppInfoButtonEnabled(false);
-        toolbar.setEditMenuEnabled(false);
+            toolbar.setEditButtonEnabled(false);
+            toolbar.setDeleteButtonEnabled(false);
+            toolbar.setSubmitButtonEnabled(false);
+            toolbar.setCopyButtonEnabled(false);
+            toolbar.setAppRunButtonEnabled(false);
+            toolbar.setEditMenuEnabled(false);
 
-        view.setCenterPanelHeading(ag.getName());
-        fetchApps(ag);
+            view.setCenterPanelHeading(ag.getName());
+            fetchApps(ag);
         }
     }
 
@@ -203,28 +207,39 @@ public class AppsViewPresenter implements AppsView.Presenter {
             toolbar.setDeleteButtonEnabled(false);
             toolbar.setSubmitButtonEnabled(false);
             toolbar.setCopyButtonEnabled(false);
-            toolbar.setAppInfoButtonEnabled(false);
+            toolbar.setAppRunButtonEnabled(false);
             toolbar.setEditMenuEnabled(false);
         } else if (app.isPublic()) {
             toolbar.setEditMenuEnabled(true);
-            toolbar.setEditButtonEnabled(false);
             toolbar.setDeleteButtonEnabled(false);
             toolbar.setSubmitButtonEnabled(false);
             toolbar.setCopyButtonEnabled(true);
-            toolbar.setAppInfoButtonEnabled(true);
+
+            if (userInfo.getEmail().equals(app.getIntegratorEmail())) {
+                // JDS If the current user is the integrator
+                toolbar.setEditButtonEnabled(true);
+            } else {
+                toolbar.setEditButtonEnabled(false);
+            }
+
         } else {
             toolbar.setEditMenuEnabled(true);
             toolbar.setEditButtonEnabled(true);
             toolbar.setDeleteButtonEnabled(true);
             toolbar.setSubmitButtonEnabled(true);
             toolbar.setCopyButtonEnabled(true);
-            toolbar.setAppInfoButtonEnabled(true);
+        }
+
+        if (app != null && toolbar != null && !app.isDisabled()) {
+            toolbar.setAppRunButtonEnabled(true);
+        } else {
+            toolbar.setAppRunButtonEnabled(false);
         }
     }
 
     /**
      * Retrieves the apps for the given group by updating and executing the list loader
-     *
+     * 
      * @param ag
      */
     protected void fetchApps(final AppGroup ag) {
@@ -237,8 +252,6 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 AutoBean<AppList> bean = AutoBeanCodex.decode(factory, AppList.class, result);
                 List<App> apps = bean.as().getApps();
                 view.setApps(apps);
-                view.updateAppGroupAppCount(ag, apps.size());
-
                 if (getDesiredSelectedApp() != null) {
                     view.selectApp(getDesiredSelectedApp().getId());
                 } else {
@@ -246,6 +259,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 }
                 setDesiredSelectedApp(null);
                 view.unMaskCenterPanel();
+                view.updateAppGroupAppCount(ag, apps.size());
             }
 
             @Override
@@ -306,6 +320,11 @@ public class AppsViewPresenter implements AppsView.Presenter {
     @Override
     public App getSelectedApp() {
         return view.getSelectedApp();
+    }
+
+    @Override
+    public List<App> getAllSelectedApps() {
+        return view.getAllSelectedApps();
     }
 
     @Override
@@ -407,16 +426,16 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 if (usersAppsGrp != null) {
                     view.updateAppGroupAppCount(usersAppsGrp, usersAppsGrp.getAppCount() + 1);
                 }
-                HasId hasId = CommonModelUtils.createHasIdFromString(StringQuoter.split(result).get("analysis_id").asString());
+                HasId hasId = CommonModelUtils.createHasIdFromString(StringQuoter.split(result)
+                        .get("analysis_id").asString());
                 if (!hasId.getId().isEmpty()) {
                     AppGroup selectedAppGroup = getSelectedAppGroup();
                     if (selectedAppGroup != null) {
                         fetchApps(selectedAppGroup);
                     }
-                    eventBus.fireEvent(new EditAppEvent(hasId));
+                    eventBus.fireEvent(new EditAppEvent(hasId, false));
                 }
             }
-
 
             @Override
             public void onFailure(Throwable caught) {
@@ -444,7 +463,11 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void onDeleteClicked() {
-        final App app = getSelectedApp();
+        final List<App> apps = getAllSelectedApps();
+        if (apps == null || apps.isEmpty()) {
+            return;
+        }
+
         ConfirmMessageBox msgBox = new ConfirmMessageBox(I18N.DISPLAY.warning(),
                 I18N.DISPLAY.appDeleteWarning());
 
@@ -455,9 +478,13 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 Dialog btn = (Dialog)event.getSource();
                 String text = btn.getHideButton().getItemId();
                 if (text.equals(PredefinedButton.YES.name())) {
-                    appUserService.deleteAppFromWorkspace(UserInfo.getInstance()
-                            .getUsername(), UserInfo.getInstance().getFullUsername(), app.getId(),
-                            new AsyncCallback<String>() {
+                    List<String> appIds = Lists.newArrayList();
+                    for (App app : apps) {
+                        appIds.add(app.getId());
+                    }
+
+                    appUserService.deleteAppFromWorkspace(userInfo.getUsername(),
+                            userInfo.getFullUsername(), appIds, new AsyncCallback<String>() {
 
                                 @Override
                                 public void onFailure(Throwable caught) {
@@ -466,14 +493,18 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
                                 @Override
                                 public void onSuccess(String result) {
-                                    // Remove from visible list and update AppGroup app counts
-                                    view.removeApp(app);
-                                    AppGroup appGroup = view.findAppGroup(app.getGroupId());
-                                    if (appGroup != null) {
-                                        view.updateAppGroupAppCount(appGroup, appGroup.getAppCount() - 1);
-                                    }
+                                    for (App app : apps) {
+                                        // Remove from visible list and update AppGroup app counts
+                                        view.removeApp(app);
 
-                                    eventBus.fireEvent(new AppDeleteEvent(app.getId()));
+                                        AppGroup appGroup = view.findAppGroup(app.getGroupId());
+                                        if (appGroup != null) {
+                                            view.updateAppGroupAppCount(appGroup,
+                                                    appGroup.getAppCount() - 1);
+                                        }
+
+                                        eventBus.fireEvent(new AppDeleteEvent(app.getId()));
+                                    }
                                 }
                             });
                 }
@@ -514,7 +545,10 @@ public class AppsViewPresenter implements AppsView.Presenter {
         if (selectedApp.getStepCount() > 1) {
             fetchWorkflowAndFireEditEvent(selectedApp);
         } else {
-            eventBus.fireEvent(new EditAppEvent(selectedApp));
+            boolean isAppPublished = selectedApp.isPublic();
+            boolean isCurrentUserAppIntegrator = userInfo.getEmail().equals(selectedApp.getIntegratorEmail());
+
+            eventBus.fireEvent(new EditAppEvent(selectedApp, isAppPublished && isCurrentUserAppIntegrator));
         }
     }
 
@@ -581,7 +615,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
             presenter.getToolbar().setRequestToolButtonVisible(false);
             return this;
         }
-        
+
         @Override
         public Builder hideToolbarMenuEdit() {
             presenter.getToolbar().setEditMenuVisible(false);
