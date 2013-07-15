@@ -118,8 +118,6 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     }
 
     private void doOnClick(final Element eventTarget, final App value) {
-        if (!value.isDisabled()) {
             view.onAppNameSelected(value);
-        }
     }
 }
