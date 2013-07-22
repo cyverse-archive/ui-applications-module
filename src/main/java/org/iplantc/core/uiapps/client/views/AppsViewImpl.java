@@ -8,6 +8,7 @@ import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 
 import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -36,6 +37,7 @@ import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.Selecti
 import com.sencha.gxt.widget.core.client.tips.QuickTip;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance;
+import com.sencha.gxt.widget.core.client.tree.Tree.TreeNode;
 
 /**
  *
@@ -56,13 +58,13 @@ public class AppsViewImpl implements AppsView {
     private Presenter presenter;
 
     @UiField(provided = true)
-    Tree<AppGroup, String> tree;
+    protected Tree<AppGroup, String> tree;
 
     @UiField(provided = true)
     TreeStore<AppGroup> treeStore;
 
     @UiField
-    Grid<App> grid;
+    protected Grid<App> grid;
 
     @UiField
     GridView<App> gridView;
@@ -382,5 +384,22 @@ public class AppsViewImpl implements AppsView {
     @Override
     public boolean isTreeStoreEmpty() {
         return treeStore.getAll().isEmpty();
+    }
+
+    @Override
+    public AppGroup getAppGroupFromElement(Element el) {
+        TreeNode<AppGroup> node = tree.findNode(el);
+        if (node != null && tree.getView().isSelectableTarget(node.getModel(), el)) {
+            return node.getModel();
+        }
+
+        return null;
+    }
+
+    @Override
+    public App getAppFromElement(Element el) {
+        Element row = gridView.findRow(el);
+        int index = gridView.findRowIndex(row);
+        return listStore.get(index);
     }
 }

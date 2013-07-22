@@ -39,6 +39,7 @@ import org.iplantc.core.uicommons.client.models.UserInfo;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -644,5 +645,15 @@ public class AppsViewPresenter implements AppsView.Presenter {
     @Override
     public void onAppNameSelected(final App app) {
         EventBus.getInstance().fireEvent(new RunAppEvent(app));
+    }
+
+    @Override
+    public AppGroup getAppGroupFromElement(Element el) {
+        return view.getAppGroupFromElement(el);
+    }
+
+    @Override
+    public App getAppFromElement(Element el) {
+        return view.getAppFromElement(el);
     }
 }
