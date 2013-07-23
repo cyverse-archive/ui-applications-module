@@ -116,7 +116,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
         userInfo = UserInfo.getInstance();
     }
 
-    private void initHandlers() {
+    protected void initHandlers() {
         eventBus.addHandler(AppSearchResultLoadEvent.TYPE, new AppSearchResultLoadEventHandler() {
             @Override
             public void onLoad(AppSearchResultLoadEvent event) {
@@ -282,31 +282,38 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
         if (!view.isTreeStoreEmpty()) {
             doInitialAppSelection(selectedAppGroup, selectedApp);
-
-            return;
+        } else {
+            // Fetch AppGroups
+            reloadAppGroups(selectedAppGroup, selectedApp);
         }
-        // Fetch AppGroups
+    }
+
+    protected void reloadAppGroups(final HasId selectedAppGroup, final HasId selectedApp) {
+        view.maskWestPanel(I18N.DISPLAY.loadingMask());
+        view.clearAppGroups();
         appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
             @Override
             public void onSuccess(List<AppGroup> result) {
                 view.addAppGroups(null, result);
                 view.expandAppGroups();
                 doInitialAppSelection(selectedAppGroup, selectedApp);
+                view.unMaskWestPanel();
             }
 
             @Override
             public void onFailure(Throwable caught) {
                 // TODO Add error message for the user.
                 ErrorHandler.post(caught);
+                view.unMaskWestPanel();
             }
         });
     }
 
     private void doInitialAppSelection(HasId selectedAppGroup, HasId selectedApp) {
         // Select previous user selections
-        if ((selectedAppGroup != null) && (selectedApp != null)) {
+        if (selectedAppGroup != null) {
             view.selectAppGroup(selectedAppGroup.getId());
-            AppsViewPresenter.this.setDesiredSelectedApp(selectedApp);
+            setDesiredSelectedApp(selectedApp);
         } else {
             view.selectFirstAppGroup();
         }

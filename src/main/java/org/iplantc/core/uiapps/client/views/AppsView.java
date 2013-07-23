@@ -110,6 +110,8 @@ public interface AppsView extends IsWidget {
 
     List<App> getAllSelectedApps();
 
+    void clearAppGroups();
+
     AppGroup getAppGroupFromElement(Element el);
 
     App getAppFromElement(Element el);

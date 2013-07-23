@@ -387,6 +387,11 @@ public class AppsViewImpl implements AppsView {
     }
 
     @Override
+    public void clearAppGroups() {
+        treeStore.clear();
+    }
+
+    @Override
     public AppGroup getAppGroupFromElement(Element el) {
         TreeNode<AppGroup> node = tree.findNode(el);
         if (node != null && tree.getView().isSelectableTarget(node.getModel(), el)) {
