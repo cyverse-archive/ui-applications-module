@@ -278,7 +278,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void go(HasOneWidget container, final HasId selectedAppGroup, final HasId selectedApp) {
-        go(container);
+        container.setWidget(view);
 
         if (!view.isTreeStoreEmpty()) {
             doInitialAppSelection(selectedAppGroup, selectedApp);
@@ -322,7 +322,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void go(final HasOneWidget container) {
-        container.setWidget(view);
+        go(container, null, null);
     }
 
     @Override

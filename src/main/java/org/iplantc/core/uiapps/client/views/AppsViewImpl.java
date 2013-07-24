@@ -93,9 +93,9 @@ public class AppsViewImpl implements AppsView {
     private final Widget widget;
 
     @Inject
-    public AppsViewImpl(final Tree<AppGroup, String> tree, final TreeStore<AppGroup> treeStore) {
+    public AppsViewImpl(final Tree<AppGroup, String> tree) {
         this.tree = tree;
-        this.treeStore = treeStore;
+        this.treeStore = tree.getStore();
         this.widget = uiBinder.createAndBindUi(this);
         grid.addCellClickHandler(new CellClickHandler() {
 
