@@ -39,6 +39,7 @@ import org.iplantc.core.uicommons.client.models.UserInfo;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -115,7 +116,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
         userInfo = UserInfo.getInstance();
     }
 
-    private void initHandlers() {
+    protected void initHandlers() {
         eventBus.addHandler(AppSearchResultLoadEvent.TYPE, new AppSearchResultLoadEventHandler() {
             @Override
             public void onLoad(AppSearchResultLoadEvent event) {
@@ -277,35 +278,42 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void go(HasOneWidget container, final HasId selectedAppGroup, final HasId selectedApp) {
-        go(container);
+        container.setWidget(view);
 
         if (!view.isTreeStoreEmpty()) {
             doInitialAppSelection(selectedAppGroup, selectedApp);
-
-            return;
+        } else {
+            // Fetch AppGroups
+            reloadAppGroups(selectedAppGroup, selectedApp);
         }
-        // Fetch AppGroups
+    }
+
+    protected void reloadAppGroups(final HasId selectedAppGroup, final HasId selectedApp) {
+        view.maskWestPanel(I18N.DISPLAY.loadingMask());
+        view.clearAppGroups();
         appGroupProxy.load(null, new AsyncCallback<List<AppGroup>>() {
             @Override
             public void onSuccess(List<AppGroup> result) {
                 view.addAppGroups(null, result);
                 view.expandAppGroups();
                 doInitialAppSelection(selectedAppGroup, selectedApp);
+                view.unMaskWestPanel();
             }
 
             @Override
             public void onFailure(Throwable caught) {
                 // TODO Add error message for the user.
                 ErrorHandler.post(caught);
+                view.unMaskWestPanel();
             }
         });
     }
 
     private void doInitialAppSelection(HasId selectedAppGroup, HasId selectedApp) {
         // Select previous user selections
-        if ((selectedAppGroup != null) && (selectedApp != null)) {
+        if (selectedAppGroup != null) {
             view.selectAppGroup(selectedAppGroup.getId());
-            AppsViewPresenter.this.setDesiredSelectedApp(selectedApp);
+            setDesiredSelectedApp(selectedApp);
         } else {
             view.selectFirstAppGroup();
         }
@@ -314,7 +322,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void go(final HasOneWidget container) {
-        container.setWidget(view);
+        go(container, null, null);
     }
 
     @Override
@@ -644,5 +652,15 @@ public class AppsViewPresenter implements AppsView.Presenter {
     @Override
     public void onAppNameSelected(final App app) {
         EventBus.getInstance().fireEvent(new RunAppEvent(app));
+    }
+
+    @Override
+    public AppGroup getAppGroupFromElement(Element el) {
+        return view.getAppGroupFromElement(el);
+    }
+
+    @Override
+    public App getAppFromElement(Element el) {
+        return view.getAppFromElement(el);
     }
 }

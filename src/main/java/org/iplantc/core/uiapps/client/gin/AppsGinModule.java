@@ -11,7 +11,6 @@ import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbarImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.tree.Tree;
@@ -20,8 +19,7 @@ public class AppsGinModule extends AbstractGinModule {
 
     @Override
     protected void configure() {
-        bind(new TypeLiteral<TreeStore<AppGroup>>() {
-        }).toProvider(AppGroupTreeStoreProvider.class).in(Singleton.class);
+        bind(new TypeLiteral<TreeStore<AppGroup>>() {}).toProvider(AppGroupTreeStoreProvider.class);
 
         bind(new TypeLiteral<Tree<AppGroup, String>>() {
         }).toProvider(AppGroupTreeProvider.class);

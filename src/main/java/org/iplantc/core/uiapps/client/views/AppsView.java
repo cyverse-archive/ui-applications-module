@@ -7,6 +7,7 @@ import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.views.widgets.AppsViewToolbar;
 import org.iplantc.core.uicommons.client.models.HasId;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.sencha.gxt.data.shared.ListStore;
@@ -37,6 +38,10 @@ public interface AppsView extends IsWidget {
         void go(HasOneWidget container, HasId selectedAppGroup, HasId selectedApp);
 
         Grid<App> getAppsGrid();
+
+        AppGroup getAppGroupFromElement(Element el);
+
+        App getAppFromElement(Element el);
     }
 
     void setPresenter(final Presenter presenter);
@@ -104,4 +109,10 @@ public interface AppsView extends IsWidget {
     boolean isTreeStoreEmpty();
 
     List<App> getAllSelectedApps();
+
+    void clearAppGroups();
+
+    AppGroup getAppGroupFromElement(Element el);
+
+    App getAppFromElement(Element el);
 }
