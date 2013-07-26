@@ -6,7 +6,8 @@
 		xmlns:form="urn:import:com.sencha.gxt.widget.core.client.form"
 		xmlns:gwt="urn:import:com.google.gwt.widget.client" 
 		xmlns:t="urn:import:com.google.gwt.i18n.server.testing"
-		xmlns:ipc="urn:import:org.iplantc.core.uiapps.client.views">
+		xmlns:ipc="urn:import:org.iplantc.core.uiapps.client.views"
+		xmlns:dr="urn:import:org.iplantc.core.uidiskresource.client.views.widgets">
 
 	<ui:with field="strings"
 		type="org.iplantc.core.resources.client.messages.IplantDisplayStrings" />
@@ -17,10 +18,10 @@
 
 	<ui:with field="layoutData"
 		type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">
-		<ui:attributes height="-1" width=".90" />
+		<ui:attributes height="-1" width=".95" />
 	</ui:with>
 
-	<con:VerticalLayoutContainer ui:field="container" width="420">
+	<con:VerticalLayoutContainer ui:field="container" width="450">
 		<form:FieldSet headingText="{strings.toolTab}" collapsible="true">
 			<con:VerticalLayoutContainer>
 				<con:child layoutData="{layoutData}">
@@ -55,22 +56,27 @@
 										name="binRadioGroup" boxLabel="Link" value="false"/>
 								<form:Radio debugId="idRdoToolUpld" ui:field="toolUpld" 
 										name="binRadioGroup" boxLabel="Upload" value="true"/>
+								<form:Radio debugId="idRdoToolSlt" ui:field="toolSlt" 
+										name="binRadioGroup" boxLabel="Select" value="false"/>
 							</g:HorizontalPanel>
 						</form:widget>
 					</form:FieldLabel>
 				</con:child>
 				<con:child layoutData="{layoutData}">
+					<con:CardLayoutContainer ui:field="binOptions">
 					<ipc:UploadForm ui:field="binUpld" allowBlank="false" visible="true" 
 							enabled="true"/>
-				</con:child>
-				<con:child layoutData="{layoutData}">
 					<form:FieldLabel text="" labelSeparator="" labelAlign="TOP">
 						<form:widget>
 							<form:TextField debugId="idTxtToolUrl" ui:field="binLink" 
-									allowBlank="false" visible="false" enabled="false"/>
+									allowBlank="false" visible="true" enabled="true"/>
 						</form:widget>
 					</form:FieldLabel>
+					<dr:FileSelectorField ui:field="binSelect" visible="true" enabled="true" required="true"></dr:FileSelectorField>
+				</con:CardLayoutContainer>
 				</con:child>
+				
+				
 				<con:child layoutData="{layoutData}">
 					<form:FieldLabel ui:field="docUrlLbl" labelAlign="TOP" labelSeparator="">
 						<form:widget>
@@ -109,11 +115,22 @@
 		<form:FieldSet headingText="{strings.otherTab}" collapsible="true">
 			<con:VerticalLayoutContainer>
 				<con:child layoutData="{layoutData}">
-					<form:FieldLabel ui:field="upldTestLbl" labelAlign="TOP">
+					<form:FieldLabel ui:field="testLbl" labelAlign="TOP" >
 						<form:widget>
-							<ipc:UploadForm ui:field="testDataUpld" allowBlank="false"/>
+							<g:HorizontalPanel spacing="3">
+								<form:Radio debugId="idRdoTestUpld" ui:field="testUpld" 
+										name="testRadioGroup" boxLabel="Upload" value="true"/>
+								<form:Radio debugId="idRdoTestSlt" ui:field="testSlt" 
+										name="testRadioGroup" boxLabel="Select" value="false"/>
+							</g:HorizontalPanel>
 						</form:widget>
 					</form:FieldLabel>
+				</con:child>
+				<con:child layoutData="{layoutData}">
+				<con:CardLayoutContainer ui:field="testDataOptions">
+					<ipc:UploadForm ui:field="testDataUpld" allowBlank="false"/>
+					<dr:FileSelectorField ui:field="testDataSelect" visible="true" enabled="true" required="true"></dr:FileSelectorField>
+				</con:CardLayoutContainer>
 				</con:child>
 				<con:child layoutData="{layoutData}">
 					<form:FieldLabel ui:field="cmdLineLbl" labelAlign="TOP">
@@ -124,11 +141,22 @@
 					</form:FieldLabel>
 				</con:child>
 				<con:child layoutData="{layoutData}">
-					<form:FieldLabel text="{strings.otherData}" labelAlign="TOP">
+					<form:FieldLabel ui:field="otherLbl" text="{strings.otherData}" labelAlign="TOP" >
 						<form:widget>
-							<ipc:UploadForm ui:field="otherDataUpld"/>
+							<g:HorizontalPanel spacing="3">
+								<form:Radio debugId="idRdoOtherUpld" ui:field="otherUpld" 
+										name="otherRadioGroup" boxLabel="Upload" value="true"/>
+								<form:Radio debugId="idRdootherSlt" ui:field="otherSlt" 
+										name="otherRadioGroup" boxLabel="Select" value="false"/>
+							</g:HorizontalPanel>
 						</form:widget>
 					</form:FieldLabel>
+				</con:child>
+				<con:child layoutData="{layoutData}">
+					<con:CardLayoutContainer ui:field="otherDataOptions">
+					<ipc:UploadForm ui:field="otherDataUpld"/>
+					<dr:FileSelectorField ui:field="otherDataSelect" visible="true" enabled="true" required="false"></dr:FileSelectorField>
+				</con:CardLayoutContainer>
 				</con:child>
 				<con:child layoutData="{layoutData}">
 					<form:FieldLabel text="{strings.otherInfo}" labelAlign="TOP">

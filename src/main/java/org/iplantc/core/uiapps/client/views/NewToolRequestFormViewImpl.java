@@ -1,22 +1,26 @@
 package org.iplantc.core.uiapps.client.views;
 
 import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.core.uiapps.client.presenter.NewToolRequestFormPresenterImpl.SELECTION_MODE;
 import org.iplantc.core.uicommons.client.validators.LengthRangeValidator;
 import org.iplantc.core.uicommons.client.validators.NameValidator3;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
+import org.iplantc.core.uidiskresource.client.views.widgets.FileSelectorField;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
+import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
+import com.sencha.gxt.widget.core.client.container.CardLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
@@ -66,7 +70,22 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
 
     @UiField
     Radio toolUpld;
+    
+    @UiField
+    Radio toolSlt;
 
+    @UiField
+    Radio testUpld;
+    
+    @UiField
+    Radio testSlt;
+    
+    @UiField
+    Radio otherUpld;
+    
+    @UiField
+    Radio otherSlt;
+    
     @UiField
     FieldLabel docUrlLbl;
 
@@ -78,9 +97,6 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
 
     @UiField
     FieldLabel multiLbl;
-
-    @UiField
-    FieldLabel upldTestLbl;
 
     @UiField
     FieldLabel cmdLineLbl;
@@ -123,7 +139,31 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
 
     @UiField
     UploadForm otherDataUpld;
+    
+    @UiField
+    FileSelectorField binSelect;
+    
+    @UiField
+    FileSelectorField testDataSelect;
 
+    @UiField
+    FileSelectorField otherDataSelect;
+    
+    @UiField
+    FieldLabel testLbl;
+    
+    @UiField
+    FieldLabel otherLbl;
+    
+    @UiField
+    CardLayoutContainer binOptions;
+    
+    @UiField
+    CardLayoutContainer testDataOptions;
+    
+    @UiField
+    CardLayoutContainer otherDataOptions;
+    
     private final AutoProgressMessageBox submissionProgressBox;
 
     private Presenter presenter;
@@ -138,6 +178,21 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
         container.setAdjustForScroll(true);
         initValidators();
         initRequiredLabels();
+       
+        ToggleGroup grp1 = new ToggleGroup();
+        grp1.add(toolLink);
+        grp1.add(toolSlt);
+        grp1.add(toolUpld);
+        
+        ToggleGroup grp2 = new ToggleGroup();
+        grp2.add(testSlt);
+        grp2.add(testUpld);
+        
+        
+        ToggleGroup grp3 = new ToggleGroup();
+        grp3.add(otherSlt);
+        grp3.add(otherUpld);
+        
     }
 
     private void initRequiredLabels() {
@@ -148,8 +203,8 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
         versionLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.version()));
         archLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.architecture()));
         multiLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.isMultiThreaded()));
-        upldTestLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.upldTestData()));
         cmdLineLbl.setHTML(buildRequiredFieldLabel(I18N.DISPLAY.cmdLineRun()));
+        testLbl.setHTML(buildRequiredFieldLabel((I18N.DISPLAY.upldTestData())));
     }
 
     private void initValidators() {
@@ -163,19 +218,59 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
     }
 
     @UiHandler("toolLink")
-    void onLinkSelect(final ChangeEvent unused) {
+    void onBinLinkSelect(final ValueChangeEvent<Boolean> unused) {
         if (presenter != null) {
-            presenter.onToolByUpload(false);
+            presenter.onToolSelectionModeChange();
         }
     }
 
     @UiHandler("toolUpld")
-    void onUploadSelect(final ChangeEvent unused) {
+    void onBinUploadSelect(final ValueChangeEvent<Boolean> unused) {
         if (presenter != null) {
-            presenter.onToolByUpload(true);
+            presenter.onToolSelectionModeChange();
         }
     }
-
+    
+    @UiHandler("toolSlt")
+    void onBinSelect(final ValueChangeEvent<Boolean> unused) {
+        if (presenter != null) {
+            presenter.onToolSelectionModeChange();
+        }
+    }
+    
+    @UiHandler("testSlt")
+    void onTestDataSelect(final ValueChangeEvent<Boolean> unused) {
+        if(presenter != null) {
+            presenter.onTestDataSelectionModeChange();
+        }
+    
+    }
+    
+    @UiHandler("testUpld")
+    void onTestDataUpload(final ValueChangeEvent<Boolean> unused) {
+        if(presenter != null) {
+            presenter.onTestDataSelectionModeChange();
+        }
+        
+    }
+    
+    @UiHandler("otherUpld")
+    void onOtherDataUpload(final ValueChangeEvent<Boolean> unused) {
+        if(presenter != null) {
+            presenter.onOtherDataSeelctionModeChange();
+        }
+        
+    }
+    
+    @UiHandler("otherSlt")
+    void onOtherDataSelect(final ValueChangeEvent<Boolean> unused) {
+        if(presenter != null) {
+            presenter.onOtherDataSeelctionModeChange();
+        }
+        
+    }
+    
+    
     @Override
     public Uploader getOtherDataUploader() {
         return otherDataUpld;
@@ -223,12 +318,30 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
     }
 
     @Override
-    public void setToolByUpload(final boolean byUpload) {
-        toolUpld.setValue(byUpload);
-        binUpld.setVisible(byUpload);
-        binUpld.setEnabled(byUpload);
-        binLink.setVisible(!byUpload);
-        binLink.setEnabled(!byUpload);
+    public void setToolSelectionMode() {
+        if(toolLink.getValue()) {
+            binOptions.setActiveWidget(binOptions.getWidget(1));
+            presenter.setToolMode(SELECTION_MODE.LINK);
+            binUpld.setAllowBlank(true);
+            binSelect.setRequired(false);
+            binLink.setAllowBlank(false);
+        } 
+        
+        if(toolUpld.getValue()) {
+            binOptions.setActiveWidget(binOptions.getWidget(0));
+            presenter.setToolMode(SELECTION_MODE.UPLOAD);
+            binUpld.setAllowBlank(false);
+            binSelect.setRequired(false);
+            binLink.setAllowBlank(true); 
+        } 
+        
+        if (toolSlt.getValue()) {
+            binOptions.setActiveWidget(binOptions.getWidget(2));
+            presenter.setToolMode(SELECTION_MODE.SELECT);
+            binUpld.setAllowBlank(true);
+            binSelect.setRequired(true);
+            binLink.setAllowBlank(true);
+        }
     }
 
     @Override
@@ -279,6 +392,56 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
     @Override
     public IsField<A> getArchitectureField() {
         return archCbo;
+    }
+    
+    @Override
+    public FileSelectorField getBinSelectField() {
+        return binSelect;
+    }
+    
+    @Override
+    public FileSelectorField getTestDataSelectField() {
+        return testDataSelect; 
+    }
+    
+    @Override
+    public FileSelectorField getOtherDataSelectField() {
+        return otherDataSelect; 
+    }
+    
+    @Override
+    public void setTestDataSelectMode() {
+        if(testUpld.getValue()) {
+            testDataOptions.setActiveWidget(testDataOptions.getWidget(0));
+            presenter.setTestDataMode(SELECTION_MODE.UPLOAD);
+            testDataUpld.setAllowBlank(false);
+            testDataSelect.setRequired(false);
+        } 
+        
+        if (testSlt.getValue()) {
+            testDataOptions.setActiveWidget(testDataOptions.getWidget(1));
+            presenter.setTestDataMode(SELECTION_MODE.SELECT);
+            testDataUpld.setAllowBlank(true);
+            testDataSelect.setRequired(true);
+        } 
+        
+    }
+
+    @Override
+    public void setOtherDataSelectMode() {
+       if(otherUpld.getValue()) {
+           otherDataOptions.setActiveWidget(testDataOptions.getWidget(0));
+           presenter.setOtherDataMode(SELECTION_MODE.UPLOAD);
+           otherDataUpld.setAllowBlank(false);
+           otherDataSelect.setRequired(false);
+       } 
+       
+       if (otherSlt.getValue()) {
+           otherDataOptions.setActiveWidget(testDataOptions.getWidget(1));
+           presenter.setOtherDataMode(SELECTION_MODE.SELECT);
+           otherDataUpld.setAllowBlank(true);
+           otherDataSelect.setRequired(true);
+       }
     }
 
 }
