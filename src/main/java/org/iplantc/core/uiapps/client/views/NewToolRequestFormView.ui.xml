@@ -65,7 +65,7 @@
 				</con:child>
 				<con:child layoutData="{layoutData}">
 					<con:CardLayoutContainer ui:field="binOptions">
-						<ipc:UploadForm ui:field="binUpld" allowBlank="false"
+						<ipc:UploadForm ui:field="binUpld" allowBlank="true"
 							visible="true" enabled="true" />
 						<form:FieldLabel text="" labelSeparator=""
 							labelAlign="TOP">
@@ -75,7 +75,7 @@
 							</form:widget>
 						</form:FieldLabel>
 						<dr:FileSelectorField ui:field="binSelect"
-							visible="true" enabled="true" required="true"></dr:FileSelectorField>
+							visible="true" enabled="true" required="false"></dr:FileSelectorField>
 					</con:CardLayoutContainer>
 				</con:child>
 
@@ -139,7 +139,7 @@
 					<con:CardLayoutContainer ui:field="testDataOptions">
 						<ipc:UploadForm ui:field="testDataUpld" allowBlank="false" />
 						<dr:FileSelectorField ui:field="testDataSelect"
-							visible="true" enabled="true" required="true"></dr:FileSelectorField>
+							visible="true" enabled="true" required="false"></dr:FileSelectorField>
 					</con:CardLayoutContainer>
 				</con:child>
 				<con:child layoutData="{layoutData}">

@@ -70,22 +70,22 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
 
     @UiField
     Radio toolUpld;
-    
+
     @UiField
     Radio toolSlt;
 
     @UiField
     Radio testUpld;
-    
+
     @UiField
     Radio testSlt;
-    
+
     @UiField
     Radio otherUpld;
-    
+
     @UiField
     Radio otherSlt;
-    
+
     @UiField
     FieldLabel docUrlLbl;
 
@@ -139,31 +139,31 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
 
     @UiField
     UploadForm otherDataUpld;
-    
+
     @UiField
     FileSelectorField binSelect;
-    
+
     @UiField
     FileSelectorField testDataSelect;
 
     @UiField
     FileSelectorField otherDataSelect;
-    
+
     @UiField
     FieldLabel testLbl;
-    
+
     @UiField
     FieldLabel otherLbl;
-    
+
     @UiField
     CardLayoutContainer binOptions;
-    
+
     @UiField
     CardLayoutContainer testDataOptions;
-    
+
     @UiField
     CardLayoutContainer otherDataOptions;
-    
+
     private final AutoProgressMessageBox submissionProgressBox;
 
     private Presenter presenter;
@@ -178,21 +178,21 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
         container.setAdjustForScroll(true);
         initValidators();
         initRequiredLabels();
-       
+
         ToggleGroup grp1 = new ToggleGroup();
         grp1.add(toolLink);
         grp1.add(toolSlt);
         grp1.add(toolUpld);
-        
+
         ToggleGroup grp2 = new ToggleGroup();
         grp2.add(testSlt);
         grp2.add(testUpld);
-        
-        
+
+
         ToggleGroup grp3 = new ToggleGroup();
         grp3.add(otherSlt);
         grp3.add(otherUpld);
-        
+
     }
 
     private void initRequiredLabels() {
@@ -230,47 +230,47 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
             presenter.onToolSelectionModeChange();
         }
     }
-    
+
     @UiHandler("toolSlt")
     void onBinSelect(final ValueChangeEvent<Boolean> unused) {
         if (presenter != null) {
             presenter.onToolSelectionModeChange();
         }
     }
-    
+
     @UiHandler("testSlt")
     void onTestDataSelect(final ValueChangeEvent<Boolean> unused) {
         if(presenter != null) {
             presenter.onTestDataSelectionModeChange();
         }
-    
+
     }
-    
+
     @UiHandler("testUpld")
     void onTestDataUpload(final ValueChangeEvent<Boolean> unused) {
         if(presenter != null) {
             presenter.onTestDataSelectionModeChange();
         }
-        
+
     }
-    
+
     @UiHandler("otherUpld")
     void onOtherDataUpload(final ValueChangeEvent<Boolean> unused) {
         if(presenter != null) {
             presenter.onOtherDataSeelctionModeChange();
         }
-        
+
     }
-    
+
     @UiHandler("otherSlt")
     void onOtherDataSelect(final ValueChangeEvent<Boolean> unused) {
         if(presenter != null) {
             presenter.onOtherDataSeelctionModeChange();
         }
-        
+
     }
-    
-    
+
+
     @Override
     public Uploader getOtherDataUploader() {
         return otherDataUpld;
@@ -325,16 +325,16 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
             binUpld.setAllowBlank(true);
             binSelect.setRequired(false);
             binLink.setAllowBlank(false);
-        } 
-        
+        }
+
         if(toolUpld.getValue()) {
             binOptions.setActiveWidget(binOptions.getWidget(0));
             presenter.setToolMode(SELECTION_MODE.UPLOAD);
             binUpld.setAllowBlank(false);
             binSelect.setRequired(false);
-            binLink.setAllowBlank(true); 
-        } 
-        
+            binLink.setAllowBlank(true);
+        }
+
         if (toolSlt.getValue()) {
             binOptions.setActiveWidget(binOptions.getWidget(2));
             presenter.setToolMode(SELECTION_MODE.SELECT);
@@ -393,22 +393,22 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
     public IsField<A> getArchitectureField() {
         return archCbo;
     }
-    
+
     @Override
     public FileSelectorField getBinSelectField() {
         return binSelect;
     }
-    
+
     @Override
     public FileSelectorField getTestDataSelectField() {
-        return testDataSelect; 
+        return testDataSelect;
     }
-    
+
     @Override
     public FileSelectorField getOtherDataSelectField() {
-        return otherDataSelect; 
+        return otherDataSelect;
     }
-    
+
     @Override
     public void setTestDataSelectMode() {
         if(testUpld.getValue()) {
@@ -416,28 +416,28 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
             presenter.setTestDataMode(SELECTION_MODE.UPLOAD);
             testDataUpld.setAllowBlank(false);
             testDataSelect.setRequired(false);
-        } 
-        
+        }
+
         if (testSlt.getValue()) {
             testDataOptions.setActiveWidget(testDataOptions.getWidget(1));
             presenter.setTestDataMode(SELECTION_MODE.SELECT);
             testDataUpld.setAllowBlank(true);
             testDataSelect.setRequired(true);
-        } 
-        
+        }
+
     }
 
     @Override
     public void setOtherDataSelectMode() {
        if(otherUpld.getValue()) {
-           otherDataOptions.setActiveWidget(testDataOptions.getWidget(0));
+           otherDataOptions.setActiveWidget(otherDataOptions.getWidget(0));
            presenter.setOtherDataMode(SELECTION_MODE.UPLOAD);
            otherDataUpld.setAllowBlank(false);
            otherDataSelect.setRequired(false);
-       } 
-       
+       }
+
        if (otherSlt.getValue()) {
-           otherDataOptions.setActiveWidget(testDataOptions.getWidget(1));
+           otherDataOptions.setActiveWidget(otherDataOptions.getWidget(1));
            presenter.setOtherDataMode(SELECTION_MODE.SELECT);
            otherDataUpld.setAllowBlank(true);
            otherDataSelect.setRequired(true);
