@@ -215,6 +215,13 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
         binUpld.addValidator(new NameValidator3());
         testDataUpld.addValidator(new NameValidator3());
         otherDataUpld.addValidator(new NameValidator3());
+        otherDataUpld.setAllowBlank(true);
+        otherDataSelect.setRequired(false);
+        binSelect.setRequired(false);
+        binLink.setAllowBlank(true);
+        binUpld.setAllowBlank(false);   
+        testDataUpld.setAllowBlank(false);
+        testDataSelect.setRequired(false);
     }
 
     @UiHandler("toolLink")
@@ -325,17 +332,13 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
             binUpld.setAllowBlank(true);
             binSelect.setRequired(false);
             binLink.setAllowBlank(false);
-        }
-
-        if(toolUpld.getValue()) {
+        } else if(toolUpld.getValue()) {
             binOptions.setActiveWidget(binOptions.getWidget(0));
             presenter.setToolMode(SELECTION_MODE.UPLOAD);
             binUpld.setAllowBlank(false);
             binSelect.setRequired(false);
             binLink.setAllowBlank(true);
-        }
-
-        if (toolSlt.getValue()) {
+        } else if (toolSlt.getValue()) {
             binOptions.setActiveWidget(binOptions.getWidget(2));
             presenter.setToolMode(SELECTION_MODE.SELECT);
             binUpld.setAllowBlank(true);
@@ -416,9 +419,7 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
             presenter.setTestDataMode(SELECTION_MODE.UPLOAD);
             testDataUpld.setAllowBlank(false);
             testDataSelect.setRequired(false);
-        }
-
-        if (testSlt.getValue()) {
+        } else if (testSlt.getValue()) {
             testDataOptions.setActiveWidget(testDataOptions.getWidget(1));
             presenter.setTestDataMode(SELECTION_MODE.SELECT);
             testDataUpld.setAllowBlank(true);
@@ -432,15 +433,9 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
        if(otherUpld.getValue()) {
            otherDataOptions.setActiveWidget(otherDataOptions.getWidget(0));
            presenter.setOtherDataMode(SELECTION_MODE.UPLOAD);
-           otherDataUpld.setAllowBlank(false);
-           otherDataSelect.setRequired(false);
-       }
-
-       if (otherSlt.getValue()) {
+       } else if (otherSlt.getValue()) {
            otherDataOptions.setActiveWidget(otherDataOptions.getWidget(1));
            presenter.setOtherDataMode(SELECTION_MODE.SELECT);
-           otherDataUpld.setAllowBlank(true);
-           otherDataSelect.setRequired(true);
        }
     }
 
