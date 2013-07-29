@@ -56,7 +56,7 @@
 								<form:Radio debugId="idRdoTooLink" ui:field="toolLink"
 									name="binRadioGroup" boxLabel="{strings.link}" value="false" />
 								<form:Radio debugId="idRdoToolUpld" ui:field="toolUpld"
-									name="binRadioGroup" boxLabel="{strings.upload}" value="true" />
+									name="binRadioGroup" boxLabel="{strings.uploadNew}" value="true" />
 								<form:Radio debugId="idRdoToolSlt" ui:field="toolSlt"
 									name="binRadioGroup" boxLabel="{strings.selectExisiting}" value="false" />
 							</g:HorizontalPanel>
@@ -128,7 +128,7 @@
 						<form:widget>
 							<g:HorizontalPanel spacing="3">
 								<form:Radio debugId="idRdoTestUpld" ui:field="testUpld"
-									name="testRadioGroup" boxLabel="{strings.upload}" value="true" />
+									name="testRadioGroup" boxLabel="{strings.uploadNew}" value="true" />
 								<form:Radio debugId="idRdoTestSlt" ui:field="testSlt"
 									name="testRadioGroup" boxLabel="{strings.selectExisiting}" value="false" />
 							</g:HorizontalPanel>
@@ -156,7 +156,7 @@
 						<form:widget>
 							<g:HorizontalPanel spacing="3">
 								<form:Radio debugId="idRdoOtherUpld" ui:field="otherUpld"
-									name="otherRadioGroup" boxLabel="{strings.upload}" value="true" />
+									name="otherRadioGroup" boxLabel="{strings.uploadNew}" value="true" />
 								<form:Radio debugId="idRdootherSlt" ui:field="otherSlt"
 									name="otherRadioGroup" boxLabel="{strings.selectExisiting}" value="false" />
 							</g:HorizontalPanel>
