@@ -58,7 +58,7 @@
 								<form:Radio debugId="idRdoToolUpld" ui:field="toolUpld"
 									name="binRadioGroup" boxLabel="{strings.uploadNew}" value="true" />
 								<form:Radio debugId="idRdoToolSlt" ui:field="toolSlt"
-									name="binRadioGroup" boxLabel="{strings.selectExisiting}" value="false" />
+									name="binRadioGroup" boxLabel="{strings.selectExsisting}" value="false" />
 							</g:HorizontalPanel>
 						</form:widget>
 					</form:FieldLabel>
@@ -130,7 +130,7 @@
 								<form:Radio debugId="idRdoTestUpld" ui:field="testUpld"
 									name="testRadioGroup" boxLabel="{strings.uploadNew}" value="true" />
 								<form:Radio debugId="idRdoTestSlt" ui:field="testSlt"
-									name="testRadioGroup" boxLabel="{strings.selectExisiting}" value="false" />
+									name="testRadioGroup" boxLabel="{strings.selectExsisting}" value="false" />
 							</g:HorizontalPanel>
 						</form:widget>
 					</form:FieldLabel>
@@ -158,7 +158,7 @@
 								<form:Radio debugId="idRdoOtherUpld" ui:field="otherUpld"
 									name="otherRadioGroup" boxLabel="{strings.uploadNew}" value="true" />
 								<form:Radio debugId="idRdootherSlt" ui:field="otherSlt"
-									name="otherRadioGroup" boxLabel="{strings.selectExisiting}" value="false" />
+									name="otherRadioGroup" boxLabel="{strings.selectExsisting}" value="false" />
 							</g:HorizontalPanel>
 						</form:widget>
 					</form:FieldLabel>
