@@ -1,5 +1,8 @@
 package org.iplantc.core.uiapps.client.views;
 
+import org.iplantc.core.uiapps.client.presenter.NewToolRequestFormPresenterImpl.SELECTION_MODE;
+import org.iplantc.core.uidiskresource.client.views.widgets.FileSelectorField;
+
 import com.google.gwt.user.client.ui.IsWidget;
 import com.sencha.gxt.widget.core.client.form.IsField;
 
@@ -24,10 +27,33 @@ public interface NewToolRequestFormView<A, Y> extends IsWidget {
          * The method to be called when the user decides whether or not to provide the tool binary
          * by uploading a file.
          * 
-         * @param byUpload If this is true, the file will be uploaded, otherwise the file will be
-         *            submitted by URL.
          */
-        void onToolByUpload(boolean byUpload);
+        void onToolSelectionModeChange();
+
+        /**
+         * Set whether or not user is uploading the bin
+         * 
+         * @param mode
+         */
+        void setToolMode(SELECTION_MODE mode);
+
+        /**
+         * Set whether or not user is uploading the test data
+         * 
+         * @param mode
+         */
+        void setTestDataMode(SELECTION_MODE mode);
+
+        /**
+         * Set whether or not user is uploading the bin other data
+         * 
+         * @param mode
+         */
+        void setOtherDataMode(SELECTION_MODE mode);
+
+        void onTestDataSelectionModeChange();
+
+        void onOtherDataSeelctionModeChange();
     }
 
     void setPresenter(Presenter p);
@@ -72,10 +98,8 @@ public interface NewToolRequestFormView<A, Y> extends IsWidget {
     /**
      * Tells the view whether or not to configure itself for uploading the tool binary.
      * 
-     * @param byUpload if true, the view will configure itself for uploading the binary, otherwise
-     *            it will configure itself for receiving a URL.
-     */
-    void setToolByUpload(boolean byUpload);
+     **/
+    void setToolSelectionMode();
 
     /**
      * @return the tool name field
@@ -126,5 +150,19 @@ public interface NewToolRequestFormView<A, Y> extends IsWidget {
      * @return the architecture field
      */
     IsField<A> getArchitectureField();
+
+    /**
+     * 
+     * @return the bin selection field
+     */
+    FileSelectorField getBinSelectField();
+
+    FileSelectorField getTestDataSelectField();
+
+    FileSelectorField getOtherDataSelectField();
+
+    void setTestDataSelectMode();
+
+    void setOtherDataSelectMode();
 
 }

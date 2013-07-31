@@ -24,6 +24,7 @@ import org.iplantc.core.uicommons.client.services.DiskResourceServiceFacade;
 import org.iplantc.core.uicommons.client.services.ToolRequestProvider;
 import org.iplantc.core.uicommons.client.util.DiskResourceUtil;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.Callback;
@@ -46,14 +47,21 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
 
     private NewToolRequestFormView<Architecture, YesNoMaybe> view;
     private Command callback;
-    private boolean toolByUpload;
+    private SELECTION_MODE toolSelectionMode;
+    private SELECTION_MODE testDataSelectionMode;
+    private SELECTION_MODE otherDataSelectionMode;
+    
+    public static enum SELECTION_MODE {
+        UPLOAD, LINK, SELECT;
+    }
     
     public NewToolRequestFormPresenterImpl(final NewToolRequestFormView<Architecture, YesNoMaybe> view, final Command callbackCmd) {
         this.view = view;
         this.callback = callbackCmd;
-        this.toolByUpload = true;
         view.setPresenter(this);
-        view.setToolByUpload(toolByUpload);
+        setToolMode(SELECTION_MODE.UPLOAD);
+        setTestDataMode(SELECTION_MODE.UPLOAD);
+        setOtherDataMode(SELECTION_MODE.UPLOAD);
     }
 
     /* (non-Javadoc)
@@ -84,14 +92,39 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
             view.indicateSubmissionFailure(I18N.ERROR.invalidToolRequest());
         }
     }
-
+    
+    @Override
+    public void setToolMode(SELECTION_MODE mode) {
+        toolSelectionMode = mode;
+    }
+    
+    
+    @Override
+    public void setTestDataMode(SELECTION_MODE mode) {
+       testDataSelectionMode = mode;
+    }
+    
+    @Override
+    public void setOtherDataMode(SELECTION_MODE mode) {
+        otherDataSelectionMode = mode;
+    }
+    
     /**
      * @see Presenter#onToolByUpload(boolean)
      */
     @Override
-    public void onToolByUpload(final boolean byUpload) {
-        toolByUpload = byUpload;
-        view.setToolByUpload(byUpload);
+    public void onToolSelectionModeChange() {
+        view.setToolSelectionMode();
+    }
+    
+    @Override
+    public void onTestDataSelectionModeChange() {
+        view.setTestDataSelectMode();
+    }
+    
+    @Override
+    public void onOtherDataSeelctionModeChange() {
+        view.setOtherDataSelectMode();
     }
 
     private final Command indicateSuccessCmd = new Command() {
@@ -106,6 +139,7 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
             @Override
             public void execute() {
                 final List<Uploader> uploaders = getUploadersToSubmit();
+                if(uploaders.size() > 0) {
                 UploadMux.startUploads(uploaders, new Callback<Void, Iterable<Uploader>>() {
                     @Override
                     public void onFailure(final Iterable<Uploader> failedUploaders) {
@@ -116,15 +150,25 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
                         submitRequest(uploaders, onSuccess);
                     }
                 });
+                } else {
+                    submitRequest(uploaders, onSuccess);
+                }
         }};
     }
 
     private void validateUploadsNew(final Iterable<Uploader> uploaders, final Command onValid) {
         final List<String> destFiles = Lists.newArrayList();
         for (Uploader uploader : uploaders) {
-            destFiles.add(makeDestinationPath(uploader.getValue()));
+            String value = uploader.getValue();
+            if(!Strings.isNullOrEmpty(value)) {
+                destFiles.add(makeDestinationPath(value));
+            }
         }
-        getDiskResourceExistMap(destFiles, checkExistenceCmd(uploaders, onValid));
+        if(destFiles.size() > 0) {
+            getDiskResourceExistMap(destFiles, checkExistenceCmd(uploaders, onValid));
+        } else {
+            onValid.execute();
+        }
     }
 
     private Continuation<DiskResourceExistMap> checkExistenceCmd(final Iterable<Uploader> uploaders, final Command onNoneExist) {
@@ -186,14 +230,20 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
         if (!valid) {
             return false;
         }
-        if (toolByUpload) {
+      
+        if (toolSelectionMode.equals(SELECTION_MODE.UPLOAD) || testDataSelectionMode.equals(SELECTION_MODE.UPLOAD) || otherDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
             valid = !areUploadsSame(view.getToolBinaryUploader(), view.getTestDataUploader()) && valid;
             valid = !areUploadsSame(view.getToolBinaryUploader(), view.getOtherDataUploader()) && valid;
+            valid = !areUploadsSame(view.getTestDataUploader(), view.getOtherDataUploader()) && valid;
         }
-        return !areUploadsSame(view.getTestDataUploader(), view.getOtherDataUploader()) && valid;
+        return valid;
     }
 
     private boolean areUploadsSame(final Uploader lhs, final Uploader rhs) {
+        if(Strings.isNullOrEmpty(lhs.getValue()) || Strings.isNullOrEmpty(rhs.getValue())) {
+            return false;
+        }
+        
         if (lhs.getValue().equals(rhs.getValue())) {
             lhs.markInvalid(I18N.ERROR.duplicateUpload());
             rhs.markInvalid(I18N.ERROR.duplicateUpload());
@@ -219,10 +269,12 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
         req.setName(view.getNameField().getValue());
         req.setDescription(view.getDescriptionField().getValue());
         req.setAttribution(view.getAttributionField().getValue());
-        if (toolByUpload) {
+        if (toolSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
             req.setSourceFile(makeDestinationPath(getToolBinaryName()));
-        } else {
+        } else if(toolSelectionMode.equals(SELECTION_MODE.LINK)) {
             req.setSourceURL(view.getSourceURLField().getValue());
+        } else if (toolSelectionMode.equals(SELECTION_MODE.SELECT)) {
+            req.setSourceFile(view.getBinSelectField().getValue().getId());
         }
         req.setDocURL(view.getDocURLField().getValue());
         req.setVersion(view.getVersionField().getValue());
@@ -230,11 +282,17 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
         if (view.getMultithreadedField().getValue() != YesNoMaybe.MAYBE) {
             req.setMultithreaded(view.getMultithreadedField().getValue());
         }
-        req.setTestDataFile(makeDestinationPath(getTestDataName()));
-        req.setInstructions(view.getInstructionsField().getValue());
-        if (!view.getOtherDataUploader().getValue().isEmpty()) {
-            req.setAdditionalDataFile(makeDestinationPath(getOtherDataName()));
+        if(testDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+            req.setTestDataFile(makeDestinationPath(getTestDataName()));
+        } else if(testDataSelectionMode.equals(SELECTION_MODE.SELECT)) {
+            req.setTestDataFile(view.getTestDataSelectField().getValue().getId());
         }
+        req.setInstructions(view.getInstructionsField().getValue());
+        if (otherDataSelectionMode.equals(SELECTION_MODE.UPLOAD) && !view.getOtherDataUploader().getValue().isEmpty()) {
+            req.setAdditionalDataFile(makeDestinationPath(getOtherDataName()));
+        } else if (otherDataSelectionMode.equals(SELECTION_MODE.SELECT) && !(view.getOtherDataSelectField().getValue() == null)) {
+            req.setAdditionalDataFile(view.getOtherDataSelectField().getValue().getId());
+        }    
         req.setAdditionaInfo(view.getAdditionalInfoField().getValue());
         return req;
     }
@@ -263,11 +321,13 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
 
     private List<Uploader> getUploadersToSubmit() {
         final List<Uploader> uploaders = Lists.newArrayList();
-        if (toolByUpload) {
+        if (toolSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
             uploaders.add(view.getToolBinaryUploader());
         }
-        uploaders.add(view.getTestDataUploader());
-        if (!view.getOtherDataUploader().getValue().isEmpty()) {
+        if(testDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+            uploaders.add(view.getTestDataUploader());
+        }
+        if (otherDataSelectionMode.equals(SELECTION_MODE.UPLOAD) && !view.getOtherDataUploader().getValue().isEmpty()) {
             uploaders.add(view.getOtherDataUploader());
         }
         return uploaders;

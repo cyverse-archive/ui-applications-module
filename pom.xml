@@ -76,6 +76,11 @@
 			<artifactId>ui-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iplantc.core</groupId>
+			<artifactId>ui-diskresource</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>ui-applications</finalName>

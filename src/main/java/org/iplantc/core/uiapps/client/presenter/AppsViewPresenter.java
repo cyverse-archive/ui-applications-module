@@ -639,8 +639,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void onAppRunClick() {
-        RunAppEvent event = new RunAppEvent(getSelectedApp());
-        EventBus.getInstance().fireEvent(event);
+        fireRunAppEvent(getSelectedApp());
     }
 
     @Override
@@ -651,7 +650,13 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void onAppNameSelected(final App app) {
-        EventBus.getInstance().fireEvent(new RunAppEvent(app));
+        fireRunAppEvent(app);
+    }
+
+    private void fireRunAppEvent(final App app) {
+        if (app!= null && !app.isDisabled()) {
+            EventBus.getInstance().fireEvent(new RunAppEvent(app));
+        }
     }
 
     @Override
