@@ -230,12 +230,37 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
         if (!valid) {
             return false;
         }
-      
-        if (toolSelectionMode.equals(SELECTION_MODE.UPLOAD) || testDataSelectionMode.equals(SELECTION_MODE.UPLOAD) || otherDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
-            valid = !areUploadsSame(view.getToolBinaryUploader(), view.getTestDataUploader()) && valid;
-            valid = !areUploadsSame(view.getToolBinaryUploader(), view.getOtherDataUploader()) && valid;
-            valid = !areUploadsSame(view.getTestDataUploader(), view.getOtherDataUploader()) && valid;
+        
+        if(toolSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+            if(testDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+                valid = !areUploadsSame(view.getToolBinaryUploader(), view.getTestDataUploader()) && valid;
+            }
+            
+            if(otherDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+                valid = !areUploadsSame(view.getToolBinaryUploader(), view.getOtherDataUploader()) && valid;
+            }
         }
+      
+        if(testDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+            if(toolSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+                valid = !areUploadsSame(view.getToolBinaryUploader(), view.getTestDataUploader()) && valid;
+            }
+            
+            if(otherDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+                valid = !areUploadsSame(view.getTestDataUploader(), view.getOtherDataUploader()) && valid;
+            }
+        }
+        
+        if(otherDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+            if(toolSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+                valid = !areUploadsSame(view.getToolBinaryUploader(), view.getOtherDataUploader()) && valid;
+            }
+            
+            if(testDataSelectionMode.equals(SELECTION_MODE.UPLOAD)) {
+                valid = !areUploadsSame(view.getTestDataUploader(), view.getOtherDataUploader()) && valid;
+            }
+        }
+        
         return valid;
     }
 
