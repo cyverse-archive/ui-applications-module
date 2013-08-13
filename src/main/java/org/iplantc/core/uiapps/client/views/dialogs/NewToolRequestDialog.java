@@ -16,7 +16,6 @@ import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
 
 import com.google.gwt.user.client.Command;
 import com.sencha.gxt.data.shared.LabelProvider;
-import com.sencha.gxt.widget.core.client.button.ToolButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
@@ -80,8 +79,6 @@ public class NewToolRequestDialog extends IPlantDialog {
         return chooser;
     }
 
-    private ToolButton tool_help;
-
     public NewToolRequestDialog() {
         setHeadingText(I18N.DISPLAY.requestNewTool());
         setPixelSize(480, 400);
@@ -89,8 +86,6 @@ public class NewToolRequestDialog extends IPlantDialog {
         setPredefinedButtons(PredefinedButton.OK, PredefinedButton.CANCEL);
         setHideOnButtonClick(false);
         setOkButtonText(I18N.DISPLAY.submit());
-        tool_help = new ToolButton(ToolButton.QUESTION);
-        getHeader().addTool(tool_help);
         final ComboBox<Architecture> archChooser = makeArchitectureChooser();
         final ComboBox<YesNoMaybe> multithreadChooser = makeMultithreadChooser();
         final NewToolRequestFormView<Architecture, YesNoMaybe> view = new NewToolRequestFormViewImpl<Architecture, YesNoMaybe>(archChooser, multithreadChooser);
