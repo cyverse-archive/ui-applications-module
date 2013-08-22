@@ -1,6 +1,7 @@
 package org.iplantc.core.uiapps.client.views;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.iplantc.core.resources.client.messages.I18N;
@@ -32,12 +33,20 @@ public class AppColumnModel extends ColumnModel<App> {
                 new IdentityValueProvider<App>(), 20);
 
         ColumnConfig<App, App> name = new ColumnConfig<App, App>(
-                new IdentityValueProvider<App>(), 180, I18N.DISPLAY.name());
+                new IdentityValueProvider<App>("name"), 180, I18N.DISPLAY.name()) {
+
+        };
         ColumnConfig<App, String> integrator = new ColumnConfig<App, String>(
                 props.integratorName(), 130, I18N.DISPLAY.integratedby());
         ColumnConfig<App, App> rating = new ColumnConfig<App, App>(new IdentityValueProvider<App>(),
                 105, "Rating"); //$NON-NLS-1$
 
+        name.setComparator(new Comparator<App>() {
+            @Override
+            public int compare(App arg0, App arg1) {
+                return arg0.getName().compareTo(arg1.getName());
+            }
+        });
         info.setSortable(false);
 
         info.setResizable(false);
