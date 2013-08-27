@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.core.uiapps.client.events.AppPublishedEvent;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
@@ -13,6 +14,7 @@ import org.iplantc.core.uiapps.client.presenter.proxy.PublicAppGroupProxy;
 import org.iplantc.core.uiapps.client.services.AppUserServiceFacade;
 import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView;
 import org.iplantc.core.uicommons.client.ErrorHandler;
+import org.iplantc.core.uicommons.client.events.EventBus;
 import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 
@@ -117,9 +119,7 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 				JsonUtil.getString(obj, "desc"), new AsyncCallback<String>() {
 					@Override
 					public void onFailure(Throwable caught) {
-						ErrorHandler.post(I18N.ERROR
-								.cantCreateConfluencePage(JsonUtil.getString(
-										obj, "name")), caught);
+						ErrorHandler.post(I18N.ERROR.cantCreateConfluencePage(JsonUtil.getString(obj, "name")), caught);
 						
 						//SS:uncomment this for testing purposes only...
 						//onSuccess("http://test.com/url");
@@ -127,19 +127,19 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 
 					@Override
 					public void onSuccess(final String url) {
-						obj.put("wiki_url", new JSONString(url));
-                appService.publishToWorld(obj,
-								new AsyncCallback<String>() {
-									@Override
-									public void onSuccess(String result) {
-										callback.onSuccess(url);
-									}
+					    obj.put("wiki_url", new JSONString(url));
+					    appService.publishToWorld(obj, new AsyncCallback<String>() {
+					        @Override
+					        public void onSuccess(String result) {
+					            EventBus.getInstance().fireEvent(new AppPublishedEvent(view.getSelectedApp()));
+					            callback.onSuccess(url);
+					        }
 
-									@Override
-									public void onFailure(Throwable caught) {
-										callback.onFailure(caught);
-									}
-								});
+					        @Override
+					        public void onFailure(Throwable caught) {
+					            callback.onFailure(caught);
+					        }
+					    });
 					}
 				});
 	}
