@@ -59,7 +59,7 @@
 					<menu:MenuItem ui:field="copy" debugId="idCopyBtn"
 				text="{strings.copy}" icon="{icons.copy}" />
 				<menu:MenuItem ui:field="editApp" debugId="idEditAppBtn"
-				text="{strings.edit}" icon="{icons.edit}" />
+				text="{strings.editApp}" icon="{icons.edit}" />
 				<menu:MenuItem ui:field="delete" debugId="idDeleteBtn"
 				text="{strings.delete}" icon="{icons.delete}" />
 					</menu:Menu>
