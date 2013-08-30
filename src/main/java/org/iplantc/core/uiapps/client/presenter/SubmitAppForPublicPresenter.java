@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
+import com.sencha.gxt.widget.core.client.box.ProgressMessageBox;
 
 public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Presenter {
 
@@ -114,11 +115,14 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 	}
 
 	private void createDocumentationPage(final JSONObject obj) {
+	    final ProgressMessageBox pmb = new ProgressMessageBox(I18N.DISPLAY.submitForPublicUse(), I18N.DISPLAY.submitRequest());
+	    pmb.show();
 		ConfluenceServiceFacade.getInstance().createDocumentationPage(
 				JsonUtil.getString(obj, "name"),
 				JsonUtil.getString(obj, "desc"), new AsyncCallback<String>() {
 					@Override
 					public void onFailure(Throwable caught) {
+					    pmb.hide();
 						ErrorHandler.post(I18N.ERROR.cantCreateConfluencePage(JsonUtil.getString(obj, "name")), caught);
 						
 						//SS:uncomment this for testing purposes only...
@@ -131,12 +135,14 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 					    appService.publishToWorld(obj, new AsyncCallback<String>() {
 					        @Override
 					        public void onSuccess(String result) {
+					            pmb.hide();
 					            EventBus.getInstance().fireEvent(new AppPublishedEvent(view.getSelectedApp()));
 					            callback.onSuccess(url);
 					        }
 
 					        @Override
 					        public void onFailure(Throwable caught) {
+					            pmb.hide();
 					            callback.onFailure(caught);
 					        }
 					    });
