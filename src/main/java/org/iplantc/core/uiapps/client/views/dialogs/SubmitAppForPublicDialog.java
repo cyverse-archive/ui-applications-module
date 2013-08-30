@@ -11,9 +11,11 @@ import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.views.SubmitAppForPublicUseView.Presenter;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uicommons.client.info.IplantAnnouncer;
+import org.iplantc.core.uicommons.client.info.SuccessAnnouncementConfig;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
-import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
@@ -30,8 +32,8 @@ public class SubmitAppForPublicDialog extends IPlantDialog {
         public void onSuccess(String url) {
             hide();
 
-            new IplantInfoBox(I18N.DISPLAY.makePublicSuccessTitle(),
-                    I18N.DISPLAY.makePublicSuccessMessage(url)).show();
+            IplantAnnouncer.getInstance().schedule(
+                    new SuccessAnnouncementConfig(SafeHtmlUtils.fromTrustedString(I18N.DISPLAY.makePublicSuccessMessage(url))));
 
             // Create and fire event
             AppGroupCountUpdateEvent event = new AppGroupCountUpdateEvent(false,
