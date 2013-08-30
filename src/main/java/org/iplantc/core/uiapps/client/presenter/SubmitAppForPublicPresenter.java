@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
+import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
 import com.sencha.gxt.widget.core.client.box.ProgressMessageBox;
 
 public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Presenter {
@@ -115,7 +116,11 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 	}
 
 	private void createDocumentationPage(final JSONObject obj) {
-	    final ProgressMessageBox pmb = new ProgressMessageBox(I18N.DISPLAY.submitForPublicUse(), I18N.DISPLAY.submitRequest());
+	    final AutoProgressMessageBox pmb = new AutoProgressMessageBox(I18N.DISPLAY.submitForPublicUse(), I18N.DISPLAY.submitRequest());
+	    pmb.setProgressText(I18N.DISPLAY.submitting());
+	    pmb.setClosable(false);
+	    pmb.getProgressBar().setInterval(100);
+	    pmb.auto();
 	    pmb.show();
 		ConfluenceServiceFacade.getInstance().createDocumentationPage(
 				JsonUtil.getString(obj, "name"),
