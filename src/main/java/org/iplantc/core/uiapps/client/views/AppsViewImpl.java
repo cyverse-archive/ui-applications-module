@@ -278,7 +278,12 @@ public class AppsViewImpl implements AppsView {
     @Override
     public void setApps(final List<App> apps) {
         listStore.clear();
-        listStore.addAll(apps);
+
+        for (App app : apps) {
+            if (listStore.findModel(app) == null) {
+                listStore.add(app);
+            }
+        }
     }
 
 
