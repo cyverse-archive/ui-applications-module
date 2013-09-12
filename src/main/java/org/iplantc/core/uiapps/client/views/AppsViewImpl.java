@@ -1,5 +1,6 @@
 package org.iplantc.core.uiapps.client.views;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.iplantc.core.resources.client.IplantResources;
@@ -18,6 +19,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
+import com.sencha.gxt.data.shared.SortDir;
+import com.sencha.gxt.data.shared.Store.StoreSortInfo;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
@@ -97,6 +100,9 @@ public class AppsViewImpl implements AppsView {
         this.tree = tree;
         this.treeStore = tree.getStore();
         this.widget = uiBinder.createAndBindUi(this);
+
+        initTreeStoreSorter();
+
         grid.addCellClickHandler(new CellClickHandler() {
 
             @Override
@@ -161,6 +167,24 @@ public class AppsViewImpl implements AppsView {
         style.setLeafIcon(IplantResources.RESOURCES.subCategory());
     }
 
+    private void initTreeStoreSorter() {
+
+        Comparator<AppGroup> comparator = new Comparator<AppGroup>() {
+
+            @Override
+            public int compare(AppGroup group1, AppGroup group2) {
+                if (treeStore.getRootItems().contains(group1)
+                        || treeStore.getRootItems().contains(group2)) {
+                    // Do not sort Root groups, since we want to keep the service's root order.
+                    return 0;
+                }
+
+                return group1.getName().compareToIgnoreCase(group2.getName());
+            }
+        };
+
+        treeStore.addSortInfo(new StoreSortInfo<AppGroup>(comparator, SortDir.ASC));
+    }
 
     @Override
     public Widget asWidget() {
@@ -254,7 +278,12 @@ public class AppsViewImpl implements AppsView {
     @Override
     public void setApps(final List<App> apps) {
         listStore.clear();
-        listStore.addAll(apps);
+
+        for (App app : apps) {
+            if (listStore.findModel(app) == null) {
+                listStore.add(app);
+            }
+        }
     }
 
 
