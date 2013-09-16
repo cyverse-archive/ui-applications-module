@@ -265,7 +265,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
             @Override
             public void onFailure(Throwable caught) {
-                ErrorHandler.post(I18N.ERROR.retrieveFolderInfoFailed(), caught);
+                ErrorHandler.post(I18N.ERROR.retrieveAppListingFailed(), caught);
                 view.unMaskCenterPanel();
             }
         });
