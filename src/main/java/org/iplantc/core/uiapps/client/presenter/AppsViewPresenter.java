@@ -602,7 +602,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
         @Override
         public Builder hideToolbarButtonEdit() {
-            presenter.getToolbar().setEditButtonVisible(false);
+            presenter.getToolbar().setEditMenuVisible(false);
             return this;
         }
 
