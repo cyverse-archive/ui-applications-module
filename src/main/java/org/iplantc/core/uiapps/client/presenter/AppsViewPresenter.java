@@ -121,9 +121,13 @@ public class AppsViewPresenter implements AppsView.Presenter {
             @Override
             public void onLoad(AppSearchResultLoadEvent event) {
                 if (event.getSource() == getAppSearchRpcProxy()) {
+                    List<App> results = event.getResults();
+                    int total = results == null ? 0 : results.size();
+
                     view.selectAppGroup(null);
-                    view.setCenterPanelHeading(I18N.DISPLAY.searchAppResultsHeader(event.getSearchText()));
-                    view.setApps(event.getResults());
+                    view.setCenterPanelHeading(I18N.DISPLAY.searchAppResultsHeader(
+                            event.getSearchText(), total));
+                    view.setApps(results);
                     view.unMaskCenterPanel();
                 }
             }
