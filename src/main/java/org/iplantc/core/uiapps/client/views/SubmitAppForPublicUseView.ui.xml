@@ -34,6 +34,9 @@
 	</ui:with>
 	<con:VerticalLayoutContainer ui:field="container">
 		<con:child layoutData="{layoutData}">
+			<con:HtmlLayoutContainer ui:field="intro"></con:HtmlLayoutContainer>
+		</con:child>
+		<con:child layoutData="{layoutData}">
 			<form:FieldLabel ui:field="appfield" labelAlign="TOP"
 				toolTip="{strings.publicNameNote}">
 				<form:widget>

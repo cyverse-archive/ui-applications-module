@@ -39,6 +39,7 @@ import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.button.ToolButton;
+import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.CompleteEditEvent;
 import com.sencha.gxt.widget.core.client.event.CompleteEditEvent.CompleteEditHandler;
@@ -114,6 +115,9 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 
 	@UiField
 	FieldLabel descfield;
+	
+	@UiField
+	HtmlLayoutContainer intro;
 
 	private GridEditing<AppRefLink> editing;
 
@@ -123,6 +127,8 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 	interface SubmitAppForPublicUseViewUiBinder extends
 			UiBinder<Widget, SubmitAppForPublicUseViewImpl> {
 	}
+	
+	
 
     @Inject
     public SubmitAppForPublicUseViewImpl() {
@@ -134,6 +140,11 @@ public class SubmitAppForPublicUseViewImpl implements SubmitAppForPublicUseView 
 
 		addhelp();
 	}
+    
+    @UiFactory
+    HtmlLayoutContainer buildIntroContainer() {
+        return new HtmlLayoutContainer(I18N.DISPLAY.submitForPublicUseIntro());
+    }
 
 	@Override
 	public void loadReferences(List<AppRefLink> refs) {
