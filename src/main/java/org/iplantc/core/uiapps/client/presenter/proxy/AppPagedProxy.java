@@ -65,7 +65,7 @@ class AppPagedProxy extends RpcProxy<PagingLoadConfig, PagingLoadResult<App>> {
 
                     @Override
                     public void onFailure(Throwable caught) {
-                        ErrorHandler.post(I18N.ERROR.retrieveFolderInfoFailed(), caught);
+                        ErrorHandler.post(I18N.ERROR.retrieveAppListingFailed(), caught);
                         callback.onFailure(caught);
                     }
                 });

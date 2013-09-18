@@ -71,7 +71,8 @@ public class AppHyperlinkCell extends AbstractCell<App> {
         }
         favoriteCell.render(context, value, sb);
         sb.appendHtmlConstant("&nbsp;");
-        SafeHtml safeHtmlName = SafeHtmlUtils.fromString(value.getName());
+        SafeHtml safeHtmlName = SafeHtmlUtils
+                .fromTrustedString(view.highlightSearchText(value.getName()));
         if (!value.isDisabled()) {
             sb.append(templates.cell(resources.css().appName(), safeHtmlName, I18N.DISPLAY.run(),
                     ELEMENT_NAME));

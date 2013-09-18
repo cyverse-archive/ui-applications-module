@@ -11,7 +11,10 @@ import org.iplantc.core.uiapps.client.views.cells.AppHyperlinkCell;
 import org.iplantc.core.uiapps.client.views.cells.AppInfoCell;
 import org.iplantc.core.uiapps.client.views.cells.AppRatingCell;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
@@ -25,7 +28,7 @@ public class AppColumnModel extends ColumnModel<App> {
 
     }
 
-    public static List<ColumnConfig<App, ?>> createColumnConfigList(AppsView view) {
+    public static List<ColumnConfig<App, ?>> createColumnConfigList(final AppsView view) {
         AppProperties props = GWT.create(AppProperties.class);
         List<ColumnConfig<App, ?>> list = new ArrayList<ColumnConfig<App, ?>>();
 
@@ -58,6 +61,14 @@ public class AppColumnModel extends ColumnModel<App> {
 
         info.setCell(new AppInfoCell(view));
         name.setCell(new AppHyperlinkCell(view));
+        integrator.setCell(new AbstractCell<String>() {
+
+            @Override
+            public void render(Context context, String value, SafeHtmlBuilder sb) {
+                sb.append(SafeHtmlUtils.fromTrustedString(view.highlightSearchText(value)));
+            }
+
+        });
         rating.setCell(new AppRatingCell());
 
         rating.setAlignment(HasHorizontalAlignment.ALIGN_CENTER);

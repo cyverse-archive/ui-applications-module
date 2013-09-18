@@ -436,4 +436,9 @@ public class AppsViewImpl implements AppsView {
         int index = gridView.findRowIndex(row);
         return listStore.get(index);
     }
+
+    @Override
+    public String highlightSearchText(String text) {
+        return presenter.highlightSearchText(text);
+    }
 }

@@ -2,8 +2,8 @@ package org.iplantc.core.uiapps.client.views;
 
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.presenter.NewToolRequestFormPresenterImpl.SELECTION_MODE;
-import org.iplantc.core.uicommons.client.validators.LengthRangeValidator;
 import org.iplantc.core.uicommons.client.validators.DiskResourceNameValidator;
+import org.iplantc.core.uicommons.client.validators.LengthRangeValidator;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
 import org.iplantc.core.uidiskresource.client.views.widgets.FileSelectorField;
@@ -11,6 +11,7 @@ import org.iplantc.core.uidiskresource.client.views.widgets.FileSelectorField;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
@@ -21,6 +22,7 @@ import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
 import com.sencha.gxt.widget.core.client.container.CardLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
@@ -164,6 +166,9 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
     @UiField
     CardLayoutContainer otherDataOptions;
 
+    @UiField
+    HtmlLayoutContainer intro;
+    
     private final AutoProgressMessageBox submissionProgressBox;
 
     private Presenter presenter;
@@ -193,6 +198,11 @@ public final class NewToolRequestFormViewImpl<A, Y> extends Composite implements
         grp3.add(otherSlt);
         grp3.add(otherUpld);
 
+    }
+    
+    @UiFactory
+    HtmlLayoutContainer buildIntroContainer() {
+        return new HtmlLayoutContainer(I18N.DISPLAY.toolRequestFormIntro());
     }
 
     private void initRequiredLabels() {

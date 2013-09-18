@@ -37,12 +37,15 @@ import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.HasId;
 import org.iplantc.core.uicommons.client.models.UserInfo;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.inject.Inject;
@@ -90,6 +93,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
     private final AppServiceFacade appService;
     private final AppUserServiceFacade appUserService;
     private final UserInfo userInfo;
+    private RegExp searchRegex;
 
     @Inject
     public AppsViewPresenter(final AppsView view, final AppGroupProxy proxy, AppsViewToolbar toolbar,
@@ -121,9 +125,15 @@ public class AppsViewPresenter implements AppsView.Presenter {
             @Override
             public void onLoad(AppSearchResultLoadEvent event) {
                 if (event.getSource() == getAppSearchRpcProxy()) {
+                    String searchText = event.getSearchText();
+                    updateSearchRegex(searchText);
+
+                    List<App> results = event.getResults();
+                    int total = results == null ? 0 : results.size();
+
                     view.selectAppGroup(null);
-                    view.setCenterPanelHeading(I18N.DISPLAY.searchAppResultsHeader(event.getSearchText()));
-                    view.setApps(event.getResults());
+                    view.setCenterPanelHeading(I18N.DISPLAY.searchAppResultsHeader(searchText, total));
+                    view.setApps(results);
                     view.unMaskCenterPanel();
                 }
             }
@@ -195,10 +205,11 @@ public class AppsViewPresenter implements AppsView.Presenter {
             toolbar.setCopyButtonEnabled(false);
             toolbar.setAppRunButtonEnabled(false);
             toolbar.setEditMenuEnabled(false);
-
-            view.setCenterPanelHeading(ag.getName());
-            fetchApps(ag);
         }
+
+        searchRegex = null;
+        view.setCenterPanelHeading(ag.getName());
+        fetchApps(ag);
     }
 
     @Override
@@ -265,7 +276,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
             @Override
             public void onFailure(Throwable caught) {
-                ErrorHandler.post(I18N.ERROR.retrieveFolderInfoFailed(), caught);
+                ErrorHandler.post(I18N.ERROR.retrieveAppListingFailed(), caught);
                 view.unMaskCenterPanel();
             }
         });
@@ -351,7 +362,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
         appInfoWin.setResizable(false);
         appInfoWin.setHeadingText(app.getName());
         appInfoWin.setPixelSize(450, 300);
-        appInfoWin.add(new AppInfoView(app));
+        appInfoWin.add(new AppInfoView(app, this));
         appInfoWin.getButtonBar().clear();
         appInfoWin.show();
     }
@@ -602,7 +613,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
         @Override
         public Builder hideToolbarButtonEdit() {
-            presenter.getToolbar().setEditButtonVisible(false);
+            presenter.getToolbar().setEditMenuVisible(false);
             return this;
         }
 
@@ -667,5 +678,28 @@ public class AppsViewPresenter implements AppsView.Presenter {
     @Override
     public App getAppFromElement(Element el) {
         return view.getAppFromElement(el);
+    }
+
+    @Override
+    public String highlightSearchText(String text) {
+        if (!Strings.isNullOrEmpty(text)) {
+            text = SafeHtmlUtils.fromString(text).asString();
+
+            if (searchRegex != null) {
+                return searchRegex.replace(text, "<font style='background: #FF0'>$1</font>"); //$NON-NLS-1$
+            }
+        }
+
+        return text;
+    }
+
+    private void updateSearchRegex(final String searchText) {
+        if (Strings.isNullOrEmpty(searchText)) {
+            searchRegex = null;
+        } else {
+            // The search service accepts * and ? wildcards, so convert them for the pattern group.
+            String pattern = "(" + searchText.replace("*", ".*").replace('?', '.') + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            searchRegex = RegExp.compile(pattern, "ig"); //$NON-NLS-1$
+        }
     }
 }
