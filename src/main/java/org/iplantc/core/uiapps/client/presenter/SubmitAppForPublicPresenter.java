@@ -29,7 +29,6 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
-import com.sencha.gxt.widget.core.client.box.ProgressMessageBox;
 
 public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Presenter {
 
@@ -100,8 +99,8 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 
 					@Override
 					public void onFailure(Throwable caught) {
-						ErrorHandler.post(I18N.ERROR.publishFailureDefaultMessage(), caught);
-
+						//ErrorHandler.post(I18N.ERROR.publishFailureDefaultMessage(), caught);
+					    //DO NOTHING - SS
 					}
 
 					@Override
