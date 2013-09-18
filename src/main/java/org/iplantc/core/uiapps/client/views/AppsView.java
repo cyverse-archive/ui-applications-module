@@ -42,6 +42,8 @@ public interface AppsView extends IsWidget {
         AppGroup getAppGroupFromElement(Element el);
 
         App getAppFromElement(Element el);
+
+        String highlightSearchText(final String text);
     }
 
     void setPresenter(final Presenter presenter);
@@ -115,4 +117,6 @@ public interface AppsView extends IsWidget {
     AppGroup getAppGroupFromElement(Element el);
 
     App getAppFromElement(Element el);
+
+    String highlightSearchText(String text);
 }

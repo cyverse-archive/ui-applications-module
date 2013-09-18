@@ -6,6 +6,7 @@ import java.util.List;
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
+import org.iplantc.core.uiapps.client.views.AppsView.Presenter;
 import org.iplantc.core.uiapps.client.views.widgets.AppFavoriteCellWidget;
 import org.iplantc.core.uiapps.client.views.widgets.AppRatingCellWidget;
 import org.iplantc.core.uicommons.client.ErrorHandler;
@@ -73,8 +74,12 @@ public class AppInfoView implements IsWidget {
 
     private final App app;
 
-    public AppInfoView(final App app) {
-        this.app = app;
+    private final Presenter presenter;
+
+    public AppInfoView(final App app, final Presenter presenter) {
+		this.app = app;
+        this.presenter = presenter;
+
         BINDER.createAndBindUi(this);
         favIcon.setValue(this.app);
         initDetailsPnl();
@@ -89,7 +94,9 @@ public class AppInfoView implements IsWidget {
     }
 
     private void initDetailsPnl() {
-        appDesc.setHTML("<i>" + I18N.DISPLAY.description() + ": " + "</i>" + app.getDescription());
+        String description = presenter.highlightSearchText(app.getDescription());
+
+        appDesc.setHTML("<i>" + I18N.DISPLAY.description() + ": " + "</i>" + description);
         AppDetailsRenderer templates = GWT.create(AppDetailsRenderer.class);
         HtmlLayoutContainer hlc = new HtmlLayoutContainer(templates.render());
         addPubDate(app, hlc);
@@ -122,8 +129,10 @@ public class AppInfoView implements IsWidget {
     }
 
     private void addDCDetails(DeployedComponent dc, HtmlLayoutContainer hlc) {
+        String name = presenter.highlightSearchText(dc.getName());
+
         hlc.add(new Label(I18N.DISPLAY.name() + ": "), new HtmlData(".cell1"));
-        hlc.add(new Label(dc.getName()), new HtmlData(".cell2"));
+        hlc.add(new HTML(name), new HtmlData(".cell2"));
         hlc.add(new Label(I18N.DISPLAY.description() + ": "), new HtmlData(".cell3"));
         hlc.add(new Label(dc.getDescription()), new HtmlData(".cell4"));
         hlc.add(new Label(I18N.DISPLAY.path() + ": "), new HtmlData(".cell5"));
@@ -161,8 +170,10 @@ public class AppInfoView implements IsWidget {
     }
 
     private void addIntegratorsInfo(final App app, HtmlLayoutContainer hlc) {
+        String name = presenter.highlightSearchText(app.getIntegratorName());
+
         hlc.add(new Label(I18N.DISPLAY.integratorName() + ": "), new HtmlData(".cell3"));
-        hlc.add(new Label(app.getIntegratorName()), new HtmlData(".cell4"));
+        hlc.add(new HTML(name), new HtmlData(".cell4"));
         hlc.add(new Label(I18N.DISPLAY.integratorEmail() + ": "), new HtmlData(".cell5"));
         hlc.add(new Label(app.getIntegratorEmail()), new HtmlData(".cell6"));
     }
@@ -204,3 +215,4 @@ public class AppInfoView implements IsWidget {
     }
 
 }
+
