@@ -3,6 +3,7 @@
  */
 package org.iplantc.core.uiapps.client.views.dialogs;
 
+import org.iplantc.core.jsonutil.JsonUtil;
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.events.AppGroupCountUpdateEvent;
 import org.iplantc.core.uiapps.client.events.AppGroupCountUpdateEvent.AppGroupType;
@@ -15,6 +16,7 @@ import org.iplantc.core.uicommons.client.info.IplantAnnouncer;
 import org.iplantc.core.uicommons.client.info.SuccessAnnouncementConfig;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
 
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -45,11 +47,24 @@ public class SubmitAppForPublicDialog extends IPlantDialog {
         public void onFailure(Throwable caught) {
             hide();
             if (caught != null) {
-                ErrorHandler.post(I18N.DISPLAY.makePublicFail(), caught);
+                String errorMessage = getErrorMessage(caught);
+                if(errorMessage.equals("")) {
+                    ErrorHandler.post(I18N.DISPLAY.makePublicFail(), caught);
+                } else {
+                    ErrorHandler.post(I18N.DISPLAY.makePublicFail() + "Reason: " + errorMessage  , caught);
+                }
             }
         }
     }
 
+    private String getErrorMessage(Throwable caught) {
+        JSONObject obj = JsonUtil.getObject(caught.getMessage());
+        if(obj != null) {
+            return JsonUtil.getString(obj, "reason");
+        }
+        return  "";
+    }
+    
     public SubmitAppForPublicDialog(final App selectedApp) {
         initDialog();
         final Presenter p = AppsInjector.INSTANCE.getSubmitAppForPublixUsePresenter();
