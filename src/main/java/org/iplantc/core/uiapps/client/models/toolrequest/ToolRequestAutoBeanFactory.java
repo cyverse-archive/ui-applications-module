@@ -11,6 +11,7 @@ public interface ToolRequestAutoBeanFactory extends AutoBeanFactory {
     
     AutoBean<ToolRequestHistory> history();
     
+    AutoBean<ToolRequestUpdate> update();
     
 
 }

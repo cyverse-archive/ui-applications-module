@@ -28,6 +28,9 @@ public interface ToolRequest extends HasName, HasId {
     @PropertyName("date_updated")
     Date getDateUpdated();
 
+    @PropertyName("date_updated")
+    void setDateUpdated(Date dateUpdated);
+
     ToolRequestStatus getStatus();
 
     void setStatus(ToolRequestStatus status);
