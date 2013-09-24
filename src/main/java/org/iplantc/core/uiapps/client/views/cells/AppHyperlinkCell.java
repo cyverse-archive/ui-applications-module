@@ -93,33 +93,38 @@ public class AppHyperlinkCell extends AbstractCell<App> {
         }
         favoriteCell.onBrowserEvent(context, parent, value, event, valueUpdater);
 
+        Element child = findAppNameElement(parent);
+        if (child != null && child.isOrHasChild(eventTarget)) {
+
+            switch (Event.as(event).getTypeInt()) {
+                case Event.ONCLICK:
+                    doOnClick(child, value);
+                    break;
+                case Event.ONMOUSEOVER:
+                    doOnMouseOver(child, value);
+                    break;
+                case Event.ONMOUSEOUT:
+                    doOnMouseOut(child, value);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private Element findAppNameElement(Element parent) {
         for (int i = 0; i < parent.getChildCount(); i++) {
             Node childNode = parent.getChild(i);
 
             if (Element.is(childNode)) {
                 Element child = Element.as(childNode);
-                if (child.getAttribute("name").equalsIgnoreCase(ELEMENT_NAME)) {
-                    if (child.isOrHasChild(eventTarget)) {
-
-                        switch (Event.as(event).getTypeInt()) {
-                            case Event.ONCLICK:
-                                doOnClick(child, value);
-                                break;
-                            case Event.ONMOUSEOVER:
-                                doOnMouseOver(child, value);
-                                break;
-                            case Event.ONMOUSEOUT:
-                                doOnMouseOut(child, value);
-                                break;
-                            default:
-                                break;
-                        }
-
-                        break;
-                    }
+                if (child.getAttribute("name").equalsIgnoreCase(ELEMENT_NAME)) { //$NON-NLS-1$
+                    return child;
                 }
             }
         }
+
+        return null;
     }
 
     private void doOnMouseOut(Element eventTarget, App value) {
