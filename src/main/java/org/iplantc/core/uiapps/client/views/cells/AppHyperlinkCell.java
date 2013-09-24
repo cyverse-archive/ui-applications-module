@@ -14,6 +14,7 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.Style.TextDecoration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -92,20 +93,31 @@ public class AppHyperlinkCell extends AbstractCell<App> {
         }
         favoriteCell.onBrowserEvent(context, parent, value, event, valueUpdater);
 
-        if (eventTarget.getAttribute("name").equalsIgnoreCase(ELEMENT_NAME)) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            Node childNode = parent.getChild(i);
 
-            switch (Event.as(event).getTypeInt()) {
-                case Event.ONCLICK:
-                    doOnClick(eventTarget, value);
-                    break;
-                case Event.ONMOUSEOVER:
-                    doOnMouseOver(eventTarget, value);
-                    break;
-                case Event.ONMOUSEOUT:
-                    doOnMouseOut(eventTarget, value);
-                    break;
-                default:
-                    break;
+            if (Element.is(childNode)) {
+                Element child = Element.as(childNode);
+                if (child.getAttribute("name").equalsIgnoreCase(ELEMENT_NAME)) {
+                    if (child.isOrHasChild(eventTarget)) {
+
+                        switch (Event.as(event).getTypeInt()) {
+                            case Event.ONCLICK:
+                                doOnClick(child, value);
+                                break;
+                            case Event.ONMOUSEOVER:
+                                doOnMouseOver(child, value);
+                                break;
+                            case Event.ONMOUSEOUT:
+                                doOnMouseOut(child, value);
+                                break;
+                            default:
+                                break;
+                        }
+
+                        break;
+                    }
+                }
             }
         }
     }
