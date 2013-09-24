@@ -88,7 +88,7 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     public void onBrowserEvent(Cell.Context context, Element parent, App value, NativeEvent event,
             ValueUpdater<App> valueUpdater) {
         Element eventTarget = Element.as(event.getEventTarget());
-        if ((value == null) && !parent.isOrHasChild(eventTarget)) {
+        if ((value == null) || !parent.isOrHasChild(eventTarget)) {
             return;
         }
         favoriteCell.onBrowserEvent(context, parent, value, event, valueUpdater);
