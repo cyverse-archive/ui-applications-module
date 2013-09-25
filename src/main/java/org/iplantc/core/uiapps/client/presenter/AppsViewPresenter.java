@@ -516,10 +516,12 @@ public class AppsViewPresenter implements AppsView.Presenter {
                                         // Remove from visible list and update AppGroup app counts
                                         view.removeApp(app);
 
-                                        AppGroup appGroup = view.findAppGroup(app.getGroupId());
-                                        if (appGroup != null) {
-                                            view.updateAppGroupAppCount(appGroup,
-                                                    appGroup.getAppCount() - 1);
+                                        // PSAR Always assume that the app is in the
+                                        // "Apps Under Development" group
+                                        AppGroup userAppGrp = view.findAppGroupByName(USER_APPS_GROUP);
+                                        if (userAppGrp != null) {
+                                            view.updateAppGroupAppCount(userAppGrp,
+                                                    userAppGrp.getAppCount() - 1);
                                         }
 
                                         eventBus.fireEvent(new AppDeleteEvent(app.getId()));

@@ -1,20 +1,23 @@
 package org.iplantc.core.uiapps.client.views;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.iplantc.core.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
+import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
+import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.views.AppsView.Presenter;
 import org.iplantc.core.uiapps.client.views.widgets.AppFavoriteCellWidget;
 import org.iplantc.core.uiapps.client.views.widgets.AppRatingCellWidget;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.models.deployedcomps.DeployedComponent;
-import org.iplantc.core.uicommons.client.models.deployedcomps.DeployedComponentAutoBeanFactory;
-import org.iplantc.core.uicommons.client.models.deployedcomps.DeployedComponentList;
 import org.iplantc.core.uicommons.client.widgets.IPlantAnchor;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -28,7 +31,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.sencha.gxt.core.client.XTemplates;
 import com.sencha.gxt.widget.core.client.ContentPanel;
@@ -72,6 +74,8 @@ public class AppInfoView implements IsWidget {
 
     private AccordionLayoutContainer dcCon;
 
+    private HtmlLayoutContainer appDetailsHtmlContainer;
+
     private final App app;
 
     private final Presenter presenter;
@@ -98,12 +102,12 @@ public class AppInfoView implements IsWidget {
 
         appDesc.setHTML("<i>" + I18N.DISPLAY.description() + ": " + "</i>" + description);
         AppDetailsRenderer templates = GWT.create(AppDetailsRenderer.class);
-        HtmlLayoutContainer hlc = new HtmlLayoutContainer(templates.render());
-        addPubDate(app, hlc);
-        addIntegratorsInfo(app, hlc);
-        addDocLinks(app, hlc);
-        addRating(app, hlc);
-        appDetailsPnl.add(hlc);
+        appDetailsHtmlContainer = new HtmlLayoutContainer(templates.render());
+        addPubDate(app, appDetailsHtmlContainer);
+        addIntegratorsInfo(app, appDetailsHtmlContainer);
+        addDocLinks(app, appDetailsHtmlContainer);
+        addRating(app, appDetailsHtmlContainer);
+        appDetailsPnl.add(appDetailsHtmlContainer);
     }
 
     private void initDCPanel() {
@@ -144,20 +148,20 @@ public class AppInfoView implements IsWidget {
     }
 
     private void loadDCinfo() {
-        Services.USER_APP_SERVICE.getDCDetails(app.getId(), new AsyncCallback<String>() {
+        Services.USER_APP_SERVICE.getAppDetails(app.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
-                DeployedComponentAutoBeanFactory factory = GWT
-                        .create(DeployedComponentAutoBeanFactory.class);
-                AutoBean<DeployedComponentList> autoBean = AutoBeanCodex.decode(factory,
-                        DeployedComponentList.class, result);
-                List<DeployedComponent> items = autoBean.as().getDCList();
-                if (items != null && items.size() > 0) {
-                    for (int i = 0; i < items.size(); i++) {
-                        buildDCPanel(items.get(i));
+                AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);
+                App appDetails = AutoBeanCodex.decode(factory, App.class, result).as();
+                List<DeployedComponent> deployedComponents = appDetails.getDeployedComponents();
+                if (deployedComponents != null) {
+                    for (DeployedComponent component : deployedComponents) {
+                        buildDCPanel(component);
                     }
                 }
+
+                addGroups(appDetails.getGroups());
 
                 addInfoTabs();
             }
@@ -197,6 +201,21 @@ public class AppInfoView implements IsWidget {
         AppRatingCellWidget rcell = new AppRatingCellWidget();
         rcell.setValue(app);
         hlc.add(rcell, new HtmlData(".cell10"));
+    }
+
+    private void addGroups(List<AppGroup> groups) {
+        if (groups == null) {
+            return;
+        }
+
+        List<String> groupNames = Lists.newArrayList();
+        for (AppGroup group : groups) {
+            groupNames.add(group.getName());
+        }
+        Collections.sort(groupNames);
+
+        appDetailsHtmlContainer.add(new Label(I18N.DISPLAY.category() + ": "), new HtmlData(".cell11"));
+        appDetailsHtmlContainer.add(new HTML(Joiner.on(", ").join(groupNames)), new HtmlData(".cell12"));
     }
 
     private void addPubDate(final App app, HtmlLayoutContainer hlc) {

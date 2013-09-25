@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.iplantc.core.uicommons.client.models.HasDescription;
 import org.iplantc.core.uicommons.client.models.HasId;
+import org.iplantc.core.uicommons.client.models.deployedcomps.DeployedComponent;
 
 import com.google.gwt.user.client.ui.HasName;
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
@@ -35,9 +36,6 @@ public interface App extends HasId, HasName, HasDescription {
     String getIntegratorEmail();
     
     boolean isDisabled();
-
-    @PropertyName("group_id")
-    String getGroupId();
 
     @PropertyName("pipeline_eligibility")
     PipelineEligibility getPipelineEligibility();
@@ -70,15 +68,6 @@ public interface App extends HasId, HasName, HasDescription {
     @PropertyName("pipeline_eligibility")
     void setPipelineEligibility(PipelineEligibility pipelineEligibility);
 
-    @PropertyName("group_id")
-    void setGroupId(String groupId);
-
-    @PropertyName("group_name")
-    String getGroupName();
-
-    @PropertyName("group_name")
-    void setGroupName(String groupName);
-
     @PropertyName("step_count")
     int getStepCount();
 
@@ -95,6 +84,9 @@ public interface App extends HasId, HasName, HasDescription {
 
     void setReferences(List<String> references);
 
+    @PropertyName("components")
+    List<DeployedComponent> getDeployedComponents();
+
     List<AppDataObject> getInputs();
 
     void setInputs(List<AppDataObject> inputs);
@@ -102,4 +94,6 @@ public interface App extends HasId, HasName, HasDescription {
     List<AppDataObject> getOutputs();
 
     void setOutputs(List<AppDataObject> outputs);
+
+    List<AppGroup> getGroups();
 }
