@@ -16,13 +16,25 @@ import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
  */
 public interface ToolRequestUpdate extends HasId {
 
+    @Override
     @PropertyName("uuid")
     String getId();
 
+    @PropertyName("uuid")
+    void setId(String id);
+
     ToolRequestStatus getStatus();
+
+    void setStatus(ToolRequestStatus status);
 
     @PropertyName("username")
     String getUserName();
 
+    @PropertyName("username")
+    void setUserName(String userName);
+
     String getComments();
+
+    void setComments(String comments);
+
 }

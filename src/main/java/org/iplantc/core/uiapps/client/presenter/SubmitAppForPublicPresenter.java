@@ -93,26 +93,24 @@ public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Pr
 		}
 	}
 
-	private void getAppDetails() {
-        appService.getAppDetails(view.getSelectedApp().getId(),
-				new AsyncCallback<String>() {
+    private void getAppDetails() {
+        appService.getAppDetails(view.getSelectedApp().getId(), new AsyncCallback<String>() {
 
-					@Override
-					public void onFailure(Throwable caught) {
-						//ErrorHandler.post(I18N.ERROR.publishFailureDefaultMessage(), caught);
-					    //DO NOTHING - SS
-					}
+            @Override
+            public void onFailure(Throwable caught) {
+                ErrorHandler.post(I18N.ERROR.publishFailureDefaultMessage(), caught);
+            }
 
-					@Override
-					public void onSuccess(String result) {
-						JSONObject obj = JsonUtil.getObject(result);
-						JSONArray arr = JsonUtil.getArray(obj, "references");
-						if (arr != null && arr.size() > 0) {
-							view.loadReferences(parseRefLinks(arr));
-						}
-					}
-				});
-	}
+            @Override
+            public void onSuccess(String result) {
+                JSONObject obj = JsonUtil.getObject(result);
+                JSONArray arr = JsonUtil.getArray(obj, "references");
+                if (arr != null && arr.size() > 0) {
+                    view.loadReferences(parseRefLinks(arr));
+                }
+            }
+        });
+    }
 
 	private void createDocumentationPage(final JSONObject obj) {
 	    final AutoProgressMessageBox pmb = new AutoProgressMessageBox(I18N.DISPLAY.submitForPublicUse(), I18N.DISPLAY.submitRequest());

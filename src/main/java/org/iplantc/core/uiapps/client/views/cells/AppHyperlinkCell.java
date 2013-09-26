@@ -14,6 +14,7 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.Style.TextDecoration;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -87,27 +88,43 @@ public class AppHyperlinkCell extends AbstractCell<App> {
     public void onBrowserEvent(Cell.Context context, Element parent, App value, NativeEvent event,
             ValueUpdater<App> valueUpdater) {
         Element eventTarget = Element.as(event.getEventTarget());
-        if ((value == null) && !parent.isOrHasChild(eventTarget)) {
+        if ((value == null) || !parent.isOrHasChild(eventTarget)) {
             return;
         }
         favoriteCell.onBrowserEvent(context, parent, value, event, valueUpdater);
 
-        if (eventTarget.getAttribute("name").equalsIgnoreCase(ELEMENT_NAME)) {
+        Element child = findAppNameElement(parent);
+        if (child != null && child.isOrHasChild(eventTarget)) {
 
             switch (Event.as(event).getTypeInt()) {
                 case Event.ONCLICK:
-                    doOnClick(eventTarget, value);
+                    doOnClick(child, value);
                     break;
                 case Event.ONMOUSEOVER:
-                    doOnMouseOver(eventTarget, value);
+                    doOnMouseOver(child, value);
                     break;
                 case Event.ONMOUSEOUT:
-                    doOnMouseOut(eventTarget, value);
+                    doOnMouseOut(child, value);
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    private Element findAppNameElement(Element parent) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            Node childNode = parent.getChild(i);
+
+            if (Element.is(childNode)) {
+                Element child = Element.as(childNode);
+                if (child.getAttribute("name").equalsIgnoreCase(ELEMENT_NAME)) { //$NON-NLS-1$
+                    return child;
+                }
+            }
+        }
+
+        return null;
     }
 
     private void doOnMouseOut(Element eventTarget, App value) {
