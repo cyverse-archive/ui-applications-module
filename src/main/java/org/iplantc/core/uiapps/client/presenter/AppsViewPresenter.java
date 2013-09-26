@@ -32,6 +32,8 @@ import org.iplantc.core.uiapps.client.views.widgets.events.AppSearchResultLoadEv
 import org.iplantc.core.uiapps.client.views.widgets.proxy.AppSearchRpcProxy;
 import org.iplantc.core.uicommons.client.ErrorHandler;
 import org.iplantc.core.uicommons.client.events.EventBus;
+import org.iplantc.core.uicommons.client.info.ErrorAnnouncementConfig;
+import org.iplantc.core.uicommons.client.info.IplantAnnouncer;
 import org.iplantc.core.uicommons.client.models.CommonModelUtils;
 import org.iplantc.core.uicommons.client.models.DEProperties;
 import org.iplantc.core.uicommons.client.models.HasId;
@@ -663,7 +665,11 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     @Override
     public void onAppNameSelected(final App app) {
-        fireRunAppEvent(app);
+        if (app.isRunnable()) {
+            fireRunAppEvent(app);
+        } else {
+            IplantAnnouncer.getInstance().schedule(new ErrorAnnouncementConfig(I18N.ERROR.appLaunchWithoutToolError()));
+        }
     }
 
     private void fireRunAppEvent(final App app) {
