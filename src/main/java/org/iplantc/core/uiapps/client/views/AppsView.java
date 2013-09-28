@@ -119,4 +119,8 @@ public interface AppsView extends IsWidget {
     App getAppFromElement(Element el);
 
     String highlightSearchText(String text);
+
+    List<AppGroup> getAppGroupRoots();
+
+    AppGroup getParent(AppGroup child);
 }
