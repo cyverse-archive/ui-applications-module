@@ -1,5 +1,6 @@
 package org.iplantc.core.uiapps.client.presenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
@@ -43,6 +44,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -90,6 +92,9 @@ public class AppsViewPresenter implements AppsView.Presenter {
 
     private final AppGroupProxy appGroupProxy;
     private AppsViewToolbar toolbar;
+    
+    private final List<HandlerRegistration> eventHandlers = new ArrayList<HandlerRegistration>();
+    
 
     private HasId desiredSelectedAppId;
     private final AppServiceFacade appService;
@@ -123,7 +128,7 @@ public class AppsViewPresenter implements AppsView.Presenter {
     }
 
     protected void initHandlers() {
-        eventBus.addHandler(AppSearchResultLoadEvent.TYPE, new AppSearchResultLoadEventHandler() {
+        eventHandlers.add( eventBus.addHandler(AppSearchResultLoadEvent.TYPE, new AppSearchResultLoadEventHandler() {
             @Override
             public void onLoad(AppSearchResultLoadEvent event) {
                 if (event.getSource() == getAppSearchRpcProxy()) {
@@ -139,8 +144,8 @@ public class AppsViewPresenter implements AppsView.Presenter {
                     view.unMaskCenterPanel();
                 }
             }
-        });
-        eventBus.addHandler(AppFavoritedEvent.TYPE, new AppFavoritedEventHander() {
+        }));
+        eventHandlers.add(eventBus.addHandler(AppFavoritedEvent.TYPE, new AppFavoritedEventHander() {
             @Override
             public void onAppFavorited(AppFavoritedEvent event) {
                 AppGroup favAppGrp = view.findAppGroupByName(FAVORITES);
@@ -155,9 +160,9 @@ public class AppsViewPresenter implements AppsView.Presenter {
                     view.removeApp(view.findApp(event.getAppId()));
                 }
             }
-        });
+        }));
 
-        eventBus.addHandler(AppUpdatedEvent.TYPE, new AppUpdatedEventHandler() {
+        eventHandlers.add(eventBus.addHandler(AppUpdatedEvent.TYPE, new AppUpdatedEventHandler() {
             @Override
             public void onAppUpdated(AppUpdatedEvent event) {
 
@@ -168,8 +173,16 @@ public class AppsViewPresenter implements AppsView.Presenter {
                 }
 
             }
-        });
+        }));
 
+    }
+    
+    @Override
+    public void cleanUp() {
+        EventBus eventBus = EventBus.getInstance();
+        for (HandlerRegistration hr : eventHandlers) {
+           eventBus.removeHandler(hr);
+        }
     }
 
     private void initConstants() {
