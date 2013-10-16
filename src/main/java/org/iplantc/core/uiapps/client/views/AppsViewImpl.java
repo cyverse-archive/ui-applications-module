@@ -441,4 +441,14 @@ public class AppsViewImpl implements AppsView {
     public String highlightSearchText(String text) {
         return presenter.highlightSearchText(text);
     }
+
+    @Override
+    public List<AppGroup> getAppGroupRoots() {
+        return treeStore.getRootItems();
+    }
+
+    @Override
+    public AppGroup getParent(AppGroup child) {
+        return treeStore.getParent(child);
+    }
 }

@@ -96,4 +96,7 @@ public interface App extends HasId, HasName, HasDescription {
     void setOutputs(List<AppDataObject> outputs);
 
     List<AppGroup> getGroups();
+
+    @PropertyName("suggested_groups")
+    List<AppGroup> getSuggestedGroups();
 }
