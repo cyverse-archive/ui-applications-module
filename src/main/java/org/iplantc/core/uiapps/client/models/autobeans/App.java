@@ -37,6 +37,8 @@ public interface App extends HasId, HasName, HasDescription {
     
     boolean isDisabled();
 
+    boolean isDeleted();
+
     @PropertyName("pipeline_eligibility")
     PipelineEligibility getPipelineEligibility();
 
@@ -64,6 +66,8 @@ public interface App extends HasId, HasName, HasDescription {
     void setId(String id);
 
     void setDisabled(boolean disabled);
+
+    void setDeleted(boolean deleted);
 
     @PropertyName("pipeline_eligibility")
     void setPipelineEligibility(PipelineEligibility pipelineEligibility);
