@@ -19,3 +19,6 @@ www-test
 /.idea
 *.iml
 /target
+
+# ignore gradle build directory
+build/
