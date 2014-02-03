@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.iplantc.core.jsonutil.JsonUtil;
-import org.iplantc.core.resources.client.IplantResources;
-import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.de.resources.client.IplantResources;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppFeedback;

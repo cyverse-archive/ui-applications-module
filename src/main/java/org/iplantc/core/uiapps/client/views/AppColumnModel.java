@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppProperties;
 import org.iplantc.core.uiapps.client.views.cells.AppHyperlinkCell;

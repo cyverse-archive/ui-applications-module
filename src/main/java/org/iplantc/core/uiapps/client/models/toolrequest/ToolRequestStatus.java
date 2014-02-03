@@ -1,6 +1,6 @@
 package org.iplantc.core.uiapps.client.models.toolrequest;
 
-import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.de.resources.client.messages.I18N;
 
 
 /**

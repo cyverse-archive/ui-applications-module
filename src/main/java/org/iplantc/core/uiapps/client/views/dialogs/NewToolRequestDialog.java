@@ -5,7 +5,7 @@ package org.iplantc.core.uiapps.client.views.dialogs;
 
 import java.util.Arrays;
 
-import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.presenter.NewToolRequestFormPresenterImpl;
 import org.iplantc.core.uiapps.client.views.NewToolRequestFormView;
 import org.iplantc.core.uiapps.client.views.NewToolRequestFormView.Presenter;

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.Services;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;

@@ -6,7 +6,7 @@ package org.iplantc.core.uiapps.client.presenter;
 import java.util.List;
 import java.util.Set;
 
-import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.views.NewToolRequestFormView;
 import org.iplantc.core.uiapps.client.views.NewToolRequestFormView.Presenter;
 import org.iplantc.core.uiapps.client.views.Uploader;

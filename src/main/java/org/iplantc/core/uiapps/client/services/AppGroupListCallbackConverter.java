@@ -2,7 +2,7 @@ package org.iplantc.core.uiapps.client.services;
 
 import java.util.List;
 
-import org.iplantc.core.resources.client.messages.I18N;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.core.uiapps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroupList;

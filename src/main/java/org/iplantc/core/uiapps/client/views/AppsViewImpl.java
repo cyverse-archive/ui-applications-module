@@ -3,7 +3,7 @@ package org.iplantc.core.uiapps.client.views;
 import java.util.Comparator;
 import java.util.List;
 
-import org.iplantc.core.resources.client.IplantResources;
+import org.iplantc.de.resources.client.IplantResources;
 import org.iplantc.core.uiapps.client.models.autobeans.App;
 import org.iplantc.core.uiapps.client.models.autobeans.AppGroup;
 

@@ -8,7 +8,7 @@
 	xmlns:dr="urn:import:org.iplantc.core.uidiskresource.client.views.widgets">
 
 	<ui:with field="strings"
-		type="org.iplantc.core.resources.client.messages.IplantDisplayStrings" />
+		type="org.iplantc.de.resources.client.messages.IplantDisplayStrings" />
 
 	<ui:with field="constants"
 		type="org.iplantc.core.uicommons.client.DEClientConstants" />
