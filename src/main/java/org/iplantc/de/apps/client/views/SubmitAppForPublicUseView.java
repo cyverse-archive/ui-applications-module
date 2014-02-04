@@ -14,7 +14,7 @@ import com.sencha.gxt.data.shared.TreeStore;
 
 public interface SubmitAppForPublicUseView extends IsWidget {
 
-    public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter {
+    public interface Presenter extends org.iplantc.de.commons.client.presenter.Presenter {
         void onSubmit();
 
         void go(HasOneWidget container, App selectedApp, AsyncCallback<String> callback);

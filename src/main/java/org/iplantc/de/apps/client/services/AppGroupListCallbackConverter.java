@@ -6,8 +6,8 @@ import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.models.autobeans.AppGroupList;
-import org.iplantc.core.uicommons.client.ErrorHandler;
-import org.iplantc.core.uicommons.client.services.AsyncCallbackConverter;
+import org.iplantc.de.commons.client.ErrorHandler;
+import org.iplantc.de.commons.client.services.AsyncCallbackConverter;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;

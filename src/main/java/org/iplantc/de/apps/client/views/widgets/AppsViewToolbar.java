@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.IsWidget;
  */
 public interface AppsViewToolbar extends IsWidget {
     public interface Presenter {
-        interface Builder extends org.iplantc.core.uicommons.client.presenter.Presenter {
+        interface Builder extends org.iplantc.de.commons.client.presenter.Presenter {
             Builder hideToolbarButtonCreate();
 
             Builder hideToolbarButtonCopy();

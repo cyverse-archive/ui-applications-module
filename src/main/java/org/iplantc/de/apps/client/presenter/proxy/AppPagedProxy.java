@@ -9,7 +9,7 @@ import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.models.autobeans.AppList;
 import org.iplantc.de.apps.client.services.AppUserServiceFacade;
-import org.iplantc.core.uicommons.client.ErrorHandler;
+import org.iplantc.de.commons.client.ErrorHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;

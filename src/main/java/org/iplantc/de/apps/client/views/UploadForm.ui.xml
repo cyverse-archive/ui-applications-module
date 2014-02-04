@@ -3,9 +3,9 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
 	xmlns:con="urn:import:com.sencha.gxt.widget.core.client.container"
 	xmlns:form="urn:import:com.sencha.gxt.widget.core.client.form"
-	xmlns:ipc="urn:import:org.iplantc.core.uicommons.client.widgets">
+	xmlns:ipc="urn:import:org.iplantc.de.commons.client.widgets">
 
-<ui:with field="constants" type="org.iplantc.core.uicommons.client.DEClientConstants"/>
+<ui:with field="constants" type="org.iplantc.de.commons.client.DEClientConstants"/>
 
 <ui:with field="layoutData" 
     type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">

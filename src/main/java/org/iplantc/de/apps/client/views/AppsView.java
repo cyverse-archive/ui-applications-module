@@ -5,7 +5,7 @@ import java.util.List;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.views.widgets.AppsViewToolbar;
-import org.iplantc.core.uicommons.client.models.HasId;
+import org.iplantc.de.commons.client.models.HasId;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HasOneWidget;
@@ -19,7 +19,7 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 
 public interface AppsView extends IsWidget {
 
-    public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter,
+    public interface Presenter extends org.iplantc.de.commons.client.presenter.Presenter,
             AppsViewToolbar.Presenter {
         void onAppSelected(final App app);
 

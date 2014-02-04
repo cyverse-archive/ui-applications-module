@@ -2,7 +2,7 @@ package org.iplantc.de.apps.client.views.dialogs;
 
 
 import org.iplantc.de.resources.client.messages.I18N;
-import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
+import org.iplantc.de.commons.client.views.gxt3.dialogs.IPlantDialog;
 
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Label;

@@ -10,9 +10,9 @@ import org.iplantc.de.apps.client.presenter.NewToolRequestFormPresenterImpl;
 import org.iplantc.de.apps.client.views.NewToolRequestFormView;
 import org.iplantc.de.apps.client.views.NewToolRequestFormView.Presenter;
 import org.iplantc.de.apps.client.views.NewToolRequestFormViewImpl;
-import org.iplantc.core.uicommons.client.models.toolrequests.Architecture;
-import org.iplantc.core.uicommons.client.models.toolrequests.YesNoMaybe;
-import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IPlantDialog;
+import org.iplantc.de.commons.client.models.toolrequests.Architecture;
+import org.iplantc.de.commons.client.models.toolrequests.YesNoMaybe;
+import org.iplantc.de.commons.client.views.gxt3.dialogs.IPlantDialog;
 
 import com.google.gwt.user.client.Command;
 import com.sencha.gxt.data.shared.LabelProvider;

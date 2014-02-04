@@ -1,7 +1,7 @@
 package org.iplantc.de.apps.client.views.widgets;
 
 import org.iplantc.de.apps.client.models.autobeans.App;
-import org.iplantc.core.uicommons.client.widgets.SearchField;
+import org.iplantc.de.commons.client.widgets.SearchField;
 
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;

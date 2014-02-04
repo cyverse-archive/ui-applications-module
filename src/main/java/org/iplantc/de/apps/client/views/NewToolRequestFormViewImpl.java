@@ -2,10 +2,10 @@ package org.iplantc.de.apps.client.views;
 
 import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.presenter.NewToolRequestFormPresenterImpl.SELECTION_MODE;
-import org.iplantc.core.uicommons.client.validators.DiskResourceNameValidator;
-import org.iplantc.core.uicommons.client.validators.LengthRangeValidator;
-import org.iplantc.core.uicommons.client.validators.UrlValidator;
-import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
+import org.iplantc.de.commons.client.validators.DiskResourceNameValidator;
+import org.iplantc.de.commons.client.validators.LengthRangeValidator;
+import org.iplantc.de.commons.client.validators.UrlValidator;
+import org.iplantc.de.commons.client.views.gxt3.dialogs.IplantInfoBox;
 import org.iplantc.de.diskResource.client.views.widgets.FileSelectorField;
 
 import com.google.gwt.core.client.GWT;

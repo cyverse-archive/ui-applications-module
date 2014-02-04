@@ -14,7 +14,7 @@ import org.iplantc.de.apps.client.Services;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppFeedback;
 import org.iplantc.de.apps.client.views.dialogs.AppCommentDialog;
-import org.iplantc.core.uicommons.client.ErrorHandler;
+import org.iplantc.de.commons.client.ErrorHandler;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 
 import com.google.gwt.cell.client.AbstractCell;

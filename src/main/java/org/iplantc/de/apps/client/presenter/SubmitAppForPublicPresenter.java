@@ -13,9 +13,9 @@ import org.iplantc.de.apps.client.models.autobeans.AppRefLink;
 import org.iplantc.de.apps.client.presenter.proxy.PublicAppGroupProxy;
 import org.iplantc.de.apps.client.services.AppUserServiceFacade;
 import org.iplantc.de.apps.client.views.SubmitAppForPublicUseView;
-import org.iplantc.core.uicommons.client.ErrorHandler;
-import org.iplantc.core.uicommons.client.events.EventBus;
-import org.iplantc.core.uicommons.client.models.DEProperties;
+import org.iplantc.de.commons.client.ErrorHandler;
+import org.iplantc.de.commons.client.events.EventBus;
+import org.iplantc.de.commons.client.models.DEProperties;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 
 import com.google.gwt.core.client.GWT;

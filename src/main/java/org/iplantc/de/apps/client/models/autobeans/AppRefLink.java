@@ -1,6 +1,6 @@
 package org.iplantc.de.apps.client.models.autobeans;
 
-import org.iplantc.core.uicommons.client.models.HasId;
+import org.iplantc.de.commons.client.models.HasId;
 
 public interface AppRefLink extends HasId {
 

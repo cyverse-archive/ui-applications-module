@@ -1,7 +1,7 @@
 package org.iplantc.de.apps.client.views;
 
-import org.iplantc.core.uicommons.client.models.UserInfo;
-import org.iplantc.core.uicommons.client.widgets.IPCFileUploadField;
+import org.iplantc.de.commons.client.models.UserInfo;
+import org.iplantc.de.commons.client.widgets.IPCFileUploadField;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeHandler;

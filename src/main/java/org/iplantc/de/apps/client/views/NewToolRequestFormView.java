@@ -12,7 +12,7 @@ import com.sencha.gxt.widget.core.client.form.IsField;
  */
 public interface NewToolRequestFormView<A, Y> extends IsWidget {
 
-    public interface Presenter extends org.iplantc.core.uicommons.client.presenter.Presenter {
+    public interface Presenter extends org.iplantc.de.commons.client.presenter.Presenter {
         /**
          * The method to be called when the user clicks the cancel button.
          */

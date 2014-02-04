@@ -8,7 +8,7 @@
 <module>
 
    <inherits name="com.google.gwt.inject.Inject"/>
-   <inherits name="org.iplantc.core.ui-commons" />
+   <inherits name="org.iplantc.de.commons.ui-commons" />
    
    <source path="client" />
    
