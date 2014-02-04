@@ -6,7 +6,7 @@ import org.iplantc.core.uicommons.client.validators.DiskResourceNameValidator;
 import org.iplantc.core.uicommons.client.validators.LengthRangeValidator;
 import org.iplantc.core.uicommons.client.validators.UrlValidator;
 import org.iplantc.core.uicommons.client.views.gxt3.dialogs.IplantInfoBox;
-import org.iplantc.core.uidiskresource.client.views.widgets.FileSelectorField;
+import org.iplantc.de.diskResource.client.views.widgets.FileSelectorField;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;

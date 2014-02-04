@@ -1,7 +1,7 @@
 package org.iplantc.core.uiapps.client.views;
 
 import org.iplantc.core.uiapps.client.presenter.NewToolRequestFormPresenterImpl.SELECTION_MODE;
-import org.iplantc.core.uidiskresource.client.views.widgets.FileSelectorField;
+import org.iplantc.de.diskResource.client.views.widgets.FileSelectorField;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.sencha.gxt.widget.core.client.form.IsField;

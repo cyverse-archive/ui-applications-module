@@ -5,7 +5,7 @@
 	xmlns:form="urn:import:com.sencha.gxt.widget.core.client.form"
 	xmlns:gwt="urn:import:com.google.gwt.widget.client" xmlns:t="urn:import:com.google.gwt.i18n.server.testing"
 	xmlns:ipc="urn:import:org.iplantc.core.uiapps.client.views"
-	xmlns:dr="urn:import:org.iplantc.core.uidiskresource.client.views.widgets">
+	xmlns:dr="urn:import:org.iplantc.de.diskResource.client.views.widgets">
 
 	<ui:with field="strings"
 		type="org.iplantc.de.resources.client.messages.IplantDisplayStrings" />
