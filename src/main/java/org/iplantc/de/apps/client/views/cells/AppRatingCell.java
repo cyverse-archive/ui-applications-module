@@ -7,7 +7,7 @@ import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.iplantc.core.jsonutil.JsonUtil;
+import org.iplantc.de.jsonutil.client.JsonUtil;
 import org.iplantc.de.resources.client.IplantResources;
 import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.Services;
