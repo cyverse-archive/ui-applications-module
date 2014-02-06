@@ -6,7 +6,7 @@
              xmlns:tree="urn:import:com.sencha.gxt.widget.core.client.tree"
              xmlns:grid="urn:import:com.sencha.gxt.widget.core.client.grid"
              xmlns:toolbar="urn:import:com.sencha.gxt.widget.core.client.toolbar"
-             xmlns:MyToolbar="urn:import:org.iplantc.core.uiapps.client.views.widgets"
+             xmlns:MyToolbar="urn:import:org.iplantc.de.apps.client.views.widgets"
              xmlns:button="urn:import:com.sencha.gxt.widget.core.client.button">
 
    <ui:with type="org.iplantc.de.resources.client.messages.IplantDisplayStrings" field="strings" />

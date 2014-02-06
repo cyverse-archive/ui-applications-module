@@ -4,7 +4,7 @@
 	xmlns:container="urn:import:com.sencha.gxt.widget.core.client.container"
 	xmlns:form="urn:import:com.sencha.gxt.widget.core.client.form"
 	xmlns:myCell="urn:import:org.iplantc.de.apps.client.views.widgets"
-	xmlns:u="urn:import:org.iplantc.core.uicommons.client.widgets">
+	xmlns:u="urn:import:org.iplantc.de.commons.client.widgets">
 	<ui:style>
 		.container {
 			background-color: white;
