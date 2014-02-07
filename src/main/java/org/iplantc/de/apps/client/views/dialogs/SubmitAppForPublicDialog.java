@@ -3,7 +3,7 @@
  */
 package org.iplantc.de.apps.client.views.dialogs;
 
-import org.iplantc.de.jsonutil.client.JsonUtil;
+import org.iplantc.de.commons.client.util.JsonUtil;
 import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.events.AppGroupCountUpdateEvent;
 import org.iplantc.de.apps.client.events.AppGroupCountUpdateEvent.AppGroupType;
