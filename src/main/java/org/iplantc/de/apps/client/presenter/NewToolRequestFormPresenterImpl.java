@@ -3,26 +3,23 @@
  */
 package org.iplantc.de.apps.client.presenter;
 
-import java.util.List;
-import java.util.Set;
-
-import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.views.NewToolRequestFormView;
 import org.iplantc.de.apps.client.views.NewToolRequestFormView.Presenter;
 import org.iplantc.de.apps.client.views.Uploader;
+import org.iplantc.de.client.models.HasPaths;
+import org.iplantc.de.client.models.UserInfo;
+import org.iplantc.de.client.models.diskResources.DiskResourceAutoBeanFactory;
+import org.iplantc.de.client.models.diskResources.DiskResourceExistMap;
+import org.iplantc.de.client.models.toolRequests.Architecture;
+import org.iplantc.de.client.models.toolRequests.NewToolRequest;
+import org.iplantc.de.client.models.toolRequests.RequestedToolDetails;
+import org.iplantc.de.client.models.toolRequests.ToolRequestFactory;
+import org.iplantc.de.client.models.toolRequests.YesNoMaybe;
 import org.iplantc.de.commons.client.gin.ServicesInjector;
-import org.iplantc.de.commons.client.models.HasPaths;
-import org.iplantc.de.commons.client.models.UserInfo;
-import org.iplantc.de.commons.client.models.diskresources.DiskResourceAutoBeanFactory;
-import org.iplantc.de.commons.client.models.diskresources.DiskResourceExistMap;
-import org.iplantc.de.commons.client.models.toolrequests.Architecture;
-import org.iplantc.de.commons.client.models.toolrequests.NewToolRequest;
-import org.iplantc.de.commons.client.models.toolrequests.RequestedToolDetails;
-import org.iplantc.de.commons.client.models.toolrequests.ToolRequestFactory;
-import org.iplantc.de.commons.client.models.toolrequests.YesNoMaybe;
 import org.iplantc.de.commons.client.services.DiskResourceServiceFacade;
 import org.iplantc.de.commons.client.services.ToolRequestProvider;
 import org.iplantc.de.commons.client.util.DiskResourceUtil;
+import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -32,6 +29,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasOneWidget;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author sriram

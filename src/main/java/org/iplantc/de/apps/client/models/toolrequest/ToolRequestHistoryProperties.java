@@ -1,9 +1,9 @@
 package org.iplantc.de.apps.client.models.toolrequest;
 
-import java.util.Date;
-
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
+
+import java.util.Date;
 
 /**
  * A PropertyAccess interface for ToolRequestHistory AutoBeans.

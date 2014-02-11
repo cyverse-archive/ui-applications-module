@@ -1,11 +1,11 @@
 package org.iplantc.de.apps.client.views.widgets.events;
 
-import java.util.List;
-
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.views.widgets.proxy.AppSearchRpcProxy;
 
 import com.google.gwt.event.shared.GwtEvent;
+
+import java.util.List;
 
 /**
  * A GwtEvent used to notify listeners that App search results have been loaded from the search service.

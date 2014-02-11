@@ -4,6 +4,7 @@ import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.theme.gray.client.tree.GrayTreeAppearance;

@@ -1,7 +1,5 @@
 package org.iplantc.de.apps.client.views;
 
-import java.util.List;
-
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.models.autobeans.AppRefLink;
@@ -10,7 +8,10 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
+
 import com.sencha.gxt.data.shared.TreeStore;
+
+import java.util.List;
 
 public interface SubmitAppForPublicUseView extends IsWidget {
 

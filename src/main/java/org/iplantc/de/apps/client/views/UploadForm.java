@@ -1,6 +1,6 @@
 package org.iplantc.de.apps.client.views;
 
-import org.iplantc.de.commons.client.models.UserInfo;
+import org.iplantc.de.client.models.UserInfo;
 import org.iplantc.de.commons.client.widgets.IPCFileUploadField;
 
 import com.google.gwt.core.client.GWT;
@@ -14,6 +14,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.Widget;
+
 import com.sencha.gxt.widget.core.client.Composite;
 import com.sencha.gxt.widget.core.client.event.InvalidEvent.HasInvalidHandlers;
 import com.sencha.gxt.widget.core.client.event.InvalidEvent.InvalidHandler;

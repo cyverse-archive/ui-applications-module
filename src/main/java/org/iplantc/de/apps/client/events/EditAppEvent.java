@@ -1,7 +1,7 @@
 package org.iplantc.de.apps.client.events;
 
 import org.iplantc.de.apps.client.events.EditAppEvent.EditAppEventHandler;
-import org.iplantc.de.commons.client.models.HasId;
+import org.iplantc.de.client.models.HasId;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;

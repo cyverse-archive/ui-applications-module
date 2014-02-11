@@ -1,7 +1,5 @@
 package org.iplantc.de.apps.client.presenter;
 
-import java.util.List;
-
 import org.iplantc.de.apps.client.views.Uploader;
 
 import com.google.common.collect.Lists;
@@ -10,9 +8,12 @@ import com.google.gwt.core.client.Callback;
 import com.google.web.bindery.autobean.shared.Splittable;
 import com.google.web.bindery.autobean.shared.impl.StringQuoter;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+
 import com.sencha.gxt.core.client.util.Format;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent.SubmitCompleteHandler;
+
+import java.util.List;
 
 // TODO move this to ui-commons
 

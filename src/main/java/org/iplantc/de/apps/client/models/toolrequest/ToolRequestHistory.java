@@ -1,8 +1,8 @@
 package org.iplantc.de.apps.client.models.toolrequest;
 
-import java.util.Date;
-
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
+
+import java.util.Date;
 
 /**
  * A Status History AutoBean for PayloadToolRequest.

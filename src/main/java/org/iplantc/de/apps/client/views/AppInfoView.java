@@ -1,10 +1,5 @@
 package org.iplantc.de.apps.client.views;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.Services;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
@@ -12,9 +7,10 @@ import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.views.AppsView.Presenter;
 import org.iplantc.de.apps.client.views.widgets.AppFavoriteCellWidget;
 import org.iplantc.de.apps.client.views.widgets.AppRatingCellWidget;
+import org.iplantc.de.client.models.deployedComps.DeployedComponent;
 import org.iplantc.de.commons.client.ErrorHandler;
-import org.iplantc.de.commons.client.models.deployedcomps.DeployedComponent;
 import org.iplantc.de.commons.client.widgets.IPlantAnchor;
+import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -32,6 +28,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+
 import com.sencha.gxt.core.client.XTemplates;
 import com.sencha.gxt.widget.core.client.ContentPanel;
 import com.sencha.gxt.widget.core.client.TabPanel;
@@ -41,6 +38,10 @@ import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.Acco
 import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer.ExpandMode;
 import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class AppInfoView implements IsWidget {
 

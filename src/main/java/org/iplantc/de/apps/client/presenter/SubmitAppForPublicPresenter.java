@@ -1,10 +1,5 @@
 package org.iplantc.de.apps.client.presenter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.iplantc.de.commons.client.util.JsonUtil;
-import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.events.AppPublishedEvent;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
@@ -13,9 +8,11 @@ import org.iplantc.de.apps.client.models.autobeans.AppRefLink;
 import org.iplantc.de.apps.client.presenter.proxy.PublicAppGroupProxy;
 import org.iplantc.de.apps.client.services.AppUserServiceFacade;
 import org.iplantc.de.apps.client.views.SubmitAppForPublicUseView;
+import org.iplantc.de.client.models.DEProperties;
 import org.iplantc.de.commons.client.ErrorHandler;
 import org.iplantc.de.commons.client.events.EventBus;
-import org.iplantc.de.commons.client.models.DEProperties;
+import org.iplantc.de.commons.client.util.JsonUtil;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 
 import com.google.gwt.core.client.GWT;
@@ -27,8 +24,12 @@ import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.inject.Inject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.AutoProgressMessageBox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubmitAppForPublicPresenter implements SubmitAppForPublicUseView.Presenter {
 

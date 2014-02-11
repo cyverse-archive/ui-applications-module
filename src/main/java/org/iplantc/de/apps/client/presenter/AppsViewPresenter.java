@@ -1,10 +1,5 @@
 package org.iplantc.de.apps.client.presenter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.iplantc.de.commons.client.util.JsonUtil;
-import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.events.AppDeleteEvent;
 import org.iplantc.de.apps.client.events.AppFavoritedEvent;
 import org.iplantc.de.apps.client.events.AppFavoritedEventHander;
@@ -31,14 +26,16 @@ import org.iplantc.de.apps.client.views.widgets.AppsViewToolbar;
 import org.iplantc.de.apps.client.views.widgets.events.AppSearchResultLoadEvent;
 import org.iplantc.de.apps.client.views.widgets.events.AppSearchResultLoadEventHandler;
 import org.iplantc.de.apps.client.views.widgets.proxy.AppSearchRpcProxy;
+import org.iplantc.de.client.models.CommonModelUtils;
+import org.iplantc.de.client.models.DEProperties;
+import org.iplantc.de.client.models.HasId;
+import org.iplantc.de.client.models.UserInfo;
 import org.iplantc.de.commons.client.ErrorHandler;
 import org.iplantc.de.commons.client.events.EventBus;
 import org.iplantc.de.commons.client.info.ErrorAnnouncementConfig;
 import org.iplantc.de.commons.client.info.IplantAnnouncer;
-import org.iplantc.de.commons.client.models.CommonModelUtils;
-import org.iplantc.de.commons.client.models.DEProperties;
-import org.iplantc.de.commons.client.models.HasId;
-import org.iplantc.de.commons.client.models.UserInfo;
+import org.iplantc.de.commons.client.util.JsonUtil;
+import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -57,12 +54,16 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.Splittable;
 import com.google.web.bindery.autobean.shared.impl.StringQuoter;
+
 import com.sencha.gxt.widget.core.client.Dialog;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The presenter for the AppsView.

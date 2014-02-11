@@ -1,13 +1,14 @@
 package org.iplantc.de.apps.client.presenter.proxy;
 
-import java.util.List;
-
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.services.AppUserServiceFacade;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+
 import com.sencha.gxt.data.client.loader.RpcProxy;
+
+import java.util.List;
 
 public class PublicAppGroupProxy extends RpcProxy<AppGroup, List<AppGroup>> {
 

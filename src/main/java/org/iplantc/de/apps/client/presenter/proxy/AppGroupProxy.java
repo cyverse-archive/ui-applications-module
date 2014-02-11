@@ -1,13 +1,14 @@
 package org.iplantc.de.apps.client.presenter.proxy;
 
-import java.util.List;
-
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.services.AppServiceFacade;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+
 import com.sencha.gxt.data.client.loader.RpcProxy;
+
+import java.util.List;
 
 /**
  * @author jstroot

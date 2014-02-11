@@ -3,23 +3,24 @@
  */
 package org.iplantc.de.apps.client.views.dialogs;
 
-import java.util.Arrays;
-
-import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.presenter.NewToolRequestFormPresenterImpl;
 import org.iplantc.de.apps.client.views.NewToolRequestFormView;
 import org.iplantc.de.apps.client.views.NewToolRequestFormView.Presenter;
 import org.iplantc.de.apps.client.views.NewToolRequestFormViewImpl;
-import org.iplantc.de.commons.client.models.toolrequests.Architecture;
-import org.iplantc.de.commons.client.models.toolrequests.YesNoMaybe;
+import org.iplantc.de.client.models.toolRequests.Architecture;
+import org.iplantc.de.client.models.toolRequests.YesNoMaybe;
 import org.iplantc.de.commons.client.views.gxt3.dialogs.IPlantDialog;
+import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.gwt.user.client.Command;
+
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
+
+import java.util.Arrays;
 
 /**
  * @author sriram

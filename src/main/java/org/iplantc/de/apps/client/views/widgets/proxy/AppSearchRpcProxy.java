@@ -1,9 +1,5 @@
 package org.iplantc.de.apps.client.views.widgets.proxy;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import org.iplantc.de.apps.client.Services;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
@@ -16,10 +12,15 @@ import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
+
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.loader.FilterConfig;
 import com.sencha.gxt.data.shared.loader.FilterPagingLoadConfig;
 import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * An RpcProxy for an AppLoadConfig that will call the searchApp service, then process the JSON results

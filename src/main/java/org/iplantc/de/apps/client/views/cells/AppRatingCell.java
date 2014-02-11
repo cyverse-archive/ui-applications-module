@@ -1,21 +1,18 @@
 package org.iplantc.de.apps.client.views.cells;
 
-import static com.google.gwt.dom.client.BrowserEvents.CLICK;
-import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
-import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.iplantc.de.commons.client.util.JsonUtil;
-import org.iplantc.de.resources.client.IplantResources;
-import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.Services;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppFeedback;
 import org.iplantc.de.apps.client.views.dialogs.AppCommentDialog;
 import org.iplantc.de.commons.client.ErrorHandler;
+import org.iplantc.de.commons.client.util.JsonUtil;
+import org.iplantc.de.resources.client.IplantResources;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
+
+import static com.google.gwt.dom.client.BrowserEvents.CLICK;
+import static com.google.gwt.dom.client.BrowserEvents.MOUSEOUT;
+import static com.google.gwt.dom.client.BrowserEvents.MOUSEOVER;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
@@ -35,6 +32,9 @@ import com.google.gwt.safehtml.shared.SafeUri;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author jstroot

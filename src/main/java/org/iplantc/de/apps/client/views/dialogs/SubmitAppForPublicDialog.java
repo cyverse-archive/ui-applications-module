@@ -3,8 +3,6 @@
  */
 package org.iplantc.de.apps.client.views.dialogs;
 
-import org.iplantc.de.commons.client.util.JsonUtil;
-import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.events.AppGroupCountUpdateEvent;
 import org.iplantc.de.apps.client.events.AppGroupCountUpdateEvent.AppGroupType;
 import org.iplantc.de.apps.client.gin.AppsInjector;
@@ -14,11 +12,14 @@ import org.iplantc.de.commons.client.ErrorHandler;
 import org.iplantc.de.commons.client.events.EventBus;
 import org.iplantc.de.commons.client.info.IplantAnnouncer;
 import org.iplantc.de.commons.client.info.SuccessAnnouncementConfig;
+import org.iplantc.de.commons.client.util.JsonUtil;
 import org.iplantc.de.commons.client.views.gxt3.dialogs.IPlantDialog;
+import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 

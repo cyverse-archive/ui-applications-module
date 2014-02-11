@@ -1,12 +1,13 @@
 package org.iplantc.de.apps.client.services;
 
 
-import java.util.List;
-
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import com.sencha.gxt.data.shared.SortDir;
+
+import java.util.List;
 
 /**
  * An interface that provides access to remote services related to apps.

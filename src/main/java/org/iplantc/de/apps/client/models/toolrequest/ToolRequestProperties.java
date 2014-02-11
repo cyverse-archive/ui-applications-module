@@ -1,10 +1,10 @@
 package org.iplantc.de.apps.client.models.toolrequest;
 
-import java.util.Date;
-
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
+
+import java.util.Date;
 
 public interface ToolRequestProperties extends PropertyAccess<ToolRequest> {
 

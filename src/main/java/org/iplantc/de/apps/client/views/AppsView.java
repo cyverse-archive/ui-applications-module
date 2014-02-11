@@ -1,21 +1,22 @@
 package org.iplantc.de.apps.client.views;
 
-import java.util.List;
-
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.views.widgets.AppsViewToolbar;
-import org.iplantc.de.commons.client.models.HasId;
+import org.iplantc.de.client.models.HasId;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
+
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
 import com.sencha.gxt.data.shared.loader.ListLoader;
 import com.sencha.gxt.data.shared.loader.TreeLoader;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+
+import java.util.List;
 
 public interface AppsView extends IsWidget {
 

@@ -1,11 +1,8 @@
 package org.iplantc.de.apps.client.views;
 
-import java.util.Comparator;
-import java.util.List;
-
-import org.iplantc.de.resources.client.IplantResources;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppGroup;
+import org.iplantc.de.resources.client.IplantResources;
 
 import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
@@ -17,6 +14,7 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.SortDir;
@@ -41,6 +39,9 @@ import com.sencha.gxt.widget.core.client.tips.QuickTip;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance;
 import com.sencha.gxt.widget.core.client.tree.Tree.TreeNode;
+
+import java.util.Comparator;
+import java.util.List;
 
 /**
  *

@@ -1,24 +1,25 @@
 package org.iplantc.de.apps.client.views;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppProperties;
 import org.iplantc.de.apps.client.views.cells.AppHyperlinkCell;
 import org.iplantc.de.apps.client.views.cells.AppInfoCell;
 import org.iplantc.de.apps.client.views.cells.AppRatingCell;
+import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class AppColumnModel extends ColumnModel<App> {
 

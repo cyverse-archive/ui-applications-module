@@ -1,7 +1,7 @@
 package org.iplantc.de.apps.client.models.autobeans;
 
-import org.iplantc.de.commons.client.models.HasDescription;
-import org.iplantc.de.commons.client.models.HasId;
+import org.iplantc.de.client.models.HasDescription;
+import org.iplantc.de.client.models.HasId;
 
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
