@@ -26,15 +26,15 @@ import org.iplantc.de.apps.client.views.widgets.AppsViewToolbar;
 import org.iplantc.de.apps.client.views.widgets.events.AppSearchResultLoadEvent;
 import org.iplantc.de.apps.client.views.widgets.events.AppSearchResultLoadEventHandler;
 import org.iplantc.de.apps.client.views.widgets.proxy.AppSearchRpcProxy;
+import org.iplantc.de.client.events.EventBus;
 import org.iplantc.de.client.models.CommonModelUtils;
 import org.iplantc.de.client.models.DEProperties;
 import org.iplantc.de.client.models.HasId;
 import org.iplantc.de.client.models.UserInfo;
+import org.iplantc.de.client.util.JsonUtil;
 import org.iplantc.de.commons.client.ErrorHandler;
-import org.iplantc.de.commons.client.events.EventBus;
 import org.iplantc.de.commons.client.info.ErrorAnnouncementConfig;
 import org.iplantc.de.commons.client.info.IplantAnnouncer;
-import org.iplantc.de.commons.client.util.JsonUtil;
 import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.common.base.Strings;

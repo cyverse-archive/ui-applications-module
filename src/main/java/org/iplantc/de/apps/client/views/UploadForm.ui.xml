@@ -5,7 +5,7 @@
 	xmlns:form="urn:import:com.sencha.gxt.widget.core.client.form"
 	xmlns:ipc="urn:import:org.iplantc.de.commons.client.widgets">
 
-<ui:with field="constants" type="org.iplantc.de.commons.client.DEClientConstants"/>
+<ui:with field="constants" type="org.iplantc.de.client.DEClientConstants"/>
 
 <ui:with field="layoutData" 
     type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">

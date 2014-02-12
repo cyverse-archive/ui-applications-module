@@ -5,8 +5,8 @@ import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
 import org.iplantc.de.apps.client.models.autobeans.AppList;
 import org.iplantc.de.apps.client.views.widgets.events.AppSearchResultLoadEvent;
+import org.iplantc.de.client.events.EventBus;
 import org.iplantc.de.commons.client.ErrorHandler;
-import org.iplantc.de.commons.client.events.EventBus;
 
 import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;

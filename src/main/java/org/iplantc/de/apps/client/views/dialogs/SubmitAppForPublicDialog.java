@@ -8,11 +8,11 @@ import org.iplantc.de.apps.client.events.AppGroupCountUpdateEvent.AppGroupType;
 import org.iplantc.de.apps.client.gin.AppsInjector;
 import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.views.SubmitAppForPublicUseView.Presenter;
+import org.iplantc.de.client.events.EventBus;
+import org.iplantc.de.client.util.JsonUtil;
 import org.iplantc.de.commons.client.ErrorHandler;
-import org.iplantc.de.commons.client.events.EventBus;
 import org.iplantc.de.commons.client.info.IplantAnnouncer;
 import org.iplantc.de.commons.client.info.SuccessAnnouncementConfig;
-import org.iplantc.de.commons.client.util.JsonUtil;
 import org.iplantc.de.commons.client.views.gxt3.dialogs.IPlantDialog;
 import org.iplantc.de.resources.client.messages.I18N;
 

@@ -11,7 +11,7 @@
 		type="org.iplantc.de.resources.client.messages.IplantDisplayStrings" />
 
 	<ui:with field="constants"
-		type="org.iplantc.de.commons.client.DEClientConstants" />
+		type="org.iplantc.de.client.DEClientConstants" />
 
 	<ui:with field="layoutData"
 		type="com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData">

@@ -8,10 +8,10 @@ import org.iplantc.de.apps.client.models.autobeans.AppRefLink;
 import org.iplantc.de.apps.client.presenter.proxy.PublicAppGroupProxy;
 import org.iplantc.de.apps.client.services.AppUserServiceFacade;
 import org.iplantc.de.apps.client.views.SubmitAppForPublicUseView;
+import org.iplantc.de.client.events.EventBus;
 import org.iplantc.de.client.models.DEProperties;
+import org.iplantc.de.client.util.JsonUtil;
 import org.iplantc.de.commons.client.ErrorHandler;
-import org.iplantc.de.commons.client.events.EventBus;
-import org.iplantc.de.commons.client.util.JsonUtil;
 import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 

@@ -15,10 +15,10 @@ import org.iplantc.de.client.models.toolRequests.NewToolRequest;
 import org.iplantc.de.client.models.toolRequests.RequestedToolDetails;
 import org.iplantc.de.client.models.toolRequests.ToolRequestFactory;
 import org.iplantc.de.client.models.toolRequests.YesNoMaybe;
+import org.iplantc.de.client.services.DiskResourceServiceFacade;
+import org.iplantc.de.client.services.ToolRequestProvider;
+import org.iplantc.de.client.util.DiskResourceUtil;
 import org.iplantc.de.commons.client.gin.ServicesInjector;
-import org.iplantc.de.commons.client.services.DiskResourceServiceFacade;
-import org.iplantc.de.commons.client.services.ToolRequestProvider;
-import org.iplantc.de.commons.client.util.DiskResourceUtil;
 import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.common.base.Strings;
