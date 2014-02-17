@@ -1,11 +1,11 @@
 package org.iplantc.de.apps.client.views.widgets.proxy;
 
 import org.iplantc.de.apps.client.Services;
-import org.iplantc.de.apps.client.models.autobeans.App;
-import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
-import org.iplantc.de.apps.client.models.autobeans.AppList;
 import org.iplantc.de.apps.client.views.widgets.events.AppSearchResultLoadEvent;
 import org.iplantc.de.client.events.EventBus;
+import org.iplantc.de.client.models.apps.App;
+import org.iplantc.de.client.models.apps.AppAutoBeanFactory;
+import org.iplantc.de.client.models.apps.AppList;
 import org.iplantc.de.commons.client.ErrorHandler;
 
 import com.google.common.base.Strings;

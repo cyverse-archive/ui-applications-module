@@ -1,12 +1,12 @@
 package org.iplantc.de.apps.client.views;
 
 import org.iplantc.de.apps.client.Services;
-import org.iplantc.de.apps.client.models.autobeans.App;
-import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
-import org.iplantc.de.apps.client.models.autobeans.AppGroup;
 import org.iplantc.de.apps.client.views.AppsView.Presenter;
 import org.iplantc.de.apps.client.views.widgets.AppFavoriteCellWidget;
 import org.iplantc.de.apps.client.views.widgets.AppRatingCellWidget;
+import org.iplantc.de.client.models.apps.App;
+import org.iplantc.de.client.models.apps.AppAutoBeanFactory;
+import org.iplantc.de.client.models.apps.AppGroup;
 import org.iplantc.de.client.models.deployedComps.DeployedComponent;
 import org.iplantc.de.commons.client.ErrorHandler;
 import org.iplantc.de.commons.client.widgets.IPlantAnchor;

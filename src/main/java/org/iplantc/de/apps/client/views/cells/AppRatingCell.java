@@ -1,9 +1,9 @@
 package org.iplantc.de.apps.client.views.cells;
 
 import org.iplantc.de.apps.client.Services;
-import org.iplantc.de.apps.client.models.autobeans.App;
-import org.iplantc.de.apps.client.models.autobeans.AppFeedback;
 import org.iplantc.de.apps.client.views.dialogs.AppCommentDialog;
+import org.iplantc.de.client.models.apps.App;
+import org.iplantc.de.client.models.apps.AppFeedback;
 import org.iplantc.de.client.util.JsonUtil;
 import org.iplantc.de.commons.client.ErrorHandler;
 import org.iplantc.de.resources.client.IplantResources;

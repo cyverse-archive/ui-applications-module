@@ -1,15 +1,15 @@
 package org.iplantc.de.apps.client.presenter;
 
 import org.iplantc.de.apps.client.events.AppPublishedEvent;
-import org.iplantc.de.apps.client.models.autobeans.App;
-import org.iplantc.de.apps.client.models.autobeans.AppAutoBeanFactory;
-import org.iplantc.de.apps.client.models.autobeans.AppGroup;
-import org.iplantc.de.apps.client.models.autobeans.AppRefLink;
 import org.iplantc.de.apps.client.presenter.proxy.PublicAppGroupProxy;
 import org.iplantc.de.apps.client.services.AppUserServiceFacade;
 import org.iplantc.de.apps.client.views.SubmitAppForPublicUseView;
 import org.iplantc.de.client.events.EventBus;
 import org.iplantc.de.client.models.DEProperties;
+import org.iplantc.de.client.models.apps.App;
+import org.iplantc.de.client.models.apps.AppAutoBeanFactory;
+import org.iplantc.de.client.models.apps.AppGroup;
+import org.iplantc.de.client.models.apps.AppRefLink;
 import org.iplantc.de.client.util.JsonUtil;
 import org.iplantc.de.commons.client.ErrorHandler;
 import org.iplantc.de.resources.client.messages.I18N;

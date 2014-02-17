@@ -1,8 +1,8 @@
 package org.iplantc.de.apps.client.views;
 
-import org.iplantc.de.apps.client.models.autobeans.App;
-import org.iplantc.de.apps.client.models.autobeans.AppGroup;
-import org.iplantc.de.apps.client.models.autobeans.AppRefLink;
+import org.iplantc.de.client.models.apps.App;
+import org.iplantc.de.client.models.apps.AppGroup;
+import org.iplantc.de.client.models.apps.AppRefLink;
 
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;

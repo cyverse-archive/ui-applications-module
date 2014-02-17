@@ -1,7 +1,7 @@
 package org.iplantc.de.apps.client.views.cells;
 
-import org.iplantc.de.apps.client.models.autobeans.App;
 import org.iplantc.de.apps.client.views.AppsView;
+import org.iplantc.de.client.models.apps.App;
 import org.iplantc.de.resources.client.messages.I18N;
 
 import static com.google.gwt.dom.client.BrowserEvents.CLICK;

@@ -1,6 +1,6 @@
 package org.iplantc.de.apps.client.gin;
 
-import org.iplantc.de.apps.client.models.autobeans.AppGroup;
+import org.iplantc.de.client.models.apps.AppGroup;
 
 import com.google.inject.Provider;
 

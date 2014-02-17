@@ -1,7 +1,7 @@
 package org.iplantc.de.apps.client.views;
 
-import org.iplantc.de.apps.client.models.autobeans.App;
-import org.iplantc.de.apps.client.models.autobeans.AppGroup;
+import org.iplantc.de.client.models.apps.App;
+import org.iplantc.de.client.models.apps.AppGroup;
 import org.iplantc.de.resources.client.IplantResources;
 
 import com.google.common.base.Strings;

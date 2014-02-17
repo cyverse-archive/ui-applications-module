@@ -1,6 +1,9 @@
 package org.iplantc.de.apps.client.models.autobeans;
 
 
+import org.iplantc.de.client.models.apps.App;
+import org.iplantc.de.client.models.apps.AppFeedback;
+
 import com.google.gwt.editor.client.Editor.Path;
 
 import com.sencha.gxt.core.client.ValueProvider;
