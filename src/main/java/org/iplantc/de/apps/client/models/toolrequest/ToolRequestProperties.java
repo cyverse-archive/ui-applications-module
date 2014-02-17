@@ -1,5 +1,8 @@
 package org.iplantc.de.apps.client.models.toolrequest;
 
+import org.iplantc.de.client.models.toolRequest.ToolRequest;
+import org.iplantc.de.client.models.toolRequest.ToolRequestStatus;
+
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
