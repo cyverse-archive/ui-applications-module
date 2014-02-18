@@ -1,8 +1,8 @@
 package org.iplantc.de.apps.client.views.widgets.proxy;
 
-import org.iplantc.de.apps.client.Services;
 import org.iplantc.de.apps.client.views.widgets.events.AppSearchResultLoadEvent;
 import org.iplantc.de.client.events.EventBus;
+import org.iplantc.de.client.gin.ServicesInjector;
 import org.iplantc.de.client.models.apps.App;
 import org.iplantc.de.client.models.apps.AppAutoBeanFactory;
 import org.iplantc.de.client.models.apps.AppList;
@@ -58,7 +58,7 @@ public class AppSearchRpcProxy extends RpcProxy<FilterPagingLoadConfig, PagingLo
         final AppSearchRpcProxy source = this;
 
         // Call the searchApp service with this proxy's query.
-        Services.APP_SERVICE.searchApp(lastQueryText, new AsyncCallback<String>() {
+        ServicesInjector.INSTANCE.getAppServiceFacade().searchApp(lastQueryText, new AsyncCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 AppAutoBeanFactory factory = GWT.create(AppAutoBeanFactory.class);

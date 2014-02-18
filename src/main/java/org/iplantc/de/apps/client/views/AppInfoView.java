@@ -1,9 +1,9 @@
 package org.iplantc.de.apps.client.views;
 
-import org.iplantc.de.apps.client.Services;
 import org.iplantc.de.apps.client.views.AppsView.Presenter;
 import org.iplantc.de.apps.client.views.widgets.AppFavoriteCellWidget;
 import org.iplantc.de.apps.client.views.widgets.AppRatingCellWidget;
+import org.iplantc.de.client.gin.ServicesInjector;
 import org.iplantc.de.client.models.apps.App;
 import org.iplantc.de.client.models.apps.AppAutoBeanFactory;
 import org.iplantc.de.client.models.apps.AppGroup;
@@ -149,7 +149,7 @@ public class AppInfoView implements IsWidget {
     }
 
     private void loadDCinfo() {
-        Services.USER_APP_SERVICE.getAppDetails(app.getId(), new AsyncCallback<String>() {
+        ServicesInjector.INSTANCE.getAppUserServiceFacade().getAppDetails(app.getId(), new AsyncCallback<String>() {
 
             @Override
             public void onSuccess(String result) {

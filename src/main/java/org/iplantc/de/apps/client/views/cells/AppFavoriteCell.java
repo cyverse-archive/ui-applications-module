@@ -1,8 +1,8 @@
 package org.iplantc.de.apps.client.views.cells;
 
-import org.iplantc.de.apps.client.Services;
 import org.iplantc.de.apps.client.events.AppFavoritedEvent;
 import org.iplantc.de.client.events.EventBus;
+import org.iplantc.de.client.gin.ServicesInjector;
 import org.iplantc.de.client.models.UserInfo;
 import org.iplantc.de.client.models.apps.App;
 import org.iplantc.de.commons.client.ErrorHandler;
@@ -112,7 +112,7 @@ public class AppFavoriteCell extends AbstractCell<App> {
 
     private void doOnClick(final Element eventTarget, final App value, final ValueUpdater<App> valueUpdater) {
 
-        Services.USER_APP_SERVICE.favoriteApp(UserInfo.getInstance().getWorkspaceId(), value.getId(),
+        ServicesInjector.INSTANCE.getAppUserServiceFacade().favoriteApp(UserInfo.getInstance().getWorkspaceId(), value.getId(),
                 !value.isFavorite(), new AsyncCallback<String>() {
 
             @Override

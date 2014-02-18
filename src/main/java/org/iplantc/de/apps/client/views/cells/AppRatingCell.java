@@ -1,7 +1,7 @@
 package org.iplantc.de.apps.client.views.cells;
 
-import org.iplantc.de.apps.client.Services;
 import org.iplantc.de.apps.client.views.dialogs.AppCommentDialog;
+import org.iplantc.de.client.gin.ServicesInjector;
 import org.iplantc.de.client.models.apps.App;
 import org.iplantc.de.client.models.apps.AppFeedback;
 import org.iplantc.de.client.util.JsonUtil;
@@ -298,7 +298,7 @@ public class AppRatingCell extends AbstractCell<App> {
             // comment id empty or not a number, leave it null and proceed
         }
 
-        Services.USER_APP_SERVICE.deleteRating(value.getId(), parsePageName(value.getWikiUrl()),
+        ServicesInjector.INSTANCE.getAppUserServiceFacade().deleteRating(value.getId(), parsePageName(value.getWikiUrl()),
                 commentId,
                 new AsyncCallback<String>() {
                     @Override
@@ -355,11 +355,11 @@ public class AppRatingCell extends AbstractCell<App> {
 
         Long commentId = value.getRating().getCommentId();
         if ((commentId == null) || (commentId == 0)) {
-            Services.USER_APP_SERVICE.rateApp(value.getId(), score,
+            ServicesInjector.INSTANCE.getAppUserServiceFacade().rateApp(value.getId(), score,
                     parsePageName(value.getWikiUrl()),
                     comment, value.getIntegratorEmail(), callback);
         } else {
-            Services.USER_APP_SERVICE.updateRating(value.getId(), score,
+            ServicesInjector.INSTANCE.getAppUserServiceFacade().updateRating(value.getId(), score,
                     parsePageName(value.getWikiUrl()),
                     commentId, comment, value.getIntegratorEmail(), callback);
         }

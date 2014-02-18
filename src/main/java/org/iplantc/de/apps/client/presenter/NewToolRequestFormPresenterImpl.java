@@ -6,6 +6,7 @@ package org.iplantc.de.apps.client.presenter;
 import org.iplantc.de.apps.client.views.NewToolRequestFormView;
 import org.iplantc.de.apps.client.views.NewToolRequestFormView.Presenter;
 import org.iplantc.de.apps.client.views.Uploader;
+import org.iplantc.de.client.gin.ServicesInjector;
 import org.iplantc.de.client.models.HasPaths;
 import org.iplantc.de.client.models.UserInfo;
 import org.iplantc.de.client.models.diskResources.DiskResourceAutoBeanFactory;
@@ -18,7 +19,6 @@ import org.iplantc.de.client.models.toolRequests.YesNoMaybe;
 import org.iplantc.de.client.services.DiskResourceServiceFacade;
 import org.iplantc.de.client.services.ToolRequestProvider;
 import org.iplantc.de.client.util.DiskResourceUtil;
-import org.iplantc.de.commons.client.gin.ServicesInjector;
 import org.iplantc.de.resources.client.messages.I18N;
 
 import com.google.common.base.Strings;
@@ -45,8 +45,8 @@ public class NewToolRequestFormPresenterImpl implements Presenter {
     private final DiskResourceServiceFacade fsServices = ServicesInjector.INSTANCE.getDiskResourceServiceFacade();
     private final ToolRequestProvider reqServices = ServicesInjector.INSTANCE.getToolRequestServiceProvider();
 
-    private NewToolRequestFormView<Architecture, YesNoMaybe> view;
-    private Command callback;
+    private final NewToolRequestFormView<Architecture, YesNoMaybe> view;
+    private final Command callback;
     private SELECTION_MODE toolSelectionMode;
     private SELECTION_MODE testDataSelectionMode;
     private SELECTION_MODE otherDataSelectionMode;
