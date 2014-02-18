@@ -1,6 +1,5 @@
 package org.iplantc.de.apps.client.views;
 
-import org.iplantc.de.apps.client.models.autobeans.AppProperties;
 import org.iplantc.de.apps.client.views.cells.AppHyperlinkCell;
 import org.iplantc.de.apps.client.views.cells.AppInfoCell;
 import org.iplantc.de.apps.client.views.cells.AppRatingCell;

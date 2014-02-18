@@ -1,4 +1,4 @@
-package org.iplantc.de.apps.client.models.autobeans;
+package org.iplantc.de.apps.client.views;
 
 
 import org.iplantc.de.client.models.apps.App;
