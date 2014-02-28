@@ -6,6 +6,8 @@ import org.iplantc.de.client.gin.ServicesInjector;
 import org.iplantc.de.client.models.apps.App;
 import org.iplantc.de.client.models.apps.AppAutoBeanFactory;
 import org.iplantc.de.client.models.apps.AppList;
+import org.iplantc.de.client.models.apps.proxy.AppListLoadResult;
+import org.iplantc.de.client.models.apps.proxy.AppSearchAutoBeanFactory;
 import org.iplantc.de.commons.client.ErrorHandler;
 
 import com.google.common.base.Strings;
